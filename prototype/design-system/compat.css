@@ -1,0 +1,14 @@
+/* Legacy aliases — ONLY for the product app screens (*.dc.html, ge-app.js), which still use v1 names.
+   The marketing mockup and DS v2 components never read these. Delete this file once the app migrates. */
+:root{
+--font-text:var(--font-sans);--font-display:var(--font-sans);
+--color-inverse-canvas:var(--color-paper);--color-inverse-surface-2:var(--color-paper-rule);--color-inverse-ink:var(--color-paper-ink);
+--color-semantic-success:var(--color-success);
+--color-hairline-tertiary:#434B58;
+--type-body-sm-size:var(--type-small-size);--type-body-sm-lh:1.5;
+--type-card-title-size:var(--type-title-size);
+--type-display-md-size:var(--type-stat-size);--type-display-md-lh:1.15;--type-display-md-ls:var(--type-stat-ls);
+--type-mono-size:var(--type-ui-size);--type-mono-lh:1.5;
+--rounded-pill:var(--rounded-full);
+--elevation-1:inset 0 0 0 1px var(--color-hairline);
+}

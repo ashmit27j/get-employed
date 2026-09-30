@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Settings · GetEmployed</title>
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/colors.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/typography.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/radius.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/base.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/styles.css">
+<script src="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/_ds_bundle.js"></script>
+<script src="ge-app.js"></script>
+<style>body{margin:0;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)">
+  <x-import component-from-global-scope="GEApp.Sidebar" active="settings" hint-size="232px,100vh"></x-import>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <x-import component-from-global-scope="GEApp.Topbar" crumbs="{{ crumbs }}" hint-size="100%,56px"></x-import>
+    <main data-screen-label="Settings" data-ge-stack-mobile="" style="padding:32px 32px 96px;max-width:1040px;width:100%;box-sizing:border-box;margin:0;display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px;align-items:start;flex-wrap:wrap">
+
+      <aside style="position:sticky;top:88px;display:flex;flex-direction:column;gap:20px">
+        <label style="display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;box-sizing:border-box;border:1px solid var(--color-hairline-strong);border-radius:var(--rounded-md);background:var(--color-surface-1)">
+          <span style="width:14px;height:14px;flex:none;background:var(--color-ink-subtle);mask:url(https://unpkg.com/lucide-static@0.460.0/icons/search.svg) center/contain no-repeat"></span>
+          <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Search settings" style="all:unset;flex:1;min-width:0;font-size:var(--type-body-sm-size);color:var(--color-ink)">
+        </label>
+        <sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="3">
+          <nav style="display:flex;flex-direction:column;gap:2px">
+            <span style="padding:0 10px 6px;font-size:var(--type-caption-size);color:var(--color-ink-tertiary)">{{ g.title }}</span>
+            <sc-for list="{{ g.items }}" as="n" hint-placeholder-count="4">
+              <a href="{{ n.href }}" onClick="{{ n.go }}" style="{{ n.style }}" style-hover="background:var(--color-surface-1);color:var(--color-ink)">
+                <span style="{{ n.icon }}"></span>
+                <span style="flex:1">{{ n.label }}</span>
+                <sc-if value="{{ n.ext }}" hint-placeholder-val="{{ false }}"><span style="width:14px;height:14px;background:var(--color-ink-tertiary);mask:url(https://unpkg.com/lucide-static@0.460.0/icons/arrow-up-right.svg) center/contain no-repeat"></span></sc-if>
+              </a>
+            </sc-for>
+          </nav>
+        </sc-for>
+        <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}"><span style="padding:0 10px;font-size:var(--type-caption-size);color:var(--color-ink-subtle)">No settings match.</span></sc-if>
+      </aside>
+
+      <div style="display:flex;flex-direction:column;gap:40px;min-width:0;flex:1 1 100%">
+
+        <sc-if value="{{ tGeneral }}" hint-placeholder-val="{{ true }}">
+          <section style="display:flex;flex-direction:column">
+            <h2 style="margin:0 0 8px;font-size:17px;font-weight:600">Preferences</h2>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">Time zone</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Deadlines, reminders and your digest use this.</span></div>
+              <x-import component-from-global-scope="GEApp.InlineSelect" label="Time zone" options="Asia/Kolkata (IST)|Asia/Dubai (GST)|Asia/Singapore (SGT)|Europe/London (GMT)|America/New_York (ET)|UTC" hint-size="170px,32px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">Salary currency</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">How salary bands are shown on jobs.</span></div>
+              <x-import component-from-global-scope="GEApp.InlineSelect" label="Currency" options="₹ INR · LPA|$ USD · per year|€ EUR · per year" hint-size="140px,32px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">Minimum match score</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Roles below this are hidden from your feed and digest.</span></div>
+              <x-import component-from-global-scope="GEApp.InlineSelect" label="Minimum match" options="Show all|50 and above|60 and above|70 and above|80 and above" value="{{ minMatch }}" on-change="{{ setMinMatch }}" hint-size="130px,32px"></x-import>
+            </div>
+
+            <h2 style="margin:40px 0 8px;font-size:17px;font-weight:600">Notifications</h2>
+            <p style="margin:0 0 4px;font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Sent to ashmit27j@gmail.com.</p>
+            <sc-for list="{{ notifs }}" as="n" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+                <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ n.title }}</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ n.sub }}</span></div>
+                <x-import component-from-global-scope="GEApp.Toggle" default-on="{{ n.on }}" label="{{ n.title }}" hint-size="32px,18px"></x-import>
+              </div>
+            </sc-for>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">Digest time</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">When the daily matches email arrives.</span></div>
+              <x-import component-from-global-scope="GEApp.TimePicker" label="Digest time" default-value="08:00" hint-size="90px,32px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">Quiet hours</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Nothing is sent in this window. Reminders wait until it ends.</span></div>
+              <x-import component-from-global-scope="GEApp.TimeRangePicker" label="Quiet hours" default-start="22:00" default-end="08:00" allow-off="{{ true }}" hint-size="140px,32px"></x-import>
+            </div>
+          </section>
+        </sc-if>
+
+        <sc-if value="{{ tMailbox }}" hint-placeholder-val="{{ false }}">
+          <section style="display:flex;flex-direction:column">
+            <h2 style="margin:0 0 4px;font-size:17px;font-weight:600">Connected mailbox</h2>
+            <p style="margin:0 0 12px;font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Outreach is sent from your own address so replies land in your inbox.</p>
+            <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--color-hairline);border-radius:var(--rounded-lg);background:var(--color-surface-1);flex-wrap:wrap">
+              <x-import component-from-global-scope="GEApp.CoLogo" name="Gmail" size="36" hint-size="36px,36px"></x-import>
+              <div style="flex:1;min-width:160px;display:flex;flex-direction:column"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">ashmit27j@gmail.com</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Gmail · send-only access · connected Sep 3</span></div>
+              <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.StatusBadge" tone="success" hint-size="80px,20px">Connected</x-import>
+              <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" hint-size="90px,28px">Disconnect</x-import>
+            </div>
+            <h2 style="margin:32px 0 8px;font-size:17px;font-weight:600">Sending</h2>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">Sending window</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Approved emails queue until this window opens.</span></div>
+              <x-import component-from-global-scope="GEApp.TimeRangePicker" label="Sending window" default-start="09:00" default-end="18:00" hint-size="140px,32px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">Daily limit</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Keeps you under Gmail's spam thresholds.</span></div>
+              <x-import component-from-global-scope="GEApp.InlineSelect" label="Daily limit" options="10 emails|20 emails|30 emails" value="20 emails" hint-size="110px,32px"></x-import>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">Automatic follow-ups</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Draft a follow-up after 7 days with no reply. You approve before it sends.</span></div>
+              <x-import component-from-global-scope="GEApp.Toggle" default-on="{{ true }}" label="Automatic follow-ups" hint-size="32px,18px"></x-import>
+            </div>
+          </section>
+        </sc-if>
+
+        <sc-if value="{{ tAI }}" hint-placeholder-val="{{ false }}">
+          <section style="display:flex;flex-direction:column">
+            <h2 style="margin:0 0 8px;font-size:17px;font-weight:600">Assistant</h2>
+            <sc-for list="{{ aiAuto }}" as="a" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+                <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ a.title }}</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ a.sub }}</span></div>
+                <x-import component-from-global-scope="GEApp.Toggle" default-on="{{ a.on }}" label="{{ a.title }}" hint-size="32px,18px"></x-import>
+              </div>
+            </sc-for>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">Outreach tone</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Default voice for drafted emails.</span></div>
+              <x-import component-from-global-scope="GEApp.InlineSelect" label="Outreach tone" options="Friendly and direct|Formal|Brief" hint-size="160px,32px"></x-import>
+            </div>
+            <h2 style="margin:40px 0 8px;font-size:17px;font-weight:600">Privacy</h2>
+            <sc-for list="{{ aiPriv }}" as="a" hint-placeholder-count="2">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+                <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ a.title }}</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ a.sub }}</span></div>
+                <x-import component-from-global-scope="GEApp.Toggle" default-on="{{ a.on }}" label="{{ a.title }}" hint-size="32px,18px"></x-import>
+              </div>
+            </sc-for>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">Delete chat history after</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Assistant conversations are removed automatically.</span></div>
+              <x-import component-from-global-scope="GEApp.InlineSelect" label="Delete chat history" options="Never|30 days|90 days" hint-size="100px,32px"></x-import>
+            </div>
+          </section>
+        </sc-if>
+
+        <sc-if value="{{ tBilling }}" hint-placeholder-val="{{ false }}">
+          <section style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+              <div style="display:flex;flex-direction:column;gap:2px"><h2 style="margin:0;font-size:17px;font-weight:600">Plan</h2><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">You're on Free. Payments are processed by Razorpay.</span></div>
+              <x-import component-from-global-scope="GEApp.Segmented" options="Monthly|Yearly" value="{{ period }}" on-change="{{ setPeriod }}" hint-size="170px,32px"></x-import>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+              <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.PricingCard" tier="Free" price="₹0" description="Your current plan" cta="Current plan" features="{{ freeFeatures }}" hint-size="100%,380px"></x-import>
+              <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.PricingCard" tier="Pro" price="{{ proPrice }}" period="{{ proPeriod }}" description="For an active job search" cta="Upgrade with Razorpay" featured="{{ true }}" features="{{ proFeatures }}" on-select="{{ upgrade }}" hint-size="100%,380px"></x-import>
+            </div>
+            <sc-if value="{{ upgrading }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:var(--rounded-md);border:1px solid var(--color-hairline-strong);background:var(--color-surface-2);font-size:var(--type-body-sm-size);color:var(--color-ink-muted)">
+                <span style="width:16px;height:16px;flex:none;background:var(--color-primary);mask:url(https://unpkg.com/lucide-static@0.460.0/icons/external-link.svg) center/contain no-repeat"></span>
+                <span style="flex:1">Razorpay checkout opens in a new window. Pay by UPI, card or netbanking.</span>
+                <button onClick="{{ cancelUpgrade }}" style="all:unset;cursor:pointer;color:var(--color-ink-subtle)">Cancel</button>
+              </div>
+            </sc-if>
+
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:28px"><h2 style="margin:0;font-size:17px;font-weight:600">Usage</h2><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Resets Oct 1</span></div>
+            <sc-for list="{{ usage }}" as="u" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:160px minmax(0,1fr) 64px;gap:16px;align-items:center;padding:10px 0;border-bottom:1px solid var(--color-hairline)">
+                <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-muted)">{{ u.label }}</span>
+                <span style="display:block;height:4px;border-radius:var(--rounded-pill);background:var(--color-surface-3);overflow:hidden"><span style="{{ u.fill }}"></span></span>
+                <span style="{{ u.countStyle }}">{{ u.count }}</span>
+              </div>
+            </sc-for>
+
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:28px"><h2 style="margin:0;font-size:17px;font-weight:600">Invoices</h2><x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" hint-size="100px,28px">Add GSTIN</x-import></div>
+            <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">No invoices yet. They appear here after your first payment.</span>
+          </section>
+        </sc-if>
+
+        <sc-if value="{{ tDev }}" hint-placeholder-val="{{ false }}">
+          <section style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:2px"><h2 style="margin:0;font-size:17px;font-weight:600">Self-hosting</h2><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">GetEmployed is open source. Run it on your own machine with no usage limits.</span></div>
+            <div style="font-family:var(--font-mono);font-size:13px;line-height:1.7;background:var(--color-surface-1);border:1px solid var(--color-hairline);border-radius:var(--rounded-md);padding:12px 16px;color:var(--color-ink-muted);overflow-x:auto;white-space:pre">git clone https://github.com/ashmit27j/get-employed
+cd get-employed &amp;&amp; cp .env.example .env
+docker compose up</div>
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" href="https://github.com/ashmit27j/get-employed" style="align-self:flex-start" hint-size="120px,28px">View on GitHub →</x-import>
+            <div style="display:flex;flex-direction:column;gap:2px;margin-top:24px"><h2 style="margin:0;font-size:17px;font-weight:600">LLM API key</h2><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Saves to your local .env. Only works on a local deployment.</span></div>
+            <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap">
+              <div style="flex:1;min-width:220px"><x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.TextInput" value="{{ apiKey }}" on-change="{{ onApiKey }}" placeholder="sk-…" type="password" hint-size="100%,38px"></x-import></div>
+              <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" on-click="{{ saveApiKey }}" disabled="{{ noApiKey }}" hint-size="120px,36px">{{ saveApiKeyLabel }}</x-import>
+            </div>
+          </section>
+        </sc-if>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tab: new URLSearchParams(location.search).get("tab") || "general", q: "", period: "Monthly", upgrading: false, apiKey: "", apiKeySaved: false, minMatch: "60 and above" };
+  renderVals() {
+    const s = this.state, y = s.period === "Yearly", q = s.q.trim().toLowerCase();
+    const ic = n => ({ width: "16px", height: "16px", flex: "none", background: "currentColor", mask: "url(https://unpkg.com/lucide-static@0.460.0/icons/" + n + ".svg) center/contain no-repeat", WebkitMask: "url(https://unpkg.com/lucide-static@0.460.0/icons/" + n + ".svg) center/contain no-repeat" });
+    const G = [
+      ["Settings", [["general", "General", "settings", "time zone currency match notifications digest quiet hours email"], ["mailbox", "Mailbox", "mail", "gmail sending window daily limit follow-ups"], ["ai", "AI & privacy", "shield", "assistant tone chat history recordings"], ["billing", "Plan & billing", "credit-card", "pro upgrade usage invoices gstin razorpay"], ["dev", "Developer", "code", "self-hosting api key docker github"]]],
+      ["You", [["account", "Account", "circle-user-round", "name email password security sessions delete export", "Account.dc.html"], ["profile", "Job Profile", "briefcase", "education experience certificates links documents", "Profile.dc.html"]]],
+      ["Help", [["feedback", "Send feedback", "message-square-text", "bug idea question"]]],
+    ];
+    const LBL = { general: "General", mailbox: "Mailbox", ai: "AI & privacy", billing: "Plan & billing", dev: "Developer" };
+    const navGroups = G.map(([title, items]) => ({ title, items: items.filter(([id, l, i, kw]) => !q || (l + " " + kw).toLowerCase().includes(q)).map(([id, label, icon, kw, href]) => {
+      const on = s.tab === id;
+      return { label, ext: !!href, href: href || "#", icon: ic(icon),
+        go: href ? undefined : e => { e.preventDefault(); if (id === "feedback") window.dispatchEvent(new Event("ge-feedback")); else { this.setState({ tab: id }); history.replaceState(null, "", "?tab=" + id); window.scrollTo(0, 0); } },
+        style: { display: "flex", alignItems: "center", gap: "10px", height: "34px", padding: "0 10px", borderRadius: "var(--rounded-sm)", textDecoration: "none", fontSize: "var(--type-body-sm-size)", color: on ? "var(--color-ink)" : "var(--color-ink-subtle)", background: on ? "var(--color-surface-2)" : "transparent" } };
+    }) })).filter(g => g.items.length);
+    return {
+      crumbs: "Settings / " + (LBL[s.tab] || "General"),
+      q: s.q, onQ: e => this.setState({ q: e.target.value }), navGroups, noResults: !navGroups.length,
+      tGeneral: s.tab === "general", tMailbox: s.tab === "mailbox", tAI: s.tab === "ai", tBilling: s.tab === "billing", tDev: s.tab === "dev",
+      minMatch: s.minMatch, setMinMatch: v => this.setState({ minMatch: v }),
+      notifs: [["New matches", "Daily digest of jobs above your minimum match score", true], ["Replies", "When a recruiter or manager answers your outreach", true], ["Follow-up reminders", "7 days after an application with no response", true], ["Interview reminders", "1 hour before a scheduled mock or real interview", true], ["Weekly summary", "Applications, replies and score changes every Monday", false]].map(([title, sub, on]) => ({ title, sub, on })),
+      aiAuto: [["Auto-create search filters", "Turn plain-English searches into filters without asking", true], ["Auto-draft outreach", "Draft emails for matches above 85. Nothing sends without your approval.", true], ["Suggest resume edits", "Show AI rewrites inline while you edit", true]].map(([title, sub, on]) => ({ title, sub, on })),
+      aiPriv: [["Save interview recordings", "Keep video in the cloud so you can replay sessions on any device", false], ["Help improve GetEmployed", "Share anonymised usage to improve matching. Never your resume text.", false]].map(([title, sub, on]) => ({ title, sub, on })),
+      period: s.period, setPeriod: v => this.setState({ period: v }),
+      proPrice: y ? "₹2,990" : "₹299", proPeriod: y ? "/yr" : "/mo",
+      freeFeatures: ["5 saved searches", "20 tailored resumes a month", "50 outreach emails a month", "1 mock interview a month"],
+      proFeatures: ["Unlimited saved searches, checked hourly", "Unlimited tailored resumes", "500 outreach emails a month", "Unlimited mock interviews with body-language feedback", "Priority contact discovery"],
+      upgrading: s.upgrading, upgrade: () => this.setState({ upgrading: true }), cancelUpgrade: () => this.setState({ upgrading: false }),
+      usage: [["Saved searches", 3, 5], ["Tailored resumes", 14, 20], ["Outreach emails", 38, 50], ["Mock interviews", 1, 1]].map(([label, u, m]) => { const p = u / m, warn = p >= 0.8;
+        return { label, count: u + " / " + m, fill: { display: "block", height: "100%", width: (p * 100) + "%", borderRadius: "inherit", background: warn ? "var(--color-primary)" : "var(--color-ink-subtle)" },
+          countStyle: { fontFamily: "var(--font-mono)", fontSize: "13px", textAlign: "right", whiteSpace: "nowrap", color: warn ? "var(--color-ink)" : "var(--color-ink-subtle)" } }; }),
+      apiKey: s.apiKey, onApiKey: e => this.setState({ apiKey: e.target.value, apiKeySaved: false }), noApiKey: !s.apiKey.trim(),
+      saveApiKeyLabel: s.apiKeySaved ? "Saved" : "Save to .env", saveApiKey: () => this.setState({ apiKeySaved: true }),
+    };
+  }
+}
+</script>
+</body>
+</html>

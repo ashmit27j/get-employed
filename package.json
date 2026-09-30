@@ -1,0 +1,36 @@
+{
+  "name": "get-employed",
+  "private": true,
+  "description": "GetEmployed: a job-search copilot for students and early-career engineers.",
+  "license": "MIT",
+  "packageManager": "pnpm@10.12.3",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:generate": "pnpm --filter @ge/db db:generate",
+    "db:migrate": "pnpm --filter @ge/db db:migrate",
+    "db:seed": "pnpm --filter @ge/db db:seed",
+    "db:studio": "pnpm --filter @ge/db db:studio",
+    "services:up": "docker compose up -d",
+    "services:down": "docker compose down"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.9",
+    "turbo": "^2.11.5",
+    "typescript": "~6.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "unrs-resolver"
+    ]
+  }
+}

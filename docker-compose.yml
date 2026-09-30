@@ -1,0 +1,32 @@
+# Local development services. The apps run on the host with `pnpm dev`.
+#   docker compose up -d
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: getemployed
+      POSTGRES_PASSWORD: getemployed
+      POSTGRES_DB: getemployed
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U getemployed"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # S3-compatible file storage (resumes, PDFs, cached interview audio). Buckets are created by the app.
+  storage:
+    image: chrislusf/seaweedfs:latest
+    command: server -dir=/data -s3 -s3.port=8333 -s3.config=/etc/seaweedfs/s3.json
+    ports:
+      - "8333:8333"
+    volumes:
+      - storagedata:/data
+      - ./docker/seaweedfs-s3.json:/etc/seaweedfs/s3.json:ro
+
+volumes:
+  pgdata:
+  storagedata:

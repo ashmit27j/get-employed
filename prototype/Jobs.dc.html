@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Job board · GetEmployed</title>
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/colors.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/typography.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/radius.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/base.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/styles.css">
+<script src="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/_ds_bundle.js"></script>
+<script src="ge-app.js"></script>
+<script src="ge-data.js"></script>
+<style>:root{--color-field:#171C25}body{margin:0;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}
+@keyframes ge-ss-glow{0%,100%{box-shadow:0 0 0 1px rgba(123,155,219,.30),0 0 18px rgba(123,155,219,.10)}50%{box-shadow:0 0 0 1px rgba(123,155,219,.55),0 0 34px rgba(123,155,219,.22)}}
+@keyframes ge-wipe-r{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes ge-ss-dot{50%{opacity:.35;transform:scale(.8)}}
+@keyframes ge-ss-pulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.8);opacity:.4}100%{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){[data-ge-anim]{animation:none!important}}
+input.ge-dual-thumb{outline:none}
+input.ge-dual-thumb::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;pointer-events:auto;width:16px;height:16px;border-radius:50%;background:var(--color-primary);border:2px solid var(--color-surface-1);box-shadow:var(--elevation-1);cursor:pointer}
+input.ge-dual-thumb::-moz-range-thumb{pointer-events:auto;width:16px;height:16px;border-radius:50%;background:var(--color-primary);border:2px solid var(--color-surface-1);box-shadow:var(--elevation-1);cursor:pointer}
+input.ge-dual-thumb::-webkit-slider-runnable-track,input.ge-dual-thumb::-moz-range-track{background:transparent}
+</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)">
+  <x-import component-from-global-scope="GEApp.Sidebar" active="jobs" hint-size="232px,100vh"></x-import>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <x-import component-from-global-scope="GEApp.Topbar" crumbs="Job board" hint-size="100%,56px"></x-import>
+    <main data-screen-label="Job board" style="padding:40px 32px 96px;max-width:1120px;width:100%;box-sizing:border-box;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:nowrap">
+        <div style="display:flex;flex-direction:column;gap:6px;min-width:0;flex:1">
+          <h1 style="margin:0;font-size:var(--type-headline-size);line-height:1.15;font-weight:600;letter-spacing:-0.8px">{{ boardTitle }}</h1>
+          <p style="margin:0;font-size:var(--type-body-size);color:var(--color-ink-subtle);text-wrap:pretty">{{ boardSubtitle }}</p>
+        </div>
+        <sc-if value="{{ isDiscover }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 18px 12px 12px;border-radius:var(--rounded-lg);border:1px solid var(--color-hairline);background:var(--color-surface-1);flex:none">
+            <span style="position:relative;width:56px;height:56px;flex:none;display:flex;align-items:center;justify-content:center">
+              <svg width="56" height="56" viewBox="0 0 56 56" style="position:absolute;inset:0;transform:rotate(-90deg)"><circle cx="28" cy="28" r="25" fill="none" stroke="var(--color-surface-3)" stroke-width="3"></circle><circle cx="28" cy="28" r="25" fill="none" stroke="var(--color-primary)" stroke-width="3" stroke-linecap="round" stroke-dasharray="157.08" style="{{ waveRing }}"></circle></svg>
+              <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink)">{{ waveClock }}</span>
+            </span>
+            <span style="display:flex;flex-direction:column;gap:2px">
+              <span style="font-size:var(--type-body-sm-size);font-weight:500">Next wave</span>
+              <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">New roles every hour</span>
+            </span>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <x-import component-from-global-scope="GEApp.Segmented" options="{{ boardTabs }}" icons="compass|sparkles|bookmark" value="{{ board }}" on-change="{{ setBoard }}" hint-size="440px,32px"></x-import>
+        <div style="display:flex;align-items:center;gap:12px">
+          <sc-if value="{{ hasHidden }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" on-click="{{ unhide }}" hint-size="90px,28px">Unhide all</x-import>
+          </sc-if>
+          <sc-if value="{{ isDiscover }}" hint-placeholder-val="{{ true }}">
+            <x-import component-from-global-scope="GEApp.SortSelect" value="{{ sort }}" options="Best match|Newest|Salary" on-change="{{ setSort }}" hint-size="180px,32px"></x-import>
+          </sc-if>
+        </div>
+      </div>
+
+      <sc-if value="{{ isDiscover }}" hint-placeholder-val="{{ true }}">
+      <x-import component-from-global-scope="GEApp.Panel" pad="16" hint-size="100%,120px">
+        <label style="position:relative;display:block">
+          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--color-ink-subtle);background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/search.svg) center/contain no-repeat"></span>
+          <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Search role, company or location" aria-label="Search jobs" style="all:unset;box-sizing:border-box;width:100%;height:44px;padding:0 14px 0 40px;border-radius:var(--rounded-md);border:1px solid var(--color-hairline-strong);background:var(--color-field);font-size:var(--type-body-size);color:var(--color-ink)" style-focus="border-color:var(--color-primary)"></input>
+        </label>
+        <div style="display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ dropdowns }}" as="d" hint-placeholder-count="5">
+            <div style="flex:1 1 150px;min-width:0;max-width:220px">
+              <x-import component-from-global-scope="GEApp.Select" options="{{ d.options }}" value="{{ d.value }}" placeholder="{{ d.all }}" on-change="{{ d.set }}" hint-size="100%,38px"></x-import>
+            </div>
+          </sc-for>
+          <span style="flex:1"></span>
+          <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle);white-space:nowrap;align-self:center">{{ countLabel }}</span>
+        </div>
+      </x-import>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ jobs }}" as="j" hint-placeholder-count="6">
+          <div role="button" tabindex="0" aria-expanded="{{ j.open }}" onClick="{{ j.toggle }}" onKeyDown="{{ j.key }}" style="display:flex;flex-direction:column;gap:14px;padding:20px;border-radius:var(--rounded-lg);border:1px solid {{ j.borderColor }};background:{{ j.bg }};cursor:pointer;transition:background var(--duration-base) var(--ease-standard),border-color var(--duration-base) var(--ease-standard)" style-hover="background:var(--color-surface-2);border-color:var(--color-hairline-strong)">
+            <div style="display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;column-gap:16px;align-items:center">
+              <x-import component-from-global-scope="GEApp.MatchRing" value="{{ j.score }}" size="44" hint-size="44px,44px"></x-import>
+              <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                <span style="font-size:var(--type-body-lg-size);font-weight:500;color:var(--color-ink)">{{ j.title }}</span>
+                <div style="display:flex;align-items:center;gap:4px 8px;font-size:var(--type-body-sm-size);color:var(--color-ink-subtle);flex-wrap:wrap">
+                  <span style="color:var(--color-ink-muted)">{{ j.co }}</span><span>·</span><span>{{ j.loc }}</span><span>·</span><span>{{ j.mode }}</span><span>·</span><span>{{ j.exp }}</span>
+                </div>
+              </div>
+              <x-import component-from-global-scope="GEApp.SalaryBadge" type="{{ j.salType }}" min="{{ j.salMin }}" max="{{ j.salMax }}" confidence="{{ j.salConf }}" samples="{{ j.salN }}" quiet="true" hint-size="130px,22px"></x-import>
+              <div onClick="{{ stop }}" style="display:flex;align-items:center;gap:0">
+                <x-import component-from-global-scope="GEApp.IconButton" icon="eye-off" title="Hide this job" on-click="{{ j.hide }}" size="40" hint-size="40px,40px"></x-import>
+                <x-import component-from-global-scope="GEApp.IconButton" icon="{{ j.saveIcon }}" title="{{ j.saveTitle }}" active="{{ j.saved }}" on-click="{{ j.toggleSave }}" size="40" hint-size="40px,40px"></x-import>
+              </div>
+            </div>
+            <sc-if value="{{ j.open }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:16px;margin-left:60px">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:baseline;gap:8px">
+                  <span style="font-size:var(--type-caption-size);font-weight:600;color:var(--color-ink-subtle);text-transform:uppercase;letter-spacing:0.4px">Skills</span>
+                </div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap">
+                  <sc-for list="{{ j.skillChips }}" as="sk" hint-placeholder-count="4">
+                    <span style="display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--rounded-pill);font-size:var(--type-caption-size);color:{{ sk.color }};border:1px {{ sk.border }} var(--color-hairline-strong);background:var(--color-surface-1)">
+                      <span style="{{ sk.iconStyle }}"></span>{{ sk.name }}
+                    </span>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--rounded-md);background:var(--color-glow-soft);border:1px solid var(--color-hairline);font-size:var(--type-body-sm-size);color:var(--color-ink-muted);text-wrap:pretty;animation:ge-wipe-r 480ms var(--ease-standard) both" data-ge-anim="">
+                <span style="width:14px;height:14px;flex:none;margin-top:3px;color:var(--color-primary);background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/sparkles.svg) center/contain no-repeat"></span>
+                <span>{{ j.why }}</span>
+              </div>
+              <div onClick="{{ stop }}" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:14px;border-top:1px solid rgba(228,231,234,0.08)">
+                <div style="display:flex;align-items:center;gap:6px 8px;font-size:var(--type-caption-size);color:var(--color-ink-subtle);flex-wrap:wrap;min-width:0">
+                  <span style="width:14px;height:14px;flex:none;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/clock.svg) center/contain no-repeat"></span><span>{{ j.posted }} ago via {{ j.src }}</span><span>·</span>
+                  <span style="width:14px;height:14px;flex:none;color:{{ j.contactColor }};background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/{{ j.contactIcon }}.svg) center/contain no-repeat"></span><span>{{ j.contactLabel }}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="md" href="{{ j.tailorHref }}" hint-size="130px,36px">Tailor resume</x-import>
+                  <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="md" href="{{ j.href }}" hint-size="110px,36px">View job</x-import>
+                </div>
+              </div>
+            </div>
+            </sc-if>
+          </div>
+        </sc-for>
+        <sc-if value="{{ hasHidden }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;border:1px solid var(--color-hairline);border-radius:var(--rounded-lg);background:var(--color-surface-1);overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--color-hairline);font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">
+              <span style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;flex:none;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/eye-off.svg) center/contain no-repeat"></span>{{ hiddenLabel }}</span>
+              <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" on-click="{{ unhide }}" hint-size="90px,28px">Unhide all</x-import>
+            </div>
+            <sc-for list="{{ hiddenJobs }}" as="h" hint-placeholder-count="1">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;border-bottom:1px solid var(--color-hairline)">
+                <span style="display:flex;align-items:baseline;gap:8px;min-width:0;flex-wrap:wrap"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ h.title }}</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ h.co }}</span></span>
+                <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" on-click="{{ h.unhide }}" hint-size="80px,28px">Unhide</x-import>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isSaved }}" hint-placeholder-val="{{ false }}">
+      <sc-if value="{{ undoLabel }}" hint-placeholder-val="{{ false }}">
+        <div role="status" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;border-radius:var(--rounded-md);border:1px solid var(--color-hairline-strong);background:var(--color-surface-2);font-size:var(--type-body-sm-size);color:var(--color-ink-muted)">
+          <span>{{ undoLabel }}</span>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" on-click="{{ undo }}" hint-size="60px,28px">Undo</x-import>
+        </div>
+      </sc-if>
+      <sc-if value="{{ hasSearches }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;border:1px solid var(--color-hairline);border-radius:var(--rounded-lg);background:var(--color-surface-1);overflow:hidden">
+        <sc-for list="{{ searches }}" as="s" hint-placeholder-count="3">
+          <div role="link" tabindex="0" onClick="{{ s.open }}" onKeyDown="{{ s.openKey }}" style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 24px;align-items:center;padding:20px 24px;border-bottom:1px solid var(--color-hairline);cursor:pointer;transition:background var(--duration-base) var(--ease-standard)" style-hover="background:var(--color-surface-2)">
+            <div style="display:flex;flex-direction:column;gap:12px;min-width:0;opacity:{{ s.dim }}">
+              <span style="font-size:var(--type-body-size);line-height:1.45;font-weight:500;color:var(--color-ink);text-wrap:pretty">{{ s.q }}</span>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <sc-for list="{{ s.chipList }}" as="c" hint-placeholder-count="3">
+                  <x-import component-from-global-scope="GEApp.Chip" icon="{{ c.icon }}" hint-size="90px,28px">{{ c.text }}</x-import>
+                </sc-for>
+              </div>
+              <span style="display:flex;align-items:center;gap:8px;font-size:var(--type-caption-size);color:var(--color-ink-subtle);flex-wrap:wrap">
+                <span style="display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:{{ s.dot }}"></span>{{ s.state }}</span><span>·</span>
+                <span style="display:flex;align-items:center;gap:6px"><span style="width:12px;height:12px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/refresh-cw.svg) center/contain no-repeat"></span>{{ s.freq }} · {{ s.last }}</span>
+                <sc-if value="{{ s.hasNew }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.StatusBadge" tone="accent" hint-size="60px,20px">{{ s.newCount }} new</x-import></sc-if>
+              </span>
+            </div>
+            <div onClick="{{ stop }}" style="display:flex;align-items:center;gap:8px">
+              <x-import component-from-global-scope="GEApp.IconButton" icon="arrow-up-right" title="Open saved search" href="{{ s.href }}" size="32" hint-size="32px,32px"></x-import>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+      <sc-if value="{{ noSearches }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:48px 24px;border-radius:var(--rounded-lg);border:1px dashed var(--color-hairline-strong);text-align:center">
+          <span style="font-size:var(--type-body-size);color:var(--color-ink)">No saved searches</span>
+          <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">Describe a role in Deep Search and it will keep checking for you.</span>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="md" on-click="{{ goDeep }}" hint-size="140px,36px">Open Deep Search</x-import>
+        </div>
+      </sc-if>
+      </sc-if>
+
+      <sc-if value="{{ isDeep }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="position:relative;border-radius:var(--rounded-lg)">
+          <form onSubmit="{{ onSubmitDeep }}" style="{{ deepBoxStyle }}">
+            <div style="display:flex;align-items:flex-start;gap:8px;padding:18px 20px 10px">
+              <textarea value="{{ query }}" onChange="{{ onQuery }}" onKeyDown="{{ onQueryKeyDown }}" onFocus="{{ onDeepFocus }}" onBlur="{{ onDeepBlur }}" rows="3" placeholder="e.g. Backend internships in Pune or Bengaluru, Go or Java, at least 40k a month" aria-label="Deep search" style="flex:1;min-width:0;resize:none;background:transparent;border:none;outline:none;color:var(--color-ink);font-family:var(--font-text);font-size:var(--type-body-size);line-height:1.55;padding:0"></textarea>
+            </div>
+            <div style="display:flex;align-items:center;gap:4px;padding:8px 12px;border-top:1px solid var(--color-hairline);flex-wrap:wrap">
+              <div style="position:relative">
+                <button type="button" onClick="{{ togglePrompts }}" aria-expanded="{{ promptsOpen }}" style="all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 10px;border-radius:var(--rounded-md);font-size:var(--type-body-sm-size);color:var(--color-ink-muted)" style-hover="background:var(--color-surface-2);color:var(--color-ink)">
+                  <span style="width:15px;height:15px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/file-search.svg) center/contain no-repeat"></span>Browse prompts
+                </button>
+                <sc-if value="{{ promptsOpen }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ closePrompts }}" style="position:fixed;inset:0;z-index:20"></div>
+                  <div role="menu" style="position:absolute;left:0;bottom:calc(100% + 8px);z-index:21;width:300px;max-width:calc(100vw - 48px);padding:6px;border-radius:var(--rounded-lg);border:1px solid var(--color-hairline-strong);background:var(--color-surface-2);display:flex;flex-direction:column;gap:2px">
+                    <sc-for list="{{ examples }}" as="ex" hint-placeholder-count="3">
+                      <button type="button" role="menuitem" onClick="{{ ex.pick }}" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--rounded-sm);font-size:var(--type-body-sm-size);color:var(--color-ink)" style-hover="background:var(--color-surface-3)">
+                        <span style="width:14px;height:14px;flex:none;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/sparkles.svg) center/contain no-repeat;color:var(--color-primary)"></span>{{ ex.text }}
+                      </button>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+              <span style="flex:1"></span>
+              <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-tertiary);padding:0 6px">{{ deepCharCount }}</span>
+              <div style="position:relative">
+                <button type="button" onClick="{{ toggleModels }}" aria-haspopup="listbox" aria-expanded="{{ modelsOpen }}" style="all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border-radius:var(--rounded-md);font-size:var(--type-body-sm-size);color:var(--color-ink-muted)" style-hover="background:var(--color-surface-2);color:var(--color-ink)">
+                  <span style="width:14px;height:14px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/sparkles.svg) center/contain no-repeat;color:var(--color-primary)"></span>
+                  {{ modelName }}
+                  <span style="width:14px;height:14px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/chevron-down.svg) center/contain no-repeat"></span>
+                </button>
+                <sc-if value="{{ modelsOpen }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ closeModels }}" style="position:fixed;inset:0;z-index:20"></div>
+                  <div role="listbox" aria-label="Model" style="position:absolute;right:0;bottom:calc(100% + 8px);z-index:21;width:280px;max-width:calc(100vw - 48px);padding:6px;border-radius:var(--rounded-lg);border:1px solid var(--color-hairline-strong);background:var(--color-surface-2);display:flex;flex-direction:column;gap:2px">
+                    <sc-for list="{{ models }}" as="m" hint-placeholder-count="5">
+                      <button type="button" role="option" aria-selected="{{ m.on }}" onClick="{{ m.pick }}" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--rounded-sm)" style-hover="background:var(--color-surface-3)">
+                        <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                          <span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ m.name }}</span>
+                          <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ m.desc }}</span>
+                        </span>
+                        <span style="{{ m.check }}"></span>
+                      </button>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+              <x-import component-from-global-scope="GEApp.IconButton" icon="{{ micIcon }}" title="{{ micTitle }}" active="{{ listening }}" on-click="{{ toggleMic }}" size="32" hint-size="32px,32px"></x-import>
+              <button type="submit" title="Search" aria-label="Search" style="all:unset;cursor:pointer;box-sizing:border-box;width:32px;height:32px;flex:none;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--rounded-md);background:var(--color-primary);color:#0A101C;box-shadow:var(--glow-cta)" style-hover="background:var(--color-primary-hover)">
+                <span style="width:16px;height:16px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/send-horizontal.svg) center/contain no-repeat"></span>
+              </button>
+            </div>
+          </form>
+          {{ glow }}
+        </div>
+          <sc-if value="{{ listening }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:8px;font-size:var(--type-caption-size);color:var(--color-ink-muted)">
+              {{ micDot }}
+              Listening. Speak your search, then tap the mic again to stop.
+            </div>
+          </sc-if>
+          <sc-if value="{{ isEmptySearch }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--rounded-md);border:1px dashed var(--color-hairline-strong);background:var(--color-surface-1);font-size:var(--type-caption-size);line-height:1.4;color:var(--color-ink-muted)">
+              <span style="width:14px;height:14px;flex:none;color:var(--color-primary);background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/lightbulb.svg) center/contain no-repeat"></span>
+              <span style="flex:1;min-width:0"><strong style="font-weight:500;color:var(--color-ink)">Tip:</strong> Press Enter to search. AI applies filters you can edit after.</span>
+              <button type="button" aria-label="Dismiss tip" onClick="{{ closeHint }}" style="all:unset;cursor:pointer;flex:none;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--rounded-sm);color:var(--color-ink-subtle)" style-hover="background:var(--color-surface-2);color:var(--color-ink)">
+                <span style="width:14px;height:14px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/x.svg) center/contain no-repeat"></span>
+              </button>
+            </div>
+          </sc-if>
+      </div>
+
+      <x-import component-from-global-scope="GEApp.Panel" title="Filters" meta="{{ matchMeta }}" hint-size="100%,420px">
+        <div style="display:grid;grid-template-columns:1fr 1fr">
+        <sc-for list="{{ groups }}" as="g" hint-placeholder-count="6">
+          <div style="grid-column:{{ g.span }};display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr) auto;gap:8px 24px;align-items:start;padding:16px 24px;border-bottom:1px solid var(--color-hairline);opacity:{{ g.opacity }};pointer-events:{{ g.pointerEvents }};background:{{ g.rowBg }};transition:opacity var(--duration-base) var(--ease-standard),background var(--duration-base) var(--ease-standard)">
+            <div style="display:flex;align-items:center;gap:12px;min-width:0">
+              <span style="width:36px;height:36px;flex:none;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--rounded-md);border:1px solid var(--color-hairline-strong);background:var(--color-surface-1)"><span style="{{ g.iconStyle }}"></span></span>
+              <span style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                <span style="display:flex;align-items:center;gap:8px;font-size:var(--type-body-size);font-weight:500;color:var(--color-ink)">{{ g.label }}
+                  <sc-if value="{{ g.pulse }}" hint-placeholder-val="{{ false }}">
+                    <span style="width:6px;height:6px;border-radius:50%;background:var(--color-primary);box-shadow:var(--glow-underline);animation:ge-ss-pulse 0.9s var(--ease-standard)"></span>
+                  </sc-if>
+                </span>
+                <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ g.status }}</span>
+              </span>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;min-width:0;min-height:36px">
+              <sc-if value="{{ g.isSalary }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:center;gap:16px;width:100%">
+                  <div style="position:relative;flex:1;height:20px;display:flex;align-items:center">
+                    <div style="position:absolute;left:0;right:0;height:4px;border-radius:2px;background:var(--color-hairline-strong)"></div>
+                    <div style="position:absolute;height:4px;border-radius:2px;background:var(--color-primary);left:calc(8px + (100% - 16px) * {{ g.fLeft }});right:calc(8px + (100% - 16px) * {{ g.fRight }})"></div>
+                    <input class="ge-dual-thumb" type="range" min="1" max="30" step="1" value="{{ g.salaryMin }}" onChange="{{ g.setSalaryMin }}" style="position:absolute;left:0;right:0;width:100%;margin:0;background:none;pointer-events:none;height:20px;z-index:2"></input>
+                    <input class="ge-dual-thumb" type="range" min="1" max="30" step="1" value="{{ g.salaryMax }}" onChange="{{ g.setSalaryMax }}" style="position:absolute;left:0;right:0;width:100%;margin:0;background:none;pointer-events:none;height:20px;z-index:3"></input>
+                  </div>
+                  <span style="font-size:var(--type-caption-size);color:var(--color-ink-muted);flex:none;min-width:88px;text-align:right;font-family:var(--font-mono)">{{ g.salaryLabel }}</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{ g.isChips }}" hint-placeholder-val="{{ true }}">
+                <sc-for list="{{ g.opts }}" as="o" hint-placeholder-count="5">
+                  <span style="display:flex;opacity:{{ o.dim }};transition:opacity var(--duration-base) var(--ease-standard)" style-hover="opacity:1"><x-import component-from-global-scope="GEApp.Chip" icon="{{ o.icon }}" active="{{ o.on }}" on-click="{{ o.toggle }}" hint-size="90px,28px">{{ o.text }}</x-import></span>
+                </sc-for>
+                <sc-if value="{{ g.hasDraft }}" hint-placeholder-val="{{ false }}">
+                  <input value="{{ g.draft }}" onChange="{{ g.onDraft }}" onKeyDown="{{ g.onKey }}" placeholder="{{ g.addPh }}" aria-label="{{ g.addPh }}" title="Press Enter to add your own value" style="all:unset;box-sizing:border-box;height:28px;width:110px;padding:0 10px;border-radius:var(--rounded-pill);border:1px dashed var(--color-hairline-strong);font-size:var(--type-caption-size);color:var(--color-ink)" style-focus="border-color:var(--color-primary);border-style:solid"></input>
+                </sc-if>
+              </sc-if>
+            </div>
+            <div style="min-height:36px;display:flex;align-items:center">
+              <sc-if value="{{ g.hasSel }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ g.clear }}" title="Clear this filter" aria-label="Clear this filter" style="all:unset;cursor:pointer;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--rounded-sm);color:var(--color-ink-subtle);transition:background var(--duration-base) var(--ease-standard)" style-hover="background:var(--color-surface-2);color:var(--color-ink)"><span style="width:14px;height:14px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/x.svg) center/contain no-repeat"></span></button>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+        </div>
+      </x-import>
+
+      <x-import component-from-global-scope="GEApp.Panel" title="Preview" sub="Top matches right now" hint-size="100%,200px">
+        <sc-for list="{{ preview }}" as="p" hint-placeholder-count="3">
+          <a href="{{ p.href }}" style="display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 20px;border-bottom:1px solid var(--color-hairline);text-decoration:none">
+            <x-import component-from-global-scope="GEApp.MatchRing" value="{{ p.score }}" size="28" label="{{ false }}" hint-size="28px,28px"></x-import>
+            <span style="display:flex;flex-direction:column;min-width:0">
+              <span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ p.title }}</span>
+              <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ p.co }} · {{ p.loc }} · {{ p.mode }}</span>
+            </span>
+            <x-import component-from-global-scope="GEApp.SalaryBadge" type="{{ p.salary.type }}" min="{{ p.salary.min }}" max="{{ p.salary.max }}" confidence="{{ p.salary.conf }}" compact="{{ true }}" hint-size="120px,20px"></x-import>
+          </a>
+        </sc-for>
+      </x-import>
+
+      <div style="display:flex;flex-direction:column;border:1px solid var(--color-hairline);border-radius:var(--rounded-lg);background:var(--color-surface-1);overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;border-bottom:1px solid var(--color-hairline)">
+          <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+            <h2 style="margin:0;font-size:var(--type-body-lg-size);font-weight:600">Your searches</h2>
+            <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Edit a search in place. Changes save when you leave the field.</span>
+          </div>
+          <a href="Jobs.dc.html?board=Saved" onClick="{{ goSaved }}" style="display:inline-flex;align-items:center;gap:6px;font-size:var(--type-body-sm-size);color:var(--color-ink-subtle);text-decoration:none;white-space:nowrap" style-hover="color:var(--color-ink)">View all →</a>
+        </div>
+        <sc-for list="{{ searches }}" as="s" hint-placeholder-count="3">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 24px;align-items:start;padding:24px;border-bottom:1px solid var(--color-hairline)">
+            <div style="display:flex;flex-direction:column;gap:14px;min-width:0;opacity:{{ s.dim }};transition:opacity var(--duration-base) var(--ease-standard)">
+              <label style="position:relative;display:block">
+                <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--color-ink-subtle);background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/sparkles.svg) center/contain no-repeat;pointer-events:none"></span>
+                <input value="{{ s.q }}" onChange="{{ s.onQ }}" onKeyDown="{{ s.onKey }}" aria-label="Edit search" style="all:unset;box-sizing:border-box;width:100%;height:44px;padding:0 14px 0 36px;border-radius:var(--rounded-md);border:1px solid var(--color-hairline-strong);background:var(--color-field);font-size:var(--type-body-sm-size);color:var(--color-ink);transition:border-color var(--duration-base) var(--ease-standard)" style-hover="border-color:var(--color-hairline-strong)" style-focus="border-color:var(--color-primary)"></input>
+              </label>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <sc-for list="{{ s.chipList }}" as="c" hint-placeholder-count="3">
+                  <x-import component-from-global-scope="GEApp.Chip" icon="{{ c.icon }}" hint-size="90px,28px">{{ c.text }}</x-import>
+                </sc-for>
+              </div>
+              <span style="display:flex;align-items:center;gap:6px;font-size:var(--type-caption-size);color:var(--color-ink-subtle)"><span style="width:12px;height:12px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/refresh-cw.svg) center/contain no-repeat"></span>{{ s.freq }} · {{ s.last }}</span>
+              <div style="display:flex"><sc-if value="{{ s.hasNew }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.StatusBadge" tone="accent" hint-size="60px,20px">{{ s.newCount }} new</x-import></sc-if></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;height:44px">
+              <x-import component-from-global-scope="GEApp.IconButton" icon="arrow-up-right" title="Open saved search" href="{{ s.href }}" size="32" hint-size="32px,32px"></x-import>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <x-import component-from-global-scope="GEApp.Panel" title="Polling" sub="How often and where we check for new postings." meta="{{ pollMeta }}" hint-size="100%,300px">
+        <div style="display:grid;grid-template-columns:minmax(0,140px) minmax(0,1fr);gap:16px;align-items:center;padding:12px 20px;border-bottom:1px solid var(--color-hairline)">
+          <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">Frequency</span>
+          <div><x-import component-from-global-scope="GEApp.Segmented" options="Hourly|Daily|Weekly" value="{{ freq }}" on-change="{{ setFreq }}" hint-size="210px,32px"></x-import></div>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,140px) minmax(0,1fr);gap:16px;align-items:center;padding:12px 20px;border-bottom:1px solid var(--color-hairline)">
+          <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">Run on</span>
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+            <x-import component-from-global-scope="GEApp.Segmented" options="Local|Cloud" icons="laptop|cloud" value="{{ runOn }}" on-change="{{ setRunOn }}" hint-size="180px,32px"></x-import>
+            <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ runHint }}</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(0,140px) minmax(0,1fr);gap:16px;align-items:start;padding:12px 20px;border-bottom:1px solid var(--color-hairline)">
+          <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle);padding-top:2px">Overages</span>
+          <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+            <label style="display:flex;align-items:center;gap:10px;font-size:var(--type-body-sm-size);color:var(--color-ink-muted)">
+              <x-import component-from-global-scope="GEApp.Toggle" on="{{ overages }}" on-change="{{ setOverages }}" label="Enable overages" hint-size="32px,18px"></x-import>
+              Keep polling after the monthly cloud check limit is used up
+            </label>
+            <sc-if value="{{ overages }}" hint-placeholder-val="{{ false }}">
+              <div role="alert" style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:var(--rounded-md);background:oklch(0.83 0.11 80 / .10);border:1px solid oklch(0.83 0.11 80 / .35);color:oklch(0.88 0.08 80);font-size:var(--type-body-sm-size);line-height:1.45">
+                <span style="width:16px;height:16px;flex:none;margin-top:2px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/triangle-alert.svg) center/contain no-repeat"></span>
+                <span style="text-wrap:pretty">Checks beyond your plan's 300 per month are billed at ₹0.50 each. Hourly polling uses about 720 a month. You can cap or turn off overages in Settings at any time.</span>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;padding:16px 20px">
+          <label style="display:flex;align-items:center;gap:10px;font-size:var(--type-body-sm-size);color:var(--color-ink-muted)">
+            <x-import component-from-global-scope="GEApp.Toggle" default-on="{{ true }}" label="Auto-draft outreach" hint-size="32px,18px"></x-import>
+            Draft outreach for matches above 85
+          </label>
+        </div>
+      </x-import>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { open: null, board: new URLSearchParams(location.search).get("board") || "Discover", q: "", role: "All roles", level: "All seniority levels", co: "All companies", loc: "All locations", mode: "All workplaces", sort: "Best match", saved: ["j1"], hidden: [], left: 211,
+    query: "Backend internships in Pune or Bengaluru, Go or Java, remote okay, at least 6 LPA", freq: "Daily", runOn: "Cloud", overages: false, f: null, extra: {}, drafts: {}, parsing: false, applying: false, appliedKeys: [], listening: false, savedAt: "just now", jobType: "Job", deleted: (() => { try { return JSON.parse(localStorage.getItem("ge-search-deleted") || "[]"); } catch (e) { return []; } })(), lastDeleted: null };
+  OPTS = {
+    role: ["Backend", "Frontend", "Full-stack", "Platform", "Data", "Security", "iOS", "Mobile", "ML"],
+    location: ["Bengaluru", "Mumbai", "Pune", "Hyderabad", "Chennai", "Delhi NCR", "Anywhere in India"],
+    mode: ["Remote", "Hybrid", "On-site"],
+    exp: ["Internship", "0–1 yrs", "0–2 yrs", "1–3 yrs"],
+    skills: ["Go", "Java", "Python", "TypeScript", "React", "Node.js", "Kafka", "SQL", "Swift", "Docker", "Kubernetes"],
+  };
+  componentWillUnmount() { clearInterval(this.wt); clearTimeout(this.pt); clearInterval(this.mt); }
+  componentDidMount() {
+    this.wt = setInterval(() => this.setState(p => ({ left: p.left <= 0 ? 3600 : p.left - 1 })), 1000);
+    this.setState({ f: this.parse(this.state.query) });
+    if (!window.GEData) { const t = setInterval(() => { if (window.GEData) { clearInterval(t); this.forceUpdate(); } }, 50); }
+  }
+  parse(q) {
+    const t = q.toLowerCase(), has = w => t.includes(w.toLowerCase());
+    const location = ["Bengaluru", "Mumbai", "Pune", "Hyderabad", "Chennai", "Delhi NCR"].filter(has);
+    const skills = this.OPTS.skills.filter(s => new RegExp("\\b" + s.replace(".", "\\.") + "\\b", "i").test(q));
+    const sal = +((t.match(/(\d+)\s*(lpa|lakh)/) || [])[1] || 0);
+    const role = this.OPTS.role.filter(r => new RegExp("\\b" + r.toLowerCase() + "\\b").test(t));
+    const mode = [has("remote") && "Remote", has("hybrid") && "Hybrid", has("on-site") && "On-site"].filter(Boolean);
+    const exp = has("intern") ? ["Internship"] : has("fresher") ? ["0–1 yrs"] : [];
+    const salary = sal > 0 ? { min: Math.min(30, Math.max(1, sal)), max: 30 } : { min: 1, max: 30 };
+    return { role, location, mode, exp, salary, skills };
+  }
+  setDeleted(list, last) { this.setState({ deleted: list, lastDeleted: last }); try { localStorage.setItem("ge-search-deleted", JSON.stringify(list)); } catch (e) {} }
+  storedQ() { try { return JSON.parse(localStorage.getItem("ge-search-q") || "{}"); } catch (e) { return {}; } }
+  stamp() { const d = new Date(); return d.getHours().toString().padStart(2, "0") + ":" + d.getMinutes().toString().padStart(2, "0"); }
+  setQuery(q) {
+    this.setState({ query: q, parsing: true });
+    clearTimeout(this.pt);
+    this.pt = setTimeout(() => this.setState({ f: this.parse(q), parsing: false, savedAt: this.stamp() }), 700);
+  }
+  submitSearch() {
+    clearTimeout(this.pt); clearInterval(this.at);
+    const target = this.parse(this.state.query);
+    const order = ["type", "role", "location", "mode", "exp", "salary", "skills"];
+    this.setState({ applying: true, parsing: true, appliedKeys: [] });
+    let i = 0;
+    this.at = setInterval(() => {
+      const key = order[i];
+      this.setState(p => ({ f: { ...(p.f || target), [key]: target[key] !== undefined ? target[key] : (p.f || target)[key] }, appliedKeys: [key] }));
+      i++;
+      if (i >= order.length) {
+        clearInterval(this.at);
+        this.setState({ applying: false, parsing: false, appliedKeys: [], savedAt: this.stamp() });
+      }
+    }, 420);
+  }
+  toggleMic = () => {
+    if (this.state.listening) { clearInterval(this.mt); this.setState({ listening: false }); return; }
+    const words = "Remote frontend roles for freshers in Bengaluru, React and TypeScript, at least 10 LPA".split(" ");
+    let i = 0; this.setState({ listening: true }); this.setQuery("");
+    this.mt = setInterval(() => { i++; this.setQuery(words.slice(0, i).join(" ")); if (i >= words.length) { clearInterval(this.mt); this.setState({ listening: false }); } }, 220);
+  };
+  renderVals() {
+    const D = window.GEData || { JOBS: [], SEARCHES: [] }, s = this.state;
+    const ROLES = { Backend: /backend|api|platform/i, Frontend: /frontend/i, Mobile: /ios|android|mobile/i, Data: /data/i, Security: /security/i, Graduate: /graduate|trainee|intern/i };
+    let jobs = D.JOBS.filter(j => !s.hidden.includes(j.id));
+    if (s.board === "Saved") jobs = jobs.filter(j => s.saved.includes(j.id));
+    const q = s.q.trim().toLowerCase();
+    if (q) jobs = jobs.filter(j => (j.title + " " + j.co + " " + j.loc).toLowerCase().includes(q));
+    if (s.role !== "All roles") jobs = jobs.filter(j => ROLES[s.role].test(j.title));
+    if (s.level !== "All seniority levels") jobs = jobs.filter(j => j.exp === s.level);
+    if (s.co !== "All companies") jobs = jobs.filter(j => j.co === s.co);
+    if (s.loc !== "All locations") jobs = jobs.filter(j => j.loc === s.loc);
+    if (s.mode !== "All workplaces") jobs = jobs.filter(j => j.mode === s.mode);
+    const uniq = k => [...new Set(D.JOBS.map(j => j[k]))];
+    const dd = (key, all, opts) => ({ all, value: s[key], options: [all, ...opts].join("|"), set: v => this.setState({ [key]: v }) });
+    if (s.sort === "Salary") jobs = [...jobs].sort((a, b) => b.salary.max - a.salary.max);
+    if (s.sort === "Newest") jobs = [...jobs].sort((a, b) => (a.posted.includes("h") ? 0 : 1) - (b.posted.includes("h") ? 0 : 1));
+    const f = (label, icon, on, toggle) => ({ label, icon, on, toggle });
+    const fs = s.f || { role: [], location: [], mode: [], exp: [], salary: { min: 1, max: 30 }, skills: [] };
+    const saved2 = () => ({ savedAt: this.stamp() });
+    const upd = (k, fn) => this.setState(p => ({ f: { ...p.f, [k]: fn(p.f[k]) }, ...saved2() }));
+    const ic = n => ({ width: "18px", height: "18px", flex: "none", color: "var(--color-ink-subtle)", background: "currentColor", mask: "url(https://unpkg.com/lucide-static@0.460.0/icons/" + n + ".svg) center/contain no-repeat" });
+    const hasSalary = s.jobType !== "Internship";
+    const halfWidth = { type: true, mode: true, exp: !hasSalary ? false : true, salary: true };
+    const defs = [["role", "Role", "briefcase", "Add role"], ["location", "Location", "map-pin", "Add city"], ["type", "Type", "briefcase", null], ["mode", "Work mode", "globe", null], ["exp", "Experience", "graduation-cap", "Add range"], ...(hasSalary ? [["salary", "Salary range", "wallet", null]] : []), ["skills", "Skills", "code", "Add skill"]];
+    const groups = defs.map(([k, label, icon, addPh]) => {
+      const rowVis = { opacity: s.applying ? 0.4 : 1, pointerEvents: s.applying ? "none" : "auto", rowBg: (s.appliedKeys || []).includes(k) ? "var(--color-glow-soft)" : "transparent", pulse: (s.appliedKeys || []).includes(k) };
+      const span = "span 2";
+      if (k === "type") {
+        const opts = ["Job", "Internship"];
+        return { label, iconStyle: ic(icon), isSalary: false, isChips: true, hasSel: false, span,
+          status: s.jobType,
+          opts: opts.map(text => { const on = s.jobType === text; return { text, on, dim: on ? 1 : 0.55, icon: on ? "check" : undefined, toggle: () => this.setState({ jobType: text, ...saved2() }) }; }),
+          ...rowVis };
+      }
+      if (k === "salary") {
+        const { min, max } = fs.salary, isAny = min === 1 && max === 30;
+        return { label, iconStyle: ic(icon), isSalary: true, isChips: false, span,
+          status: isAny ? "Any" : min + "–" + max + " LPA",
+          salaryMin: min, salaryMax: max, salaryLabel: min + "–" + max + " LPA",
+          fLeft: (min - 1) / 29, fRight: 1 - (max - 1) / 29,
+          setSalaryMin: e => this.setState(p => ({ f: { ...p.f, salary: { min: Math.min(+e.target.value, p.f.salary.max), max: p.f.salary.max } }, ...saved2() })),
+          setSalaryMax: e => this.setState(p => ({ f: { ...p.f, salary: { min: p.f.salary.min, max: Math.max(+e.target.value, p.f.salary.min) } }, ...saved2() })), ...rowVis };
+      }
+      const sel = fs[k] || [], all = [...this.OPTS[k], ...(s.extra[k] || []), ...sel.filter(x => !this.OPTS[k].includes(x) && !(s.extra[k] || []).includes(x))];
+      const add = () => { const v = (s.drafts[k] || "").trim(); if (!v) return; this.setState(p => ({ extra: { ...p.extra, [k]: [...(p.extra[k] || []), v].filter((x, i, a) => a.indexOf(x) === i) }, drafts: { ...p.drafts, [k]: "" }, f: { ...p.f, [k]: p.f[k].includes(v) ? p.f[k] : [...p.f[k], v] }, ...saved2() })); };
+      return { label, iconStyle: ic(icon), isSalary: false, isChips: true, hasSel: sel.length > 0, span,
+        status: sel.length ? sel.length + " selected" : "Any",
+        opts: all.map(text => { const on = sel.includes(text); return { text, on, dim: on ? 1 : 0.55, icon: on ? "check" : undefined, toggle: () => upd(k, a => on ? a.filter(x => x !== text) : [...a, text]) }; }),
+        clear: () => upd(k, () => []), hasDraft: !!addPh, addPh: addPh || "Add", draft: s.drafts[k] || "",
+        onDraft: e => { const v = e.target.value; this.setState(p => ({ drafts: { ...p.drafts, [k]: v } })); },
+        onKey: e => { if (e.key === "Enter") { e.preventDefault(); add(); } }, ...rowVis };
+    });
+    const nSel = ["role", "location", "mode", "exp", "skills"].reduce((a, k) => a + (fs[k] || []).length, 0) + ((fs.salary.min === 1 && fs.salary.max === 30) ? 0 : 1);
+    const nMatch = Math.max(3, 64 - nSel * 5);
+    return {
+      isDiscover: s.board === "Discover", isSaved: s.board === "Saved", isDeep: s.board === "Deep Search",
+      boardTitle: s.board === "Deep Search" ? "Deep Search" : s.board === "Saved" ? "Saved searches" : "Find your next role",
+      boardSubtitle: s.board === "Deep Search" ? "Describe the role you want in plain language. AI searches beyond the job board, across company career pages and listings, and brings back matches." : s.board === "Saved" ? "Each search keeps checking for new roles. Open one to see its matches and polling settings." : "Browse new openings from company career pages, or describe what you want and let AI search for it.",
+      sort: s.sort, setSort: v => this.setState({ sort: v }),
+      board: s.board, setBoard: v => this.setState({ board: v.split(":")[0] }),
+      boardTabs: "Discover|Deep Search|Saved:" + D.SEARCHES.filter(x => !s.deleted.includes(x.id)).length,
+      goSaved: e => { e.preventDefault(); this.setState({ board: "Saved" }); try { window.scrollTo(0, 0); } catch (er) {} },
+      goDeep: () => this.setState({ board: "Deep Search" }),
+      noSearches: D.SEARCHES.every(x => s.deleted.includes(x.id)), hasSearches: !D.SEARCHES.every(x => s.deleted.includes(x.id)),
+      undoLabel: s.lastDeleted ? "Deleted \u201c" + ((D.SEARCHES.find(x => x.id === s.lastDeleted) || {}).q || "search") + "\u201d" : false,
+      undo: () => this.setDeleted(s.deleted.filter(d => d !== s.lastDeleted), null),
+      q: s.q, onQ: e => this.setState({ q: e.target.value }),
+      waveClock: String(Math.floor(s.left / 60)).padStart(2, "0") + ":" + String(s.left % 60).padStart(2, "0"),
+      waveRing: { strokeDashoffset: (157.08 * (1 - s.left / 3600)).toFixed(2), transition: "stroke-dashoffset 1s linear" },
+      dropdowns: [dd("role", "All roles", Object.keys(ROLES)), dd("level", "All seniority levels", uniq("exp")), dd("co", "All companies", uniq("co")), dd("loc", "All locations", uniq("loc")), dd("mode", "All workplaces", ["Remote", "Hybrid", "On-site"])],
+      countLabel: jobs.length + (jobs.length === 1 ? " role" : " roles"),
+      stop: e => e.stopPropagation(),
+      listCardStyle: { padding: 0, gap: 0, overflow: "hidden" },
+      jobs: jobs.map(j => {
+        const saved = s.saved.includes(j.id), open = s.open === j.id;
+        const toggle = () => this.setState(p => ({ open: p.open === j.id ? null : j.id }));
+        const lo = 8, hi = 32, sl = j.salary || {};
+        const c = j.contact || {};
+        const contactIcon = c.status === "found" ? "user-check" : c.status === "searching" ? "loader" : "user-search";
+        const contactColor = c.status === "found" ? "var(--color-primary)" : "var(--color-ink-subtle)";
+        const contactLabel = c.status === "found" ? c.name + " · " + c.role : c.status === "searching" ? "Searching for a contact…" : "No contact found yet";
+        return { ...j, salType: j.salary.type, salMin: j.salary.min, salMax: j.salary.max, salConf: j.salary.conf, salN: j.salary.n,
+          href: "Job%20Detail.dc.html?id=" + j.id, tailorHref: "Resume.dc.html?tab=tailor&job=" + j.id,
+          open, toggle, key: e => { if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); toggle(); } },
+          bg: open ? "var(--color-surface-2)" : "var(--color-surface-1)", borderColor: open ? "var(--color-hairline-strong)" : "var(--color-hairline)", chev: open ? "chevron-up" : "chevron-down", chevTitle: open ? "Show less" : "Show more",
+          saved, saveIcon: saved ? "bookmark-check" : "bookmark", saveTitle: saved ? "Saved to tracker" : "Save to tracker",
+          toggleSave: () => this.setState(p => ({ saved: saved ? p.saved.filter(x => x !== j.id) : [...p.saved, j.id] })),
+          hide: () => this.setState(p => ({ hidden: [...p.hidden, j.id] })),
+          skillChips: (j.skills || []).filter(k => !(j.missing || []).includes(k)).map(name => ({ name, color: "var(--color-primary)", border: "solid",
+            iconStyle: "width:12px;height:12px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/circle-check.svg) center/contain no-repeat" }))
+            .concat((j.missing || []).map(name => ({ name, color: "var(--color-ink-subtle)", border: "dashed",
+            iconStyle: "width:12px;height:12px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/circle.svg) center/contain no-repeat" }))),
+          bandStyle: { position: "absolute", top: "3px", height: "8px", borderRadius: "var(--rounded-pill)", left: ((sl.min - lo) / (hi - lo) * 100) + "%", width: ((sl.max - sl.min) / (hi - lo) * 100) + "%", background: sl.type === "stated" ? "var(--color-primary)" : "var(--color-glow)", border: sl.type === "stated" ? "none" : "1px dashed var(--color-primary)", boxSizing: "border-box" },
+          skillCount: (() => { const m = (j.skills || []).filter(k => !(j.missing || []).includes(k)).length; return m + " of " + (m + (j.missing || []).length) + " matched"; })(),
+          contactIcon, contactColor, contactLabel };
+      }),
+      hasHidden: s.hidden.length > 0, hiddenLabel: s.hidden.length + " hidden. We'll rank similar roles lower.",
+      unhide: () => this.setState({ hidden: [] }),
+      hiddenJobs: D.JOBS.filter(j => s.hidden.includes(j.id)).map(j => ({ title: j.title, co: j.co, unhide: () => this.setState(p => ({ hidden: p.hidden.filter(x => x !== j.id) })) })),
+      searchTitle: s.query.trim() ? "Search" : "New search", isEmptySearch: !s.query.trim() && !s.hintClosed, closeHint: () => this.setState({ hintClosed: true }),
+      query: s.query, onQuery: e => this.setQuery(e.target.value),
+      onQueryKeyDown: e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); this.submitSearch(); } },
+      onSubmitDeep: e => { e.preventDefault(); this.submitSearch(); },
+      onDeepFocus: () => this.setState({ deepFocus: true }), onDeepBlur: () => this.setState({ deepFocus: false }),
+      deepBoxStyle: { display: "flex", flexDirection: "column", borderRadius: "var(--rounded-lg)", border: "1px solid " + (s.deepFocus || s.listening ? "rgba(123,155,219,.7)" : "var(--color-hairline-strong)"), background: "var(--color-surface-1)", boxShadow: s.deepFocus || s.listening ? "0 0 0 3px rgba(123,155,219,.12), 0 0 28px rgba(123,155,219,.10)" : "none", transition: "border-color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard)" },
+      deepCharCount: s.query.length.toLocaleString("en-IN") + " / 3,000",
+      promptsOpen: !!s.promptsOpen, togglePrompts: () => this.setState(p => ({ promptsOpen: !p.promptsOpen })), closePrompts: () => this.setState({ promptsOpen: false }),
+      modelsOpen: !!s.modelsOpen, toggleModels: () => this.setState(p => ({ modelsOpen: !p.modelsOpen })), closeModels: () => this.setState({ modelsOpen: false }),
+      models: [["auto", "Auto", "Picks the best model for each task"], ["claude-sonnet", "Claude Sonnet 4.5", "Strong at writing and resume edits"], ["gpt-5", "GPT-5", "General reasoning and search"], ["gemini-pro", "Gemini 2.5 Pro", "Long job descriptions and documents"], ["fast", "Fast", "Quick answers, lower accuracy"]].map(([id, name, desc]) => ({ name, desc, on: (s.deepModel || "auto") === id, check: { width: "16px", height: "16px", flex: "none", background: "currentColor", mask: "url(https://unpkg.com/lucide-static@0.460.0/icons/check.svg) center/contain no-repeat", color: (s.deepModel || "auto") === id ? "var(--color-primary)" : "transparent" }, pick: () => this.setState({ deepModel: id, modelsOpen: false }) })),
+      modelName: ({ auto: "Auto", "claude-sonnet": "Claude Sonnet 4.5", "gpt-5": "GPT-5", "gemini-pro": "Gemini 2.5 Pro", fast: "Fast" })[s.deepModel || "auto"],
+      saveMeta: s.applying ? "AI is updating your filters…" : s.parsing ? "Updating filters…" : "Saved automatically · " + s.savedAt,
+      listening: s.listening, micIcon: s.listening ? "mic-off" : "mic", micTitle: s.listening ? "Stop dictation" : "Dictate your search", toggleMic: this.toggleMic,
+      micDot: React.createElement("span", { "data-ge-anim": "", style: { width: 8, height: 8, borderRadius: "50%", background: "var(--color-primary)", boxShadow: "var(--glow-underline)", animation: "ge-ss-dot 1s ease-in-out infinite" } }),
+      glow: React.createElement("span", { "aria-hidden": "true", "data-ge-anim": "", style: { position: "absolute", inset: 0, borderRadius: "inherit", pointerEvents: "none", animation: "ge-ss-glow " + (s.listening || s.parsing ? "1.2s" : "3.6s") + " ease-in-out infinite" } }),
+      examples: ["Remote frontend roles for freshers, React", "Security internships in Mumbai", "iOS roles, SwiftUI, 15 LPA+"].map(text => ({ text, pick: () => { clearTimeout(this.pt); this.setState({ promptsOpen: false }); this.setQuery(text); }, use: () => { clearTimeout(this.pt); this.setState({ query: text, f: this.parse(text), savedAt: this.stamp() }); } })),
+      groups, matchMeta: nMatch + " jobs match right now",
+      freq: s.freq, setFreq: v => this.setState({ freq: v }),
+      runOn: s.runOn, setRunOn: v => this.setState({ runOn: v }),
+      runHint: s.runOn === "Local" ? "Free and unlimited. Runs only while this device is on and the app is open." : "Runs even when your device is off. Counts toward your monthly check limit.",
+      pollMeta: s.runOn === "Local" ? "Unlimited on this device" : ({ Hourly: "≈ 720", Daily: "≈ 30", Weekly: "≈ 4" }[s.freq]) + " checks / month",
+      overages: s.overages, setOverages: v => this.setState({ overages: v }),
+      preview: D.JOBS.slice(0, 3).map(j => ({ ...j, href: "Job%20Detail.dc.html?id=" + j.id })),
+      searches: D.SEARCHES.filter(x => !s.deleted.includes(x.id)).map(x => { const act = (s.searchOn || {})[x.id] ?? !!x.active; const sq = (s.searchQ || {})[x.id] ?? this.storedQ()[x.id] ?? x.q; const href = "Saved%20Search.dc.html?id=" + x.id;
+        return { ...x, q: sq, active: act, dim: act ? 1 : 0.5, href, state: act ? "Active" : "Paused", dot: act ? "var(--color-semantic-success)" : "var(--color-ink-tertiary)",
+        last: "checked " + x.last, open: () => { location.href = href; }, openKey: e => { if (e.target === e.currentTarget && e.key === "Enter") location.href = href; },
+        remove: () => this.setDeleted([...s.deleted, x.id], x.id),
+        onQ: e => { const v = e.target.value; this.setState(p => ({ searchQ: { ...(p.searchQ || {}), [x.id]: v } })); try { localStorage.setItem("ge-search-q", JSON.stringify({ ...this.storedQ(), [x.id]: v })); } catch (er) {} },
+        onKey: e => { if (e.key === "Enter") e.target.blur(); },
+        setActive: v => this.setState(p => ({ searchOn: { ...(p.searchOn || {}), [x.id]: v } })), hasNew: act && x.newCount > 0, chipList: x.chips.map(([icon, text]) => ({ icon, text })) }; }),
+    };
+  }
+}
+</script>
+</body>
+</html>

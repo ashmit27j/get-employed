@@ -1,0 +1,20 @@
+:root{
+--font-display:"Inter","SF Pro Display",-apple-system,system-ui,"Segoe UI",sans-serif;
+--font-text:"Inter","SF Pro Text",-apple-system,system-ui,"Segoe UI",sans-serif;
+--font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+--weight-regular:400;--weight-medium:500;--weight-semibold:600;
+
+--type-display-xl-size:80px;--type-display-xl-lh:1.05;--type-display-xl-ls:-3px;
+--type-display-lg-size:56px;--type-display-lg-lh:1.10;--type-display-lg-ls:-1.8px;
+--type-display-md-size:40px;--type-display-md-lh:1.15;--type-display-md-ls:-1px;
+--type-headline-size:28px;--type-headline-lh:1.20;--type-headline-ls:-0.6px;
+--type-card-title-size:22px;--type-card-title-lh:1.25;--type-card-title-ls:-0.4px;
+--type-subhead-size:20px;--type-subhead-lh:1.40;--type-subhead-ls:-0.2px;
+--type-body-lg-size:18px;--type-body-lg-lh:1.50;--type-body-lg-ls:-0.1px;
+--type-body-size:16px;--type-body-lh:1.50;--type-body-ls:-0.05px;
+--type-body-sm-size:14px;--type-body-sm-lh:1.50;--type-body-sm-ls:0;
+--type-caption-size:12px;--type-caption-lh:1.40;--type-caption-ls:0;
+--type-button-size:14px;--type-button-lh:1.20;--type-button-ls:0;
+--type-eyebrow-size:13px;--type-eyebrow-lh:1.30;--type-eyebrow-ls:0.4px;
+--type-mono-size:13px;--type-mono-lh:1.50;--type-mono-ls:0;
+}

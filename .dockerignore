@@ -1,0 +1,12 @@
+**/node_modules
+**/.next
+**/out
+**/dist
+**/.turbo
+**/.venv
+**/__pycache__
+.git
+.env
+.env.*
+prototype/shots
+prototype/uploads

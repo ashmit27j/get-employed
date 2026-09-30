@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Profiles · GetEmployed</title>
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/colors.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/typography.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/radius.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/base.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/styles.css">
+<script src="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/_ds_bundle.js"></script>
+<script src="ge-app.js"></script>
+<script src="ge-data.js"></script>
+<style>body{margin:0;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)">
+  <x-import component-from-global-scope="GEApp.Sidebar" active="{{ navActive }}" hint-size="232px,100vh"></x-import>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <x-import component-from-global-scope="GEApp.Topbar" crumbs="{{ crumbs }}" hint-size="100%,56px"></x-import>
+    <main data-screen-label="Profiles" style="padding:32px 32px 96px;max-width:1200px;width:100%;box-sizing:border-box;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+
+      <sc-if value="{{ isLinkedIn }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;gap:16px;align-items:flex-start">
+          <span style="width:44px;height:44px;flex:none;border-radius:var(--rounded-md);border:1px solid var(--color-hairline-strong);background:var(--color-surface-2);display:flex;align-items:center;justify-content:center">
+            <img src="assets/linkedin.svg" alt="" width="22" height="22" style="display:block;border-radius:4px">
+          </span>
+          <x-import component-from-global-scope="GEApp.PageHeader" title="Optimize your LinkedIn profile" sub="Upload your LinkedIn PDF export. We rebuild it into an editable profile and suggest improvements that match your main resume." hint-size="100%,64px"></x-import>
+        </div>
+        <x-import component-from-global-scope="GEApp.Dropzone" on-remove="{{ removeFile }}" title="Drop your LinkedIn PDF here" hint="PDF up to 10 MB" accept=".pdf" button-label="Choose PDF" state="{{ up }}" file-name="{{ fileName }}" file-size="{{ fileSize }}" progress="{{ prog }}" on-file="{{ onFile }}" hint-size="100%,240px"></x-import>
+
+        <sc-if value="{{ liDone }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <h2 style="margin:0;font-size:var(--type-body-size);font-weight:600">Your rebuilt profile</h2>
+              <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Reconstructed from your PDF export, section by section.</span>
+            </div>
+          </div>
+          <x-import component-from-global-scope="GEApp.Panel" pad="0" hint-size="100%,320px">
+            <sc-for list="{{ liSections }}" as="sec" hint-placeholder-count="6">
+              <div style="display:flex;gap:16px;padding:16px 20px;border-bottom:1px solid var(--color-hairline)">
+                <span style="width:32px;height:32px;flex:none;border-radius:var(--rounded-sm);background:var(--color-surface-2);border:1px solid var(--color-hairline);display:flex;align-items:center;justify-content:center;color:var(--color-ink-subtle)"><span style="width:16px;height:16px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/{{ sec.icon }}.svg) center/contain no-repeat"></span></span>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+                  <span style="font-size:var(--type-body-sm-size);font-weight:500">{{ sec.title }}</span>
+                  <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-muted);text-wrap:pretty;white-space:pre-line">{{ sec.body }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </x-import>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <h2 style="margin:0;font-size:var(--type-body-size);font-weight:600">Suggested improvements</h2>
+              <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Accepted changes are copied to your clipboard section by section. Paste them into LinkedIn.</span>
+            </div>
+            <x-import component-from-global-scope="GEApp.MatchRing" value="58" size="44" caption="Profile strength" hint-size="130px,44px"></x-import>
+          </div>
+          <sc-for list="{{ liDiffs }}" as="d" hint-placeholder-count="3">
+            <x-import component-from-global-scope="GEApp.DiffBlock" section="{{ d.sec }}" before="{{ d.old }}" after="{{ d.neu }}" alts="{{ d.alts }}" reason="{{ d.why }}" hint-size="100%,150px"></x-import>
+          </sc-for>
+        </sc-if>
+
+        <x-import component-from-global-scope="GEApp.Panel" title="How to export your LinkedIn PDF" meta="Takes about 10 seconds" pad="20" hint-size="100%,280px">
+          <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start">
+            <div style="flex:0 0 370px;width:370px;aspect-ratio:2106/2147;border-radius:var(--rounded-lg);overflow:hidden;border:1px solid var(--color-hairline)">
+              <img src="uploads/ashmit-linkedin-banner-c8be1e69.png" alt="LinkedIn profile with Resources menu open" style="width:100%;height:100%;object-fit:contain;display:block">
+            </div>
+            <div style="flex:1 1 260px;min-width:220px">
+              <x-import component-from-global-scope="GEApp.StepList" steps="{{ liSteps }}" hint-size="100%,160px"></x-import>
+            </div>
+          </div>
+        </x-import>
+      </sc-if>
+
+      <sc-if value="{{ isGitHub }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:16px;align-items:flex-start">
+          <span style="width:44px;height:44px;flex:none;border-radius:var(--rounded-md);border:1px solid var(--color-hairline-strong);background:var(--color-surface-2);display:flex;align-items:center;justify-content:center">
+            <img src="assets/github.png" alt="" width="22" height="22" style="display:block">
+          </span>
+          <x-import component-from-global-scope="GEApp.PageHeader" title="GitHub optimization" sub="Paste your GitHub username. We read your repositories, languages and main resume, then help you write a profile README, choose what to pin, and fix project READMEs." hint-size="100%,64px"></x-import>
+        </div>
+        <x-import component-from-global-scope="GEApp.Panel" pad="20" hint-size="100%,120px">
+          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
+            <div style="flex:1;min-width:220px">
+              <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.TextInput" label="GitHub username" value="{{ ghUser }}" on-change="{{ onGhUser }}" placeholder="e.g. ashmit27j" hint-size="100%,64px"></x-import>
+            </div>
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="md" on-click="{{ connect }}" disabled="{{ noUser }}" hint-size="140px,36px">{{ connectLabel }}</x-import>
+            <x-import component-from-global-scope="GEApp.IconButton" icon="{{ connectOAuthIcon }}" title="{{ connectOAuthLabel }}" active="{{ ghOAuthDone }}" on-click="{{ connectOAuth }}" size="36" hint-size="36px,36px"></x-import>
+          </div>
+        </x-import>
+
+        <sc-if value="{{ ghIdle }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">
+            <sc-for list="{{ features }}" as="f" hint-placeholder-count="4">
+              <div style="display:flex;gap:12px;padding:16px;border-radius:var(--rounded-lg);border:1px solid var(--color-hairline);background:var(--color-surface-1)">
+                <span style="width:32px;height:32px;flex:none;border-radius:var(--rounded-sm);background:var(--color-surface-2);border:1px solid var(--color-hairline);display:flex;align-items:center;justify-content:center;color:var(--color-ink-subtle)"><span style="width:16px;height:16px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/{{ f.icon }}.svg) center/contain no-repeat"></span></span>
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <span style="font-size:var(--type-body-sm-size);font-weight:500">{{ f.title }}</span>
+                  <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle);text-wrap:pretty">{{ f.body }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ ghDone }}" hint-placeholder-val="{{ false }}">
+          <x-import component-from-global-scope="GEApp.Panel" pad="20" hint-size="100%,120px">
+            <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+              <x-import component-from-global-scope="GEApp.Avatar" name="Ashmit Jain" size="44" hint-size="44px,44px"></x-import>
+              <div style="flex:1 1 260px;min-width:0;display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+                  <a href="{{ ghUrl }}" target="_blank" rel="noreferrer" style="font-size:var(--type-body-size);font-weight:500;text-decoration:none">{{ ghHandle }}</a>
+                  <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ ghStats }}</span>
+                </div>
+                <div style="display:flex;height:6px;border-radius:var(--rounded-pill);overflow:hidden;gap:2px">
+                  <sc-for list="{{ langs }}" as="l" hint-placeholder-count="5">
+                    <span style="width:{{ l.pct }}%;background:{{ l.color }}"></span>
+                  </sc-for>
+                </div>
+                <div style="display:flex;gap:12px;flex-wrap:wrap">
+                  <sc-for list="{{ langs }}" as="l" hint-placeholder-count="5">
+                    <span style="display:inline-flex;align-items:center;gap:6px;font-size:var(--type-caption-size);color:var(--color-ink-subtle)"><span style="width:8px;height:8px;border-radius:var(--rounded-full);background:{{ l.color }}"></span>{{ l.name }} <span style="font-family:var(--font-mono);color:var(--color-ink-tertiary)">{{ l.pct }}%</span></span>
+                  </sc-for>
+                </div>
+              </div>
+              <x-import component-from-global-scope="GEApp.MatchRing" value="{{ ghScore }}" size="48" caption="GitHub profile score" hint-size="150px,48px"></x-import>
+            </div>
+          </x-import>
+
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.PillTabs" options="{{ tabs }}" value="{{ tab }}" on-change="{{ setTab }}" hint-size="560px,40px"></x-import>
+
+          <sc-if value="{{ tabReadme }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+              <div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:12px">
+                <x-import component-from-global-scope="GEApp.Panel" title="What to include" sub="Built from your repositories and main resume" pad="16" hint-size="100%,140px">
+                  <div style="display:flex;gap:6px;flex-wrap:wrap">
+                    <sc-for list="{{ sections }}" as="c" hint-placeholder-count="6">
+                      <x-import component-from-global-scope="GEApp.Chip" active="{{ c.on }}" icon="{{ c.icon }}" on-click="{{ c.toggle }}" hint-size="100px,28px">{{ c.label }}</x-import>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+                    <x-import component-from-global-scope="GEApp.Segmented" options="Concise|Detailed" value="{{ tone }}" on-change="{{ setTone }}" hint-size="170px,32px"></x-import>
+                    <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" on-click="{{ regen }}" icon-left="{{ icRefresh }}" hint-size="110px,28px">Regenerate</x-import>
+                  </div>
+                </x-import>
+                <x-import component-from-global-scope="GEApp.TextArea" mono="{{ true }}" rows="22" value="{{ readme }}" on-change="{{ editReadme }}" hint="{{ readmeHint }}" hint-size="100%,460px"></x-import>
+              </div>
+              <aside style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:12px;position:sticky;top:88px">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+                  <span style="font-family:var(--font-mono);font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ readmePath }}</span>
+                  <div style="display:flex;gap:8px;align-items:center">
+                    <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" on-click="{{ copyReadme }}" icon-left="{{ icCopy }}" hint-size="80px,28px">{{ copyLabel }}</x-import>
+                    <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="sm" on-click="{{ commit }}" disabled="{{ committed }}" hint-size="150px,28px">{{ commitLabel }}</x-import>
+                  </div>
+                </div>
+                <x-import component-from-global-scope="GEApp.Panel" pad="24" hint-size="100%,460px">
+                  <x-import component-from-global-scope="GEApp.MarkdownView" source="{{ readme }}" hint-size="100%,400px"></x-import>
+                </x-import>
+              </aside>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ tabPins }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="GEApp.Panel" title="Pinned repositories" sub="Pin 4 to 6 repositories that show the work your target role asks for. Recruiters see these first." meta="{{ pinMeta }}" hint-size="100%,420px">
+              <sc-for list="{{ pinRows }}" as="p" hint-placeholder-count="6">
+                <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--color-hairline)">
+                  <div style="min-width:0;display:flex;flex-direction:column;gap:4px">
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                      <span style="font-family:var(--font-mono);font-size:var(--type-body-sm-size)">{{ p.name }}</span>
+                      <sc-if value="{{ p.nowPinned }}" hint-placeholder-val="{{ false }}">
+                        <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.StatusBadge" tone="neutral" hint-size="80px,20px">Pinned now</x-import>
+                      </sc-if>
+                      <span style="font-size:var(--type-caption-size);color:var(--color-ink-tertiary)">{{ p.meta }}</span>
+                    </div>
+                    <span style="display:flex;gap:6px;align-items:flex-start;font-size:var(--type-caption-size);color:{{ p.reasonColor }};text-wrap:pretty"><span style="width:14px;height:14px;flex:none;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/{{ p.reasonIcon }}.svg) center/contain no-repeat;margin-top:2px"></span>{{ p.reason }}</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Pin</span>
+                    <x-import component-from-global-scope="GEApp.Toggle" on="{{ p.pin }}" on-change="{{ p.toggle }}" label="Pin repository" hint-size="32px,18px"></x-import>
+                  </div>
+                </div>
+              </sc-for>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;flex-wrap:wrap">
+                <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ pinNote }}</span>
+                <div style="display:flex;gap:8px">
+                  <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" on-click="{{ useSuggested }}" hint-size="120px,28px">Use suggestions</x-import>
+                  <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="sm" on-click="{{ applyPins }}" disabled="{{ pinsBad }}" hint-size="120px,28px">{{ applyPinsLabel }}</x-import>
+                </div>
+              </div>
+            </x-import>
+          </sc-if>
+
+          <sc-if value="{{ tabProjects }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+              <div style="flex:0 1 300px;min-width:240px;display:flex;flex-direction:column;gap:4px">
+                <sc-for list="{{ projRows }}" as="p" hint-placeholder-count="6">
+                  <button type="button" onClick="{{ p.pick }}" style="all:unset;cursor:pointer;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--rounded-md);border:1px solid {{ p.border }};background:{{ p.bg }}">
+                    <x-import component-from-global-scope="GEApp.MatchRing" value="{{ p.score }}" size="32" hint-size="32px,32px"></x-import>
+                    <span style="flex:1;min-width:0;display:flex;flex-direction:column">
+                      <span style="font-family:var(--font-mono);font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ p.name }}</span>
+                      <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ p.status }}</span>
+                    </span>
+                  </button>
+                </sc-for>
+              </div>
+              <div style="flex:1 1 480px;min-width:0;display:flex;flex-direction:column;gap:12px">
+                <x-import component-from-global-scope="GEApp.Panel" title="{{ cur.name }}" sub="README checklist" meta="{{ cur.checkMeta }}" pad="20" hint-size="100%,220px">
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 16px">
+                    <sc-for list="{{ cur.checks }}" as="c" hint-placeholder-count="6">
+                      <span style="display:flex;gap:8px;align-items:center;font-size:var(--type-body-sm-size);color:{{ c.color }}"><span style="width:14px;height:14px;flex:none;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/{{ c.icon }}.svg) center/contain no-repeat"></span>{{ c.label }}</span>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap">
+                    <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" on-click="{{ cur.generate }}" icon-left="{{ icSparkle }}" hint-size="150px,28px">{{ cur.genLabel }}</x-import>
+                    <sc-if value="{{ cur.hasDraft }}" hint-placeholder-val="{{ false }}">
+                      <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="sm" on-click="{{ cur.openPr }}" disabled="{{ cur.prDone }}" hint-size="150px,28px">{{ cur.prLabel }}</x-import>
+                    </sc-if>
+                  </div>
+                </x-import>
+                <sc-if value="{{ cur.hasDraft }}" hint-placeholder-val="{{ false }}">
+                  <x-import component-from-global-scope="GEApp.Segmented" options="Preview|Markdown" value="{{ projView }}" on-change="{{ setProjView }}" hint-size="190px,32px"></x-import>
+                  <sc-if value="{{ projPreview }}" hint-placeholder-val="{{ true }}">
+                    <x-import component-from-global-scope="GEApp.Panel" pad="24" hint-size="100%,360px">
+                      <x-import component-from-global-scope="GEApp.MarkdownView" source="{{ cur.draft }}" hint-size="100%,320px"></x-import>
+                    </x-import>
+                  </sc-if>
+                  <sc-if value="{{ projCode }}" hint-placeholder-val="{{ false }}">
+                    <x-import component-from-global-scope="GEApp.TextArea" mono="{{ true }}" rows="20" value="{{ cur.draft }}" on-change="{{ cur.edit }}" hint-size="100%,400px"></x-import>
+                  </sc-if>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ tabContext }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">
+              <div style="flex:1.6 1 460px;min-width:0;display:flex;flex-direction:column;gap:16px">
+              <x-import component-from-global-scope="GEApp.Panel" title="Projects on your resume" sub="Selected repositories are added to Projects on your main resume" meta="{{ resMeta }}" hint-size="100%,260px">
+                <sc-for list="{{ resRows }}" as="p" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;border-bottom:1px solid var(--color-hairline)">
+                    <span style="font-family:var(--font-mono);font-size:var(--type-body-sm-size)">{{ p.name }}</span>
+                    <x-import component-from-global-scope="GEApp.Toggle" on="{{ p.on }}" on-change="{{ p.toggle }}" label="Add to resume" hint-size="32px,18px"></x-import>
+                  </div>
+                </sc-for>
+                <div style="display:flex;justify-content:flex-end;padding:12px 20px">
+                  <a href="Resume.dc.html?view=main" style="text-decoration:none"><x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="sm" hint-size="160px,28px">{{ addLabel }}</x-import></a>
+                </div>
+              </x-import>
+              <x-import component-from-global-scope="GEApp.Panel" title="Resume skills backed by code" sub="Highlighted skills appear in at least one public repository" meta="{{ backedMeta }}" pad="20" hint-size="100%,160px">
+                <div style="display:flex;gap:6px;flex-wrap:wrap">
+                  <sc-for list="{{ skillsBacked }}" as="k" hint-placeholder-count="10">
+                    <x-import component-from-global-scope="GEApp.Chip" active="{{ k.on }}" icon="{{ k.icon }}" hint-size="80px,28px">{{ k.name }}</x-import>
+                  </sc-for>
+                </div>
+              </x-import>
+              </div>
+              <div style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:16px">
+              <x-import component-from-global-scope="GEApp.Panel" title="Target role" sub="Frames the README intro and pin suggestions" pad="20" hint-size="100%,140px">
+                <x-import component-from-global-scope="GEApp.Select" value="{{ role }}" options="Backend engineer|Full-stack engineer|iOS engineer|Frontend engineer" on-change="{{ setRole }}" hint-size="100%,40px"></x-import>
+              </x-import>
+              <x-import component-from-global-scope="GEApp.Panel" title="Languages by code volume" pad="20" hint-size="100%,220px">
+                <sc-for list="{{ langs }}" as="l" hint-placeholder-count="5">
+                  <x-import component-from-global-scope="GEApp.ScoreBar" label="{{ l.name }}" value="{{ l.pct }}" value-label="{{ l.pctLabel }}" dim="{{ true }}" hint-size="100%,28px"></x-import>
+                </sc-for>
+              </x-import>
+              </div>
+            </div>
+          </sc-if>
+        </sc-if>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { up: "idle", prog: 0, file: null, ghUser: "ashmit27j", gh: "idle", tab: "readme", tone: "Concise", role: "Backend engineer",
+    secs: { about: true, now: true, stack: true, projects: true, experience: false, contact: true }, res: { festflow: true, nosh: true },
+    pins: { festflow: true, nosh: true, dotfiles: true, dsa: true }, pinsApplied: false, committed: false, copied: false, cur: "festflow", drafts: {}, prs: {}, projView: "Preview", ghOAuth: "idle" };
+  componentDidMount() { if (!window.GEApp) { const t = setInterval(() => { if (window.GEApp) { clearInterval(t); this.forceUpdate(); } }, 50); } }
+  componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.to); clearTimeout(this.to2); }
+  onFile(f) { clearInterval(this.iv); this.setState({ up: "uploading", prog: 0, file: f }); this.iv = setInterval(() => this.setState(s => { const p = Math.min(100, s.prog + 12); if (p >= 100) { clearInterval(this.iv); return { prog: 100, up: "done" }; } return { prog: p }; }), 120); }
+  repos() { return [
+    { id: "festflow", name: "festflow", lang: "Go", stars: 41, desc: "Event ticketing backend with a Kafka scan queue.", topics: ["Go", "Kafka", "PostgreSQL", "Redis", "Docker"], readme: 72, suggest: true, why: "Your strongest backend project. Go and Kafka appear in 9 of your saved jobs." },
+    { id: "nosh", name: "nosh-ios", lang: "Swift", stars: 18, desc: "SwiftUI meal-planning app built with MVVM.", topics: ["Swift", "SwiftUI"], readme: 45, suggest: true, why: "Your only iOS project. Shows SwiftUI and MVVM from the Digitas internship." },
+    { id: "shipeasy", name: "shipeasy-web", lang: "TypeScript", stars: 7, desc: "Responsive storefront and prototypes for ShipEasy.", topics: ["TypeScript", "React", "Next.js"], readme: 30, suggest: true, why: "Real client work in React. Lead with it for full-stack roles." },
+    { id: "limiter", name: "rate-limiter", lang: "Go", stars: 12, desc: "Token-bucket rate limiter with a Redis backend.", topics: ["Go", "Redis"], readme: 20, suggest: true, why: "Small but on-topic. Rate limiting comes up in backend interviews." },
+    { id: "dotfiles", name: "dotfiles", lang: "Shell", stars: 2, desc: "Personal shell and editor config.", topics: ["Git"], readme: 60, suggest: false, why: "Config repos rarely help recruiters. Unpin it." },
+    { id: "dsa", name: "dsa-practice", lang: "Python", stars: 3, desc: "Solutions to practice problems.", topics: ["Python"], readme: 10, suggest: false, why: "Practice solutions read as coursework. Keep it public, but don't pin it." },
+  ]; }
+  profileReadme(s) {
+    const P = window.GEData ? window.GEData.PROFILE : { contact: {} }, R = this.repos(), det = s.tone === "Detailed", on = s.secs, L = [];
+    const intro = { "Backend engineer": "I build backend services in Go: queues, APIs and the parts that have to stay up at peak load.", "Full-stack engineer": "I build full-stack products with Go and React, from the database to the last screen.", "iOS engineer": "I build iOS apps in SwiftUI and the Go services behind them.", "Frontend engineer": "I build responsive interfaces in React and TypeScript, backed by a design-system mindset." }[s.role];
+    L.push("# " + (P.contact.name || "Ashmit Jain"), "");
+    if (on.about) L.push("Computer engineering student at MPSTME, NMIMS. " + intro, "");
+    if (on.now) { L.push("## Currently"); L.push("- Looking for " + s.role.toLowerCase() + " roles for 2027 graduates"); if (det) L.push("- Adding a gRPC gateway to **festflow**", "- Writing about queue design on my blog"); L.push(""); }
+    if (on.stack) { L.push("## Tech stack", "**Languages:** Go · TypeScript · Swift · Python", "", "**Tools:** Kafka · PostgreSQL · Redis · Docker · Git", ""); }
+    if (on.projects) { L.push("## Featured projects"); R.filter(r => r.suggest).slice(0, det ? 4 : 3).forEach(r => L.push("- **[" + r.name + "](https://github.com/" + (s.ghUser || "ashmit27j") + "/" + r.name + ")**: " + r.desc + (det ? " `" + r.lang + "`" : ""))); L.push(""); }
+    if (on.experience) { L.push("## Experience", "- **iOS Development Intern**, Digitas India (2025)", "- **Web & UI/UX Development Intern**, Synoris Information Systems (2024)", ""); }
+    if (on.contact) { L.push("## Contact", "- [" + (P.contact.email || "") + "](mailto:" + (P.contact.email || "") + ")", "- [linkedin.com/in/ashmitjain](https://linkedin.com/in/ashmitjain)"); }
+    return L.join("\n").trim();
+  }
+  projectReadme(r) {
+    return ["# " + r.name, "", r.desc, "", "## Why it exists", r.id === "festflow" ? "Ticket scans at the gate dropped during peak entry at our college fest. festflow queues every scan so none are lost." : "Built to solve a real problem and to learn " + r.topics.join(", ") + ".", "", "## Tech stack", ...r.topics.map(t => "- " + t), "", "## Getting started", "```", "git clone https://github.com/" + (this.state.ghUser || "ashmit27j") + "/" + r.name, "cd " + r.name, r.lang === "Go" ? "docker compose up -d && go run ./cmd/server" : r.lang === "Swift" ? "open " + r.name + ".xcodeproj" : r.lang === "TypeScript" ? "npm install && npm run dev" : "make", "```", "", "## Results", r.id === "festflow" ? "- Handled 900 scans a minute at peak with zero dropped events" : "- Add one measurable result here", "", "## License", "MIT"].join("\n");
+  }
+  renderVals() {
+    const s = this.state, gh = new URLSearchParams(location.search).get("p") === "github", R = this.repos();
+    const ic = n => React.createElement("span", { "aria-hidden": "true", style: { width: 14, height: 14, flex: "none", background: "currentColor", mask: "url(https://unpkg.com/lucide-static@0.460.0/icons/" + n + ".svg) center/contain no-repeat", WebkitMask: "url(https://unpkg.com/lucide-static@0.460.0/icons/" + n + ".svg) center/contain no-repeat" } });
+    const OK = "oklch(0.78 0.11 150)", BAD = "oklch(0.74 0.11 22)";
+    const LANGS = [["Go", 38, "var(--color-primary)"], ["TypeScript", 24, "var(--color-ink-muted)"], ["Swift", 18, "var(--color-ink-subtle)"], ["Python", 12, "var(--color-ink-tertiary)"], ["Shell", 8, "var(--color-surface-4)"]];
+    const pinned = R.filter(r => s.pins[r.id]), pinCount = pinned.length;
+    const projDone = Object.keys(s.prs).length;
+    const ghScore = Math.min(96, 48 + (s.committed ? 16 : 0) + (s.pinsApplied ? 12 : 0) + projDone * 5);
+    const readme = s.readmeDraft ?? this.profileReadme(s);
+    const cr = R.find(r => r.id === s.cur) || R[0];
+    const CHECKS = ["One-line description", "What it does and why", "Tech stack", "Setup and run steps", "Screenshots or demo", "Results or metrics"];
+    const scoreOf = r => s.drafts[r.id] ? 92 : r.readme;
+    const n = Object.values(s.res).filter(Boolean).length;
+    const PS = window.GEData ? window.GEData.PROFILE.skills : {};
+    const backed = new Set(R.flatMap(r => r.topics));
+    const allSkills = Object.values(PS).flat();
+    return {
+      navActive: gh ? "github" : "linkedin", crumbs: "Profiles / " + (gh ? "GitHub" : "LinkedIn"), isLinkedIn: !gh, isGitHub: gh,
+      up: s.up, prog: s.prog, fileName: s.file ? s.file.name : "", fileSize: s.file ? s.file.size : "", onFile: f => this.onFile(f), removeFile: () => { clearInterval(this.iv); this.setState({ up: "idle", prog: 0, file: null }); }, liDone: s.up === "done",
+      liSections: [
+        { icon: "user", title: "Headline", body: "Computer Engineering student · Backend (Go, Kafka) and iOS (SwiftUI)" },
+        { icon: "align-left", title: "About", body: "I build backend services and iOS apps. Most recently: a Go ticketing backend that handled 900 scans a minute at a college fest." },
+        { icon: "graduation-cap", title: "Education", body: "MPSTME, NMIMS — B.Tech, Computer Engineering, 2023–2027" },
+        { icon: "briefcase", title: "Experience", body: "iOS Development Intern, Digitas India (2025)\nWeb & UI/UX Development Intern, Synoris Information Systems (2024)" },
+        { icon: "folder-git-2", title: "Projects", body: "festflow — Event ticketing backend with a Kafka scan queue\nnosh-ios — SwiftUI meal-planning app built with MVVM" },
+        { icon: "code", title: "Skills", body: "Go · TypeScript · Swift · React · PostgreSQL · Kafka · Docker" },
+      ],
+      liSteps: [{ title: "Open the Resources menu", body: "On your LinkedIn profile, click Resources under your headline." }, { title: "Choose Save to PDF", body: "LinkedIn downloads a PDF of your full profile." }, { title: "Drop the file above", body: "We rebuild your profile in a few seconds." }],
+      liDiffs: [
+        { sec: "Headline", old: "Student at NMIMS", neu: "Computer Engineering student · Backend (Go, Kafka) and iOS (SwiftUI)", alts: ["Backend and iOS developer · Go, Kafka, SwiftUI · Computer Engineering at NMIMS", "Building backend services in Go and iOS apps in SwiftUI · NMIMS '27"], why: "Recruiters search headlines. This matches your main resume's skills." },
+        { sec: "About", old: "Passionate about technology and learning new things.", neu: "I build backend services and iOS apps. Most recently: a Go ticketing backend that handled 900 scans a minute at a college fest.", alts: ["Computer Engineering student who ships. I built a Go ticketing backend that scanned 900 tickets a minute at a college fest, and Nosh, a SwiftUI meal-planning app.", "I work across backend (Go, Kafka) and iOS (SwiftUI). My latest project handled 900 ticket scans a minute during a live college fest."], why: "Leads with a concrete result instead of a general statement." },
+        { sec: "Experience · Digitas India", old: "iOS intern.", neu: "Built Nosh, a SwiftUI meal-planning app using MVVM; shipped onboarding and settings with the design team.", alts: ["Shipped onboarding and settings for Nosh, a SwiftUI meal-planning app, working with the design team on an MVVM codebase.", "Built core screens for Nosh (SwiftUI, MVVM), including onboarding and settings, alongside the design team."], why: "Copies the stronger wording from your resume." }],
+      ghUser: s.ghUser, onGhUser: e => this.setState({ ghUser: e && e.target ? e.target.value : e }), noUser: !String(s.ghUser || "").trim() || s.gh === "loading",
+      connectLabel: s.gh === "loading" ? "Connecting…" : s.gh === "done" ? "Refresh" : "Connect",
+      connect: () => { this.setState({ gh: "loading" }); clearTimeout(this.to); this.to = setTimeout(() => this.setState({ gh: "done" }), 900); },
+      connectOAuthLabel: s.ghOAuth === "loading" ? "Connecting…" : s.ghOAuth === "done" ? "Connected" : "Connect GitHub",
+      connectOAuthIcon: s.ghOAuth === "loading" ? "loader" : s.ghOAuth === "done" ? "check" : "plug", ghOAuthDone: s.ghOAuth === "done",
+      connectOAuth: () => { if (s.ghOAuth === "done") return; this.setState({ ghOAuth: "loading" }); clearTimeout(this.to3); this.to3 = setTimeout(() => this.setState({ ghOAuth: "done" }), 900); },
+      ghIdle: s.gh !== "done", ghDone: s.gh === "done",
+      features: [
+        { icon: "file-text", title: "Profile README", body: "Generate a profile README from your resume and repositories, then commit it in one click." },
+        { icon: "pin", title: "Pinned repo guidance", body: "See which repositories to pin for your target role, and which to take down." },
+        { icon: "book-open", title: "Project READMEs", body: "Score each repository's README and generate a clear one with setup steps and results." },
+        { icon: "compass", title: "Profile context", body: "Your languages, skills backed by code, and which projects to carry onto your resume." }],
+      ghHandle: "@" + (s.ghUser || "ashmit27j"), ghUrl: "https://github.com/" + (s.ghUser || "ashmit27j"), ghStats: R.length + " public repositories · " + R.reduce((a, r) => a + r.stars, 0) + " stars · active this week",
+      langs: LANGS.map(([name, pct, color]) => ({ name, pct, color, pctLabel: pct + "%" })), ghScore,
+      tabs: [{ value: "readme", label: "Profile README" }, { value: "pins", label: "Pinned repos" }, { value: "projects", label: "Project READMEs" }, { value: "context", label: "Profile context" }],
+      tab: s.tab, setTab: v => this.setState({ tab: v }), tabReadme: s.tab === "readme", tabPins: s.tab === "pins", tabProjects: s.tab === "projects", tabContext: s.tab === "context",
+      sections: [["about", "About", "user"], ["now", "Currently", "clock"], ["stack", "Tech stack", "code"], ["projects", "Featured projects", "folder-git-2"], ["experience", "Experience", "briefcase"], ["contact", "Contact", "at-sign"]].map(([id, label, icon]) => ({ label, icon, on: !!s.secs[id], toggle: () => this.setState(p => ({ secs: { ...p.secs, [id]: !p.secs[id] }, readmeDraft: undefined, committed: false })) })),
+      tone: s.tone, setTone: v => this.setState({ tone: v, readmeDraft: undefined, committed: false }),
+      regen: () => this.setState({ readmeDraft: undefined, committed: false }), icRefresh: ic("refresh-cw"), icCopy: ic("copy"), icSparkle: ic("sparkles"),
+      readme, editReadme: e => this.setState({ readmeDraft: e.target.value, committed: false }),
+      readmeHint: s.readmeDraft != null ? "Edited by hand. Regenerate to start over." : "Generated for a " + s.role.toLowerCase() + " profile. Edit anything before committing.",
+      readmePath: (s.ghUser || "ashmit27j") + "/" + (s.ghUser || "ashmit27j") + " · README.md",
+      copyLabel: s.copied ? "Copied" : "Copy", copyReadme: () => { try { navigator.clipboard.writeText(readme); } catch (e) {} this.setState({ copied: true }); clearTimeout(this.to2); this.to2 = setTimeout(() => this.setState({ copied: false }), 1500); },
+      committed: s.committed, commitLabel: s.committed ? "Committed" : "Commit to GitHub", commit: () => this.setState({ committed: true }),
+      pinRows: R.map(r => ({ name: r.name, meta: r.lang + " · " + r.stars + " stars", nowPinned: ["festflow", "nosh", "dotfiles", "dsa"].includes(r.id), reason: r.why, reasonIcon: r.suggest ? "circle-check" : "circle-minus", reasonColor: r.suggest ? "var(--color-ink-subtle)" : BAD, pin: !!s.pins[r.id], toggle: v => this.setState(p => ({ pins: { ...p.pins, [r.id]: v }, pinsApplied: false })) })),
+      pinMeta: pinCount + " of 6 pinned", pinsBad: s.pinsApplied || pinCount === 0 || pinCount > 6,
+      pinNote: s.pinsApplied ? "Pins updated on GitHub." : pinCount > 6 ? "GitHub allows up to 6 pins." : pinned.filter(r => !r.suggest).length ? pinned.filter(r => !r.suggest).length + " pinned repositories work against you." : "Your pins match the suggestions.",
+      useSuggested: () => this.setState({ pins: Object.fromEntries(R.map(r => [r.id, r.suggest])), pinsApplied: false }),
+      applyPinsLabel: s.pinsApplied ? "Applied" : "Apply pins", applyPins: () => this.setState({ pinsApplied: true }),
+      projRows: R.map(r => ({ name: r.name, score: scoreOf(r), status: s.prs[r.id] ? "Pull request opened" : s.drafts[r.id] ? "Draft ready" : r.readme >= 60 ? "Needs small fixes" : r.readme >= 30 ? "Missing key sections" : "Almost empty", pick: () => this.setState({ cur: r.id }), border: r.id === cr.id ? "var(--color-hairline-strong)" : "transparent", bg: r.id === cr.id ? "var(--color-surface-2)" : "transparent" })),
+      cur: (() => { const has = !!s.drafts[cr.id]; const k = has ? 6 : Math.round(cr.readme / 100 * CHECKS.length); return {
+        name: cr.name, checkMeta: k + " of " + CHECKS.length, checks: CHECKS.map((l, i) => ({ label: l, icon: i < k ? "circle-check" : "circle-x", color: i < k ? OK : BAD })),
+        hasDraft: has, draft: s.drafts[cr.id] || "", genLabel: has ? "Regenerate README" : "Generate README",
+        generate: () => this.setState(p => ({ drafts: { ...p.drafts, [cr.id]: this.projectReadme(cr) }, prs: (({ [cr.id]: _, ...rest }) => rest)(p.prs) })),
+        edit: e => { const v = e.target.value; this.setState(p => ({ drafts: { ...p.drafts, [cr.id]: v } })); },
+        prDone: !!s.prs[cr.id], prLabel: s.prs[cr.id] ? "Pull request opened" : "Open pull request", openPr: () => this.setState(p => ({ prs: { ...p.prs, [cr.id]: true } })) }; })(),
+      projView: s.projView, setProjView: v => this.setState({ projView: v }), projPreview: s.projView === "Preview", projCode: s.projView === "Markdown",
+      role: s.role, setRole: v => this.setState({ role: v, readmeDraft: undefined, committed: false }),
+      skillsBacked: allSkills.map(k => ({ name: k, on: backed.has(k), icon: backed.has(k) ? "check" : undefined })), backedMeta: allSkills.filter(k => backed.has(k)).length + " of " + allSkills.length,
+      resRows: R.filter(r => r.suggest).map(r => ({ name: r.name, on: !!s.res[r.id], toggle: v => this.setState(p => ({ res: { ...p.res, [r.id]: v } })) })), resMeta: n + " selected",
+      addLabel: n ? "Add " + n + " to Projects" : "Select repositories",
+    };
+  }
+}
+</script>
+</body>
+</html>

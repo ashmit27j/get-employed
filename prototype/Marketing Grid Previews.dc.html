@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Marketing grid · responsive previews</title>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="design-system/tokens.css">
+<style>body{margin:0;background:#050608}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}</style>
+</helmet>
+<div id="desktop" style="margin:0;padding:0 0 16px">
+  <iframe src="marketing/index.html?review=0" title="Desktop" style="display:block;width:100vw;height:100vh;margin:0;border:0;border-radius:0;background:var(--color-canvas)"></iframe>
+</div>
+<section style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:64px;padding:64px;font-family:var(--font-sans);color:var(--color-ink)">
+  <div id="tablet" style="display:flex;flex-direction:column;gap:12px">
+    <span style="font-family:var(--font-mono);font-size:13px;color:var(--color-ink-subtle)">Tablet · 900</span>
+    <iframe src="marketing/index.html?review=0" title="Tablet 900" style="display:block;width:900px;height:1600px;border:1px solid var(--color-hairline);border-radius:12px;background:var(--color-canvas)"></iframe>
+  </div>
+  <div id="mobile" style="display:flex;flex-direction:column;gap:12px">
+    <span style="font-family:var(--font-mono);font-size:13px;color:var(--color-ink-subtle)">Mobile · 390</span>
+    <iframe src="marketing/index.html?review=0" title="Mobile 390" style="display:block;width:390px;height:1600px;border:1px solid var(--color-hairline);border-radius:12px;background:var(--color-canvas)"></iframe>
+  </div>
+</section>
+</x-dc>
+</body>
+</html>

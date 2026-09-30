@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Application Tracker · GetEmployed</title>
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/colors.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/typography.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/radius.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/base.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/styles.css">
+<script src="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/_ds_bundle.js"></script>
+<script src="ge-app.js"></script>
+<script src="ge-data.js"></script>
+<style>body{margin:0;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}select option{background:#0F1218;color:#EEF0F3}</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)">
+  <x-import component-from-global-scope="GEApp.Sidebar" active="tracker" hint-size="232px,100vh"></x-import>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <x-import component-from-global-scope="GEApp.Topbar" crumbs="Application Tracker" hint-size="100%,56px"></x-import>
+    <main data-screen-label="Application tracker" style="padding:32px 32px 96px;max-width:1120px;width:100%;box-sizing:border-box;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+      <x-import component-from-global-scope="GEApp.PageHeader" title="Application tracker" sub="Every role you've saved or applied to, with what to do next. Replies and interview invites update stages automatically." hint-size="100%,64px"></x-import>
+
+      <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap">
+      <div style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <h2 style="margin:0;font-size:var(--type-body-size);font-weight:600">Applications</h2>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <sc-if value="{{ hasStageFilter }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="GEApp.Chip" active="{{ true }}" on-remove="{{ clearStage }}" hint-size="100px,28px">{{ stageFilterLabel }}</x-import>
+            </sc-if>
+            <x-import component-from-global-scope="GEApp.Segmented" options="Active|All|Closed" value="{{ view }}" on-change="{{ setView }}" hint-size="200px,32px"></x-import>
+          </div>
+        </div>
+        <x-import component-from-global-scope="GEApp.Panel" hint-size="100%,480px">
+          <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:8px;padding:7px 16px;background:var(--color-surface-2);border-bottom:1px solid var(--color-hairline)">
+              <span style="{{ g.dot }}"></span>
+              <span style="font-size:var(--type-body-sm-size);font-weight:500">{{ g.label }}</span>
+              <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-tertiary)">{{ g.n }}</span>
+            </div>
+            <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="2">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;column-gap:16px;row-gap:8px;padding:10px 16px;border-bottom:1px solid var(--color-hairline)" data-ge-stack-mobile="">
+                <a href="{{ r.href }}" style="flex:1 1 220px;display:flex;align-items:center;gap:10px;min-width:0;text-decoration:none">
+                  <x-import component-from-global-scope="GEApp.CoLogo" name="{{ r.co }}" size="32" hint-size="32px,32px"></x-import>
+                  <span style="display:flex;flex-direction:column;gap:1px;min-width:0">
+                    <span style="font-size:var(--type-body-sm-size);font-weight:500;color:var(--color-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.title }}</span>
+                    <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ r.co }} · {{ r.meta }}</span>
+                  </span>
+                </a>
+                <div data-ge-hide-mobile="" style="flex:0 1 240px;min-width:160px;display:flex;align-items:center;gap:10px" title="{{ r.stepTitle }}">
+                  <div style="display:flex;gap:3px;flex:1;min-width:60px">
+                    <sc-for list="{{ r.steps }}" as="st" hint-placeholder-count="4"><span style="{{ st }}"></span></sc-for>
+                  </div>
+                  <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle);flex:none">{{ r.stepLabel }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </sc-for>
+          <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:16px">
+              <x-import component-from-global-scope="GEApp.EmptyState" icon="square-kanban" title="Nothing here" body="Save a job from the feed and it shows up in your tracker." hint-size="100%,200px"></x-import>
+            </div>
+          </sc-if>
+        </x-import>
+      </div>
+
+      <div style="flex:1 1 420px;min-width:min(100%,360px)">
+        <div>
+          <x-import component-from-global-scope="GEApp.Panel" hint-size="100%,240px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;border-bottom:1px solid var(--color-hairline)">
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                <span style="font-size:var(--type-body-sm-size);font-weight:500;color:var(--color-ink)">Alerts</span>
+              </div>
+              <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="sm" on-click="{{ openAlertModal }}" hint-size="110px,28px">+ Add alert</x-import>
+            </div>
+            <sc-for list="{{ attention }}" as="a" hint-placeholder-count="4">
+            <a href="Job%20Detail.dc.html" style="display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:16px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--color-hairline);text-decoration:none" style-hover="background:var(--color-surface-2)">
+              <span style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:52px;border-radius:var(--rounded-md);border:1px solid var(--color-hairline-strong);background:var(--color-surface-2)">
+                <span style="font-size:var(--type-caption-size);text-transform:uppercase;letter-spacing:.4px;color:var(--color-ink-subtle)">{{ a.mon }}</span>
+                <span style="font-family:var(--font-mono);font-size:18px;line-height:1.1;color:var(--color-ink)">{{ a.day }}</span>
+              </span>
+              <span style="display:flex;flex-direction:column;gap:3px;min-width:0">
+                <span style="font-size:var(--type-body-sm-size);font-weight:500;color:var(--color-ink)">{{ a.action }}</span>
+                <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.title }} · {{ a.co }}</span>
+              </span>
+                <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.StatusBadge" tone="{{ a.tone }}" hint-size="80px,20px">{{ a.when }}</x-import>
+              </a>
+            </sc-for>
+          </x-import>
+        </div>
+
+        <sc-if value="{{ alertModalOpen }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ closeAlertModal }}" style="position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:24px">
+            <div role="dialog" aria-label="Add a custom alert" onClick="{{ stop }}" style="width:min(420px,100%);background:var(--color-surface-1);border-radius:var(--rounded-lg);border:1px solid var(--color-hairline);padding:24px;display:flex;flex-direction:column;gap:16px">
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <span style="font-size:var(--type-body-size);font-weight:600">Add a custom alert</span>
+                <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Write a reminder to show up in your alerts list.</span>
+              </div>
+              <textarea value="{{ alertDraft }}" onChange="{{ setAlertDraft }}" placeholder="e.g. Follow up with recruiter at CRED" rows="3" style="all:unset;box-sizing:border-box;width:100%;padding:10px 12px;border-radius:var(--rounded-md);border:1px solid var(--color-hairline-strong);font-size:var(--type-body-sm-size);color:var(--color-ink);font-family:inherit;resize:vertical" style-focus="border-color:var(--color-primary)"></textarea>
+              <div style="display:flex;justify-content:flex-end;gap:10px">
+                <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" on-click="{{ closeAlertModal }}" hint-size="80px,36px">Cancel</x-import>
+                <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" on-click="{{ addAlert }}" disabled="{{ alertDraftEmpty }}" hint-size="100px,36px">Add alert</x-import>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { apps: null, view: "Active", stage: null, alertModalOpen: false, alertDraft: "", customAlerts: [] };
+  componentDidMount() { const init = () => this.setState({ apps: window.GEData.APPS.map(a => ({ ...a })) }); if (window.GEData) init(); else { const t = setInterval(() => { if (window.GEData) { clearInterval(t); init(); } }, 50); } }
+  renderVals() {
+    const STAGES = (window.GEData && window.GEData.STAGES) || [["saved", "Saved"], ["applied", "Applied"], ["interview", "Interview"], ["offer", "Offer"], ["rejected", "Rejected"]];
+    const s = this.state, apps = s.apps || [];
+    const col = k => k === "offer" ? "oklch(0.78 0.11 150)" : k === "interview" ? "var(--color-primary)" : k === "applied" ? "var(--color-ink-muted)" : k === "rejected" ? "var(--color-surface-4)" : "var(--color-ink-tertiary)";
+    const dot = k => ({ width: "8px", height: "8px", flex: "none", borderRadius: "50%", background: col(k) });
+    const ic = (n, c) => ({ width: "16px", height: "16px", flex: "none", color: c || "var(--color-ink-subtle)", background: "currentColor", mask: "url(https://unpkg.com/lucide-static@0.460.0/icons/" + n + ".svg) center/contain no-repeat" });
+    const cnt = k => apps.filter(a => a.stage === k).length, total = apps.length || 1;
+    const order = ["saved", "applied", "interview", "offer"];
+    const dateOnly = m => (m.match(/[A-Za-z]{3}\s\d{1,2}$/) || [m])[0];
+    const next = a => ({
+      saved: a.flags.includes("tailored") ? ["Resume tailored. Apply and send outreach", "send"] : ["Tailor your resume, then apply", "file-text"],
+      applied: a.flags.includes("opened") ? ["Opened, no reply. Follow up Sep 28", "mail"] : ["Follow up if no reply by Sep 29", "clock"],
+      interview: [a.meta, "calendar"], offer: [dateOnly(a.meta), "badge-check"], rejected: ["Ask for feedback", "message-square"],
+    }[a.stage]);
+    let list = apps.filter(a => s.view === "All" ? true : s.view === "Closed" ? a.stage === "rejected" : a.stage !== "rejected");
+    if (s.stage) list = apps.filter(a => a.stage === s.stage);
+    const groups = STAGES.filter(([k]) => list.some(a => a.stage === k)).reverse().filter(([k]) => k !== "rejected").concat(STAGES.filter(([k]) => k === "rejected" && list.some(a => a.stage === k)));
+    return {
+      activeCount: apps.filter(a => a.stage !== "rejected").length,
+      pipe: STAGES.map(([k, label]) => ({ label, n: cnt(k), on: s.stage === k, dot: dot(k),
+        pick: () => this.setState(p => ({ stage: p.stage === k ? null : k })),
+        bar: { flex: Math.max(cnt(k), 0.3) + " 1 0", borderRadius: "var(--rounded-pill)", background: col(k), opacity: s.stage && s.stage !== k ? 0.3 : 1, transition: "opacity var(--duration-base) var(--ease-standard)" },
+        btn: { all: "unset", cursor: "pointer", boxSizing: "border-box", display: "flex", flexDirection: "column", gap: "10px", padding: "12px", borderRadius: "var(--rounded-md)", border: "1px solid " + (s.stage === k ? "var(--color-primary)" : "transparent"), background: s.stage === k ? "var(--color-glow-soft)" : "transparent" } })),
+      attention: (() => {
+        const MI = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
+        const today = new Date(2026, 8, 29);
+        const raw = [
+          { mon: "Sep", day: "27", action: "Submit take-home", title: "Frontend Engineer", co: "CRED" },
+          { mon: "Sep", day: "28", action: "Follow up with Neha Gupta", title: "SDE-1, Consumer", co: "Swiggy" },
+          { mon: "Sep", day: "29", action: "Round 1 interview, 11:00", title: "Graduate SWE", co: "Atlassian" },
+          { mon: "Oct", day: "3", action: "Respond to offer", title: "SWE Intern → PPO", co: "Digitas India" },
+          ...s.customAlerts,
+        ];
+        return raw.map(a => {
+          const d = MI[a.mon] != null ? new Date(2026, MI[a.mon], parseInt(a.day, 10) || 0) : null;
+          const days = d ? Math.round((d - today) / 86400000) : 0;
+          const when = a.when || (days < 0 ? (days === -1 ? "Yesterday" : Math.abs(days) + " days overdue") : days === 0 ? "Today" : days === 1 ? "Tomorrow" : "In " + days + " days");
+          const tone = a.tone || (days <= 1 ? "accent" : days <= 4 ? "neutral" : "success");
+          return { ...a, when, tone, _sort: d ? d.getTime() : Infinity };
+        }).sort((a, b) => a._sort - b._sort);
+      })(),
+      alertModalOpen: s.alertModalOpen, alertDraft: s.alertDraft, alertDraftEmpty: !s.alertDraft.trim(),
+      openAlertModal: () => this.setState({ alertModalOpen: true, alertDraft: "" }),
+      closeAlertModal: () => this.setState({ alertModalOpen: false }),
+      setAlertDraft: e => this.setState({ alertDraft: e.target.value }),
+      stop: e => e.stopPropagation(),
+      addAlert: () => { const v = s.alertDraft.trim(); if (!v) return; this.setState(p => ({ customAlerts: [...p.customAlerts, { mon: "Note", day: "·", action: v, title: "Custom", co: "", when: "Just added", tone: "neutral" }], alertModalOpen: false, alertDraft: "" })); },
+      view: s.view, setView: v => this.setState({ view: v, stage: null }),
+      hasStageFilter: !!s.stage, stageFilterLabel: s.stage ? (STAGES.find(x => x[0] === s.stage) || [, ""])[1] : "", clearStage: () => this.setState({ stage: null }),
+      stageOptLabels: STAGES.map(([, l]) => l).join("|"),
+      empty: list.length === 0,
+      groups: groups.map(([k, label]) => ({ label, dot: dot(k), n: list.filter(a => a.stage === k).length,
+        rows: list.filter(a => a.stage === k).map(a => {
+          const idx = order.indexOf(a.stage), rej = a.stage === "rejected", [nx, ni] = next(a);
+          return { ...a, href: "Job%20Detail.dc.html", next: nx, nextIcon: ic(ni, a.stage === "interview" ? "var(--color-primary)" : null),
+            stepLabel: rej ? "Closed" : "Step " + (idx + 1) + " of 4", stepTitle: order.map(o => STAGES.find(x => x[0] === o)[1]).join(" → "),
+            steps: order.map((o, i) => ({ height: "4px", flex: "1", borderRadius: "var(--rounded-pill)", background: rej ? "var(--color-surface-4)" : i <= idx ? col(a.stage) : "var(--color-surface-3)" })),
+            moveLabel: "Stage for " + a.title,
+            stageLabel: (STAGES.find(x => x[0] === a.stage) || [, ""])[1],
+            move: (label) => { const k = (STAGES.find(x => x[1] === label) || [a.stage])[0]; this.setState(p => ({ apps: p.apps.map(x => x.id === a.id ? { ...x, stage: k, meta: "Moved just now" } : x) })); } };
+        }) })),
+    };
+  }
+}
+</script>
+</body>
+</html>

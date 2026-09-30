@@ -1,0 +1,26 @@
+{
+  "name": "@ge/worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "lint": "eslint .",
+    "typecheck": "tsc",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@ge/core": "workspace:*",
+    "@ge/db": "workspace:*",
+    "pg-boss": "^12.35.0",
+    "tsx": "^4.23.15"
+  },
+  "devDependencies": {
+    "@ge/config": "workspace:*",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.39.5",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.2"
+  }
+}

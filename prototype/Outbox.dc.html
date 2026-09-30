@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Mailbox · GetEmployed</title>
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/colors.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/typography.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/radius.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/base.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/styles.css">
+<script src="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/_ds_bundle.js"></script>
+<script src="ge-app.js"></script>
+<script src="ge-data.js"></script>
+<style>body{margin:0;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}input[type=checkbox]{accent-color:var(--color-primary);width:16px;height:16px;margin:0;cursor:pointer}</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)">
+  <x-import component-from-global-scope="GEApp.Sidebar" active="outbox" hint-size="232px,100vh"></x-import>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <x-import component-from-global-scope="GEApp.Topbar" crumbs="Mailbox" hint-size="100%,56px"></x-import>
+    <main data-screen-label="Mailbox" style="padding:32px 32px 96px;max-width:1120px;width:100%;box-sizing:border-box;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+      <x-import component-from-global-scope="GEApp.PageHeader" title="Mailbox" sub="{{ headerSub }}" hint-size="100%,64px">
+        <sc-if value="{{ isOut }}" hint-placeholder-val="{{ false }}">
+          <x-import component-from-global-scope="GEApp.QuotaBar" label="Emails this month" used="38" max="50" compact="{{ true }}" style="width:200px" hint-size="200px,32px"></x-import>
+        </sc-if>
+      </x-import>
+
+      <div style="display:flex">
+        <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.PillTabs" options="{{ boxOptions }}" value="{{ boxLabel }}" on-change="{{ pickBox }}" hint-size="200px,36px"></x-import>
+      </div>
+
+      <sc-if value="{{ isIn }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+        <sc-for list="{{ inTabs }}" as="t" hint-placeholder-count="5">
+          <button onClick="{{ t.pick }}" aria-pressed="{{ t.on }}" style="{{ t.style }}" style-hover="border-color:var(--color-hairline-strong);background:var(--color-surface-2)">
+            <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-muted)">{{ t.label }}</span>
+            <span style="font-family:var(--font-mono);font-size:24px;line-height:1;color:var(--color-ink)">{{ t.n }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div ref="{{ inWrapRef }}">
+      <x-import component-from-global-scope="GEApp.Panel" hint-size="100%,420px">
+        <div style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid var(--color-hairline);flex-wrap:wrap;min-height:60px;box-sizing:border-box">
+          <div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:2px">
+            <span style="font-size:var(--type-body-size);font-weight:600">{{ inTab }}</span>
+            <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ inTabSub }}</span>
+          </div>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" disabled="{{ noUnread }}" on-click="{{ markAllRead }}" hint-size="120px,28px">Mark all read</x-import>
+        </div>
+        <div data-ge-hide-mobile="" style="display:grid;grid-template-columns:{{ inCols }};gap:16px;align-items:center;padding:10px 20px;border-bottom:1px solid var(--color-hairline);font-size:var(--type-caption-size);color:var(--color-ink-tertiary)">
+          <span></span><span>From</span><sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span>Message</span></sc-if><span>Type</span><sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span style="text-align:right">Received</span></sc-if>
+        </div>
+        <sc-for list="{{ inRows }}" as="m" hint-placeholder-count="4">
+          <div data-ge-stack-mobile="" role="button" tabindex="0" onClick="{{ m.open }}" onKeyDown="{{ m.key }}" style="display:grid;grid-template-columns:{{ inCols }};gap:16px;align-items:center;padding:16px 20px;border-bottom:1px solid var(--color-hairline);cursor:pointer;background:{{ m.bg }};transition:background var(--duration-base) var(--ease-standard)" style-hover="background:var(--color-surface-2)">
+            <span aria-label="{{ m.dotLabel }}" style="width:8px;height:8px;border-radius:50%;background:{{ m.dot }}"></span>
+            <div style="display:flex;align-items:center;gap:12px;min-width:0">
+              <x-import component-from-global-scope="GEApp.Avatar" name="{{ m.from }}" size="36" hint-size="36px,36px"></x-import>
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                <span style="font-size:var(--type-body-sm-size);font-weight:{{ m.weight }};color:var(--color-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.from }}</span>
+                <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.role }} · {{ m.co }}</span>
+                <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-top:2px">{{ m.subject }}</span>
+                </sc-if>
+              </div>
+            </div>
+            <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+            <div data-ge-hide-mobile="" style="display:flex;flex-direction:column;gap:2px;min-width:0">
+              <span style="font-size:var(--type-body-sm-size);font-weight:{{ m.weight }};color:var(--color-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.subject }}</span>
+              <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.preview }}</span>
+            </div>
+            </sc-if>
+            <div><x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.StatusBadge" tone="{{ m.tone }}" hint-size="90px,20px">{{ m.type }}</x-import></div>
+            <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+            <span data-ge-hide-mobile="" style="font-size:var(--type-caption-size);color:var(--color-ink-subtle);text-align:right;white-space:nowrap">{{ m.date }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+        <sc-if value="{{ inEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:16px">
+            <x-import component-from-global-scope="GEApp.EmptyState" icon="inbox" title="{{ inEmptyTitle }}" body="{{ inEmptyBody }}" hint-size="100%,220px"></x-import>
+          </div>
+        </sc-if>
+      </x-import>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isOut }}" hint-placeholder-val="{{ false }}">
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+          <button onClick="{{ t.pick }}" aria-pressed="{{ t.on }}" style="{{ t.style }}" style-hover="border-color:var(--color-hairline-strong);background:var(--color-surface-2)">
+            <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-muted)">{{ t.label }}</span>
+            <span style="font-family:var(--font-mono);font-size:24px;line-height:1;color:var(--color-ink)">{{ t.n }}</span>
+          </button>
+        </sc-for>
+      </div>
+
+      <div ref="{{ wrapRef }}">
+      <x-import component-from-global-scope="GEApp.Panel" hint-size="100%,420px">
+        <div style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-bottom:1px solid var(--color-hairline);flex-wrap:wrap;min-height:60px;box-sizing:border-box">
+          <sc-if value="{{ isReview }}" hint-placeholder-val="{{ true }}">
+            <input type="checkbox" checked="{{ allChecked }}" onChange="{{ toggleAll }}" aria-label="Select all drafts">
+          </sc-if>
+          <div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:2px">
+            <span style="font-size:var(--type-body-size);font-weight:600">{{ tab }}</span>
+            <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ tabSub }}</span>
+          </div>
+          <sc-if value="{{ isReview }}" hint-placeholder-val="{{ true }}">
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="sm" disabled="{{ noneSelected }}" on-click="{{ approveSelected }}" hint-size="140px,28px">{{ approveLabel }}</x-import>
+          </sc-if>
+        </div>
+
+        <div data-ge-hide-mobile="" style="display:grid;grid-template-columns:{{ cols }};gap:16px;align-items:center;padding:10px 20px;border-bottom:1px solid var(--color-hairline);font-size:var(--type-caption-size);color:var(--color-ink-tertiary)">
+          <sc-if value="{{ isReview }}" hint-placeholder-val="{{ true }}"><span></span></sc-if>
+          <span>Recipient</span><sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span>Subject</span></sc-if><sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span style="text-align:right">{{ dateHead }}</span></sc-if>
+        </div>
+
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="4">
+          <div data-ge-stack-mobile="" role="button" tabindex="0" onClick="{{ r.open }}" onKeyDown="{{ r.key }}" style="display:grid;grid-template-columns:{{ cols }};gap:16px;align-items:center;padding:16px 20px;border-bottom:1px solid var(--color-hairline);cursor:pointer;background:{{ r.bg }};transition:background var(--duration-base) var(--ease-standard)" style-hover="background:var(--color-surface-2)">
+            <sc-if value="{{ isReview }}" hint-placeholder-val="{{ true }}">
+              <input type="checkbox" checked="{{ r.checked }}" onChange="{{ r.toggle }}" onClick="{{ stop }}" aria-label="{{ r.selLabel }}">
+            </sc-if>
+            <div style="flex:1;display:flex;align-items:center;gap:12px;min-width:0">
+              <x-import component-from-global-scope="GEApp.Avatar" name="{{ r.to }}" size="36" hint-size="36px,36px"></x-import>
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                <span style="font-size:var(--type-body-sm-size);font-weight:500;color:var(--color-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.to }}</span>
+                <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.role }} · {{ r.co }}</span>
+                <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-top:2px">{{ r.subject }}</span>
+                </sc-if>
+              </div>
+            </div>
+            <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+            <div data-ge-hide-mobile="" style="display:flex;flex-direction:column;gap:2px;min-width:0">
+              <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.subject }}</span>
+              <sc-if value="{{ r.note }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.note }}</span>
+              </sc-if>
+            </div>
+            </sc-if>
+            <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+            <span data-ge-hide-mobile="" style="font-size:var(--type-caption-size);font-weight:600;color:{{ r.matchColor }};text-align:right;white-space:nowrap">{{ r.date }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+        <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:16px">
+            <x-import component-from-global-scope="GEApp.EmptyState" icon="{{ emptyIcon }}" title="{{ emptyTitle }}" body="{{ emptyBody }}" hint-size="100%,220px"></x-import>
+          </div>
+        </sc-if>
+      </x-import>
+      </div>
+      </sc-if>
+    </main>
+  </div>
+
+  <sc-if value="{{ docModalOpen }}" hint-placeholder-val="{{ false }}">
+    <div aria-hidden="true" onClick="{{ closeDocModal }}" style="position:fixed;inset:0;z-index:40;background:rgba(7,9,13,.6)"></div>
+    <div role="dialog" aria-label="Attach a document" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:41;width:min(480px,92vw);max-height:80vh;box-sizing:border-box;background:var(--color-canvas);border:1px solid var(--color-hairline);border-radius:var(--rounded-lg);display:flex;flex-direction:column;overflow:hidden">
+      <div style="height:56px;flex:none;display:flex;align-items:center;gap:12px;padding:0 10px 0 20px;border-bottom:1px solid var(--color-hairline)">
+        <span style="flex:1;min-width:0;font-size:var(--type-body-size);font-weight:600">Attach a document</span>
+        <x-import component-from-global-scope="GEApp.IconButton" icon="x" title="Close" on-click="{{ closeDocModal }}" size="36" hint-size="36px,36px"></x-import>
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px">
+        <x-import component-from-global-scope="GEApp.Dropzone" title="Drop a document here" hint="PDF or DOCX, up to 10 MB" on-file="{{ uploadDoc }}" state="idle" hint-size="100%,140px"></x-import>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Your documents</span>
+          <sc-for list="{{ docLibrary }}" as="doc" hint-placeholder-count="3">
+            <button onClick="{{ doc.pick }}" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--color-hairline);border-radius:var(--rounded-md);font-size:var(--type-body-sm-size);color:var(--color-ink-muted)" style-hover="background:var(--color-surface-2);color:var(--color-ink)">
+              <span style="width:16px;height:16px;flex:none;color:var(--color-ink-subtle);background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/{{ doc.icon }}.svg) center/contain no-repeat"></span>
+              <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left">{{ doc.name }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ inDrawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div aria-hidden="true" onClick="{{ closeIn }}" style="position:fixed;inset:0;z-index:35;background:rgba(7,9,13,.6)"></div>
+    <aside role="dialog" aria-label="{{ msg.subject }}" style="position:fixed;top:0;right:0;bottom:0;z-index:36;width:min(600px,100vw);box-sizing:border-box;background:var(--color-canvas);border-left:1px solid var(--color-hairline);display:flex;flex-direction:column">
+      <div style="height:64px;flex:none;display:flex;align-items:center;gap:12px;padding:0 12px 0 24px;border-bottom:1px solid var(--color-hairline)">
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+          <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ msg.type }}</span>
+          <span style="font-size:var(--type-body-size);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ msg.subject }}</span>
+        </div>
+        <x-import component-from-global-scope="GEApp.IconButton" icon="archive" title="Archive" on-click="{{ archive }}" size="40" hint-size="40px,40px"></x-import>
+        <x-import component-from-global-scope="GEApp.IconButton" icon="x" title="Close" on-click="{{ closeIn }}" size="40" hint-size="40px,40px"></x-import>
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;gap:14px;align-items:center;padding:16px;border-radius:var(--rounded-lg);background:var(--color-surface-1);border:1px solid var(--color-hairline)">
+          <x-import component-from-global-scope="GEApp.Avatar" name="{{ msg.from }}" size="44" hint-size="44px,44px"></x-import>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+            <span style="font-size:var(--type-body-sm-size);font-weight:500;color:var(--color-ink)">{{ msg.from }}</span>
+            <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ msg.role }}, {{ msg.co }}</span>
+            <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-muted)">{{ msg.email }}</span>
+          </div>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" href="Tracker.dc.html" hint-size="110px,28px">View in tracker</x-import>
+        </div>
+        <sc-for list="{{ thread }}" as="t" hint-placeholder-count="1">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;gap:12px;font-size:var(--type-caption-size);color:var(--color-ink-subtle)">
+              <span>{{ t.name }}</span><span>{{ t.time }}</span>
+            </div>
+            <div style="{{ t.box }}">{{ t.text }}</div>
+          </div>
+        </sc-for>
+        <x-import component-from-global-scope="GEApp.TextArea" label="Reply" rows="6" value="{{ replyText }}" on-change="{{ editReply }}" hint="Sends from ashmit27j@gmail.com" hint-size="100%,180px"></x-import>
+      </div>
+      <div style="flex:none;display:flex;gap:8px;align-items:center;padding:16px 24px;border-top:1px solid var(--color-hairline);flex-wrap:wrap">
+        <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" on-click="{{ archive }}" hint-size="80px,28px">Archive</x-import>
+        <span style="flex:1"></span>
+        <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" on-click="{{ draftReply }}" hint-size="110px,28px">Draft reply</x-import>
+        <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="sm" disabled="{{ noReply }}" on-click="{{ sendReply }}" hint-size="100px,28px">Send reply</x-import>
+      </div>
+    </aside>
+  </sc-if>
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div aria-hidden="true" onClick="{{ close }}" style="position:fixed;inset:0;z-index:35;background:rgba(7,9,13,.6)"></div>
+    <aside role="dialog" aria-label="{{ sel.subject }}" style="position:fixed;top:0;right:0;bottom:0;z-index:36;width:min(600px,100vw);box-sizing:border-box;background:var(--color-canvas);border-left:1px solid var(--color-hairline);display:flex;flex-direction:column">
+      <div style="height:64px;flex:none;display:flex;align-items:center;gap:12px;padding:0 12px 0 24px;border-bottom:1px solid var(--color-hairline)">
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+          <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ sel.statusLabel }}</span>
+          <span style="font-size:var(--type-body-size);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ sel.subject }}</span>
+        </div>
+        <x-import component-from-global-scope="GEApp.IconButton" icon="x" title="Close" on-click="{{ close }}" size="40" hint-size="40px,40px"></x-import>
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;gap:14px;align-items:center;padding:16px;border-radius:var(--rounded-lg);background:var(--color-surface-1);border:1px solid var(--color-hairline)">
+          <x-import component-from-global-scope="GEApp.Avatar" name="{{ sel.to }}" size="44" hint-size="44px,44px"></x-import>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+            <span style="font-size:var(--type-body-sm-size);font-weight:500;color:var(--color-ink)">{{ sel.to }}</span>
+            <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ sel.role }}, {{ sel.co }}</span>
+            <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-muted)">{{ sel.email }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+            <x-import component-from-global-scope="GEApp.ConfidenceMeter" value="{{ sel.conf }}" label="confidence" hint-size="110px,16px"></x-import>
+            <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle);text-align:right">{{ sel.how }}</span>
+          </div>
+        </div>
+
+        <sc-if value="{{ sel.editable }}" hint-placeholder-val="{{ true }}">
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.TextInput" label="Subject" value="{{ sel.subject }}" on-change="{{ editSubject }}" hint-size="100%,64px"></x-import>
+          <x-import component-from-global-scope="GEApp.TextArea" label="Message" rows="14" value="{{ sel.body }}" on-change="{{ editBody }}" hint="{{ wordCount }}" hint-size="100%,340px"></x-import>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <a href="Resume.dc.html?view=main" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--color-hairline);border-radius:var(--rounded-md);font-size:var(--type-body-sm-size);color:var(--color-ink-muted);text-decoration:none" style-hover="background:var(--color-surface-2)">
+              <span style="width:16px;height:16px;flex:none;color:var(--color-ink-subtle);background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/paperclip.svg) center/contain no-repeat"></span>
+              <span style="flex:1;min-width:0">{{ attachName }}</span>
+              <x-import component-from-global-scope="GEApp.MatchRing" value="84" size="28" label="{{ false }}" hint-size="28px,28px"></x-import>
+            </a>
+            <sc-for list="{{ extraDocs }}" as="doc" hint-placeholder-count="0">
+              <a href="{{ doc.href }}" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--color-hairline);border-radius:var(--rounded-md);font-size:var(--type-body-sm-size);color:var(--color-ink-muted);text-decoration:none" style-hover="background:var(--color-surface-2)">
+                <span style="width:16px;height:16px;flex:none;color:var(--color-ink-subtle);background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/{{ doc.icon }}.svg) center/contain no-repeat"></span>
+                <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ doc.name }}</span>
+                <button onClick="{{ doc.remove }}" aria-label="Remove attachment" style="all:unset;cursor:pointer;display:inline-flex;width:20px;height:20px;flex:none;color:var(--color-ink-subtle);background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/x.svg) center/contain no-repeat"></button>
+              </a>
+            </sc-for>
+            <button onClick="{{ openDocModal }}" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;padding:10px 14px;border:1px dashed var(--color-hairline-strong);border-radius:var(--rounded-md);font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)" style-hover="background:var(--color-surface-2);color:var(--color-ink)">
+              <span style="width:14px;height:14px;flex:none;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/plus.svg) center/contain no-repeat"></span>
+              Attach another document
+            </button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ sel.readonly }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:0">
+            <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="2">
+              <div style="display:grid;grid-template-columns:20px minmax(0,1fr);gap:12px;padding-bottom:16px">
+                <span style="{{ t.dot }}"></span>
+                <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                  <span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ t.title }}</span>
+                  <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ t.sub }}</span>
+                  <sc-if value="{{ t.quote }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:14px 16px;border-radius:var(--rounded-md);border:1px solid var(--color-hairline);background:var(--color-surface-1);font-size:var(--type-body-sm-size);color:var(--color-ink);text-wrap:pretty">{{ t.quote }}</div>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <sc-if value="{{ sel.editable }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:none;display:flex;gap:8px;align-items:center;padding:16px 24px;border-top:1px solid var(--color-hairline);flex-wrap:wrap">
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" on-click="{{ discard }}" hint-size="80px,28px">Discard</x-import>
+          <span style="flex:1"></span>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" hint-size="100px,28px">Regenerate</x-import>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="sm" on-click="{{ approveOne }}" hint-size="130px,28px">Approve and queue</x-import>
+        </div>
+      </sc-if>
+    </aside>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  wrapRef = React.createRef();
+  inWrapRef = React.createRef();
+  state = { pw: 1056, box: new URLSearchParams(location.search).get("box") === "outbox" ? "outbox" : "inbox", inTab: "All mail", isel: null, replyText: "", inbox: [
+    { id: "i1", from: "Ananya Krishnan", role: "Engineering Manager, Payments", co: "Razorpay", email: "ananya.k@razorpay.com", kind: "interview", subject: "Re: Backend Engineer I, payments team", date: "10:42", unread: true, text: "Hi Ashmit, thanks for reaching out. Your Kafka retry work lines up well with what we're building. Could you do a 45-minute technical round on Tuesday or Wednesday afternoon? I'll send an invite once you pick a slot." },
+    { id: "i2", from: "Karthik Rao", role: "Senior Engineer, Platform", co: "Zepto", email: "karthik.rao@zepto.co", kind: "reply", subject: "Re: SDE-1, Platform", date: "09:15", unread: true, text: "Happy to refer you. Send me the tailored resume as a PDF and I'll put it in with a note to the hiring manager this week." },
+    { id: "i3", from: "Meera Iyer", role: "Talent Partner", co: "Atlassian", email: "miyer@atlassian.com", kind: "recruiter", subject: "Graduate engineer roles, Bengaluru", date: "Yesterday", unread: false, text: "Hi Ashmit, I came across your profile and think you'd suit our 2027 graduate engineer intake. Are you open to a 20-minute call this week to talk through the process?" },
+    { id: "i4", from: "Priya Menon", role: "Engineering Lead", co: "Freshworks", email: "priya.menon@freshworks.com", kind: "reply", subject: "Re: Frontend Engineer, Freddy AI", date: "Sep 25", unread: false, text: "Thanks for the note. We've filled this role, but the Customer Service Suite team is hiring in November. I'll forward your details to their lead." },
+    { id: "i5", from: "Careers team", role: "Recruiting", co: "CRED", email: "careers@cred.club", kind: "update", subject: "Your take-home assignment", date: "Sep 24", unread: false, text: "Your take-home is due by Sep 30, 23:59 IST. Submit the repository link using the form in the original email." }
+  ], emails: null, tab: "Needs review", sel: null, checked: ["e1", "e2", "e4"], extraDocs: {}, docModalOpen: false };
+  docLibraryData = [{ name: "Cover_Letter_Template.pdf", icon: "file-text" }, { name: "Portfolio_Case_Study.pdf", icon: "file" }, { name: "Certifications_Bundle.pdf", icon: "file-text" }];
+  componentDidMount() {
+    const init = () => this.setState({ emails: window.GEData.EMAILS.map(e => ({ ...e })) });
+    if (window.GEData) init(); else { const t = setInterval(() => { if (window.GEData) { clearInterval(t); init(); } }, 50); }
+    this.onKey = e => { if (e.key === "Escape") { if (this.state.sel) this.setState({ sel: null }); else if (this.state.isel) this.setState({ isel: null }); } };
+    window.addEventListener("keydown", this.onKey);
+    this.ro = new ResizeObserver(([en]) => { const w = Math.round(en.contentRect.width); if (Math.abs(w - this.state.pw) > 4) this.setState({ pw: w }); });
+    this.observe();
+  }
+  componentDidUpdate() { this.observe(); }
+  observe() { [this.wrapRef.current, this.inWrapRef.current].forEach(el => { if (el && el !== this.obsEl) { this.ro.disconnect(); this.ro.observe(el); this.obsEl = el; } }); }
+  componentWillUnmount() { window.removeEventListener("keydown", this.onKey); this.ro && this.ro.disconnect(); }
+  renderVals() {
+    const s = this.state, E = s.emails || [];
+    const L = { draft: ["Needs review", "neutral"], queued: ["Queued", "accent"], sent: ["Sent", "neutral"], opened: ["Opened", "accent"], replied: ["Replied", "success"], bounced: ["Bounced", "neutral"] };
+    const groups = { "Needs review": ["draft"], "Queued": ["queued"], "Sent": ["sent", "opened"], "Replied": ["replied"], "Bounced": ["bounced"] };
+    const subs = { "Needs review": "Drafts written for your best matches. Edit, then approve to queue.", "Queued": "Approved and waiting for the next sending window.", "Sent": "Delivered from your mailbox. Opens are tracked.", "Replied": "Conversations to pick up in Gmail.", "Bounced": "Addresses that failed. We can try another contact." };
+    const empties = { "Needs review": ["inbox", "Nothing waiting for review", "New drafts appear here when a saved search finds a match above your outreach threshold."], "Queued": ["clock", "Nothing queued", "Approve a draft and it will wait here until the next sending window."], "Sent": ["send", "Nothing sent yet", "Approved emails show here once they leave your mailbox."], "Replied": ["message-square", "No replies yet", "Replies usually arrive within 3–5 working days."], "Bounced": ["circle-check", "No bounces", "Every address you've emailed so far has accepted delivery."] };
+    const count = t => E.filter(e => groups[t].includes(e.status)).length;
+    const rows = E.filter(e => groups[s.tab].includes(e.status));
+    const drafts = E.filter(e => e.status === "draft").map(e => e.id);
+    const checked = s.checked.filter(id => drafts.includes(id));
+    const selE = E.find(e => e.id === s.sel);
+    const setE = (id, patch) => this.setState(p => ({ emails: p.emails.map(e => e.id === id ? { ...e, ...patch } : e) }));
+    const approve = ids => this.setState(p => ({ emails: p.emails.map(e => ids.includes(e.id) ? { ...e, status: "queued" } : e), checked: p.checked.filter(i => !ids.includes(i)), sel: ids.includes(p.sel) ? null : p.sel }));
+    const words = selE && selE.body ? selE.body.trim().split(/\s+/).length : 0;
+    const isReview = s.tab === "Needs review";
+    const dot = c => ({ width: "10px", height: "10px", marginTop: "4px", marginLeft: "5px", borderRadius: "50%", background: c, boxShadow: "0 0 0 4px var(--color-canvas)" });
+    const tl = [];
+    if (selE && selE.status !== "draft") {
+      tl.push({ title: selE.status === "queued" ? "Queued" : "Sent", sub: selE.status === "queued" ? "Goes out in the next sending window" : (selE.sent || "Today") + " from ashmit27j@gmail.com", dot: dot("var(--color-ink-subtle)"), quote: "" });
+      if (["opened", "replied"].includes(selE.status)) tl.push({ title: "Opened", sub: "Read at least once", dot: dot("var(--color-primary)"), quote: "" });
+      if (selE.reply) tl.push({ title: "Reply from " + selE.to, sub: "Continue the thread in Gmail", dot: dot("oklch(0.78 0.11 150)"), quote: selE.reply });
+      if (selE.err) tl.push({ title: "Bounced", sub: selE.err + ". We'll try the next best contact at " + selE.co + " if you allow it.", dot: dot("oklch(0.74 0.11 22)"), quote: "" });
+    }
+    const em = empties[s.tab];
+    const K = { interview: ["Interview", "success"], reply: ["Reply", "accent"], recruiter: ["Recruiter", "neutral"], update: ["Update", "neutral"] };
+    const ig = { "All mail": () => true, "Unread": m => m.unread, "Interviews": m => m.kind === "interview", "Replies": m => m.kind === "reply", "Recruiters": m => m.kind === "recruiter" };
+    const isubs = { "All mail": "Mail matched to your applications and outreach.", "Unread": "Messages you haven't opened yet.", "Interviews": "Invites and scheduling. Reply quickly, slots fill.", "Replies": "Answers to emails you sent from the outbox.", "Recruiters": "Recruiters who contacted you first." };
+    const IB = s.inbox, inRows = IB.filter(ig[s.inTab]), msgM = IB.find(m => m.id === s.isel);
+    const setM = (id, patch) => this.setState(p => ({ inbox: p.inbox.map(m => m.id === id ? { ...m, ...patch } : m) }));
+    const tabStyle = on => ({ all: "unset", cursor: "pointer", boxSizing: "border-box", display: "flex", flexDirection: "column", gap: "12px", padding: "16px", borderRadius: "var(--rounded-lg)", border: "1px solid " + (on ? "var(--color-primary)" : "var(--color-hairline)"), background: on ? "var(--color-glow-soft)" : "var(--color-surface-1)", boxShadow: on ? "var(--glow-active)" : "none", transition: "background var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard)" });
+    const bubble = mine => ({ padding: "14px 16px", borderRadius: "var(--rounded-md)", border: "1px solid var(--color-hairline)", background: mine ? "var(--color-surface-2)" : "var(--color-surface-1)", fontSize: "var(--type-body-sm-size)", color: "var(--color-ink)", lineHeight: 1.55, whiteSpace: "pre-wrap", textWrap: "pretty" });
+    const pickBox = v => { const b = String(v).toLowerCase(); this.setState({ box: b, sel: null, isel: null }); const u = new URL(location.href); u.searchParams.set("box", b); history.replaceState(null, "", u); };
+    const unreadN = IB.filter(m => m.unread).length;
+    return {
+      isIn: s.box === "inbox", isOut: s.box === "outbox",
+      boxOptions: ["Inbox", "Outbox"], boxLabel: s.box === "inbox" ? "Inbox" : "Outbox", pickBox,
+      headerSub: s.box === "inbox" ? "Replies, interview invites and recruiter mail from your connected mailbox, matched to your applications." : "Nothing is sent until you approve it. Emails go out from your connected mailbox between 9:00 and 18:00 IST, spaced a few minutes apart.",
+      inTabs: Object.keys(ig).map(t => ({ label: t, n: IB.filter(ig[t]).length, on: s.inTab === t, pick: () => this.setState({ inTab: t }), style: tabStyle(s.inTab === t) })),
+      inTab: s.inTab, inTabSub: isubs[s.inTab], inWrapRef: this.inWrapRef,
+      inCols: s.pw >= 880 ? "8px minmax(180px,1.2fr) minmax(220px,2.4fr) 100px 72px" : "8px minmax(0,1fr) 100px",
+      noUnread: unreadN === 0, markAllRead: () => this.setState(p => ({ inbox: p.inbox.map(m => ({ ...m, unread: false })) })),
+      inEmpty: inRows.length === 0, inEmptyTitle: "Nothing here", inEmptyBody: "Replies to your outreach and new recruiter mail land here.",
+      inRows: inRows.map(m => { const open = () => { this.setState({ isel: m.id, replyText: "" }); if (m.unread) setM(m.id, { unread: false }); };
+        return { ...m, type: K[m.kind][0], tone: K[m.kind][1], preview: m.text, weight: m.unread ? 600 : 400, dot: m.unread ? "var(--color-primary)" : "transparent", dotLabel: m.unread ? "Unread" : "",
+          bg: s.isel === m.id ? "var(--color-glow-soft)" : "transparent", open, key: ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); open(); } } }; }),
+      inDrawerOpen: !!msgM, closeIn: () => this.setState({ isel: null }),
+      msg: msgM ? { ...msgM, type: K[msgM.kind][0] } : { subject: "" },
+      thread: msgM ? [{ name: msgM.from, time: msgM.date, text: msgM.text, box: bubble(false) }, ...(msgM.sentReplies || []).map(r => ({ name: "You", time: r.time, text: r.text, box: bubble(true) }))] : [],
+      replyText: s.replyText, noReply: !s.replyText.trim(), editReply: e => this.setState({ replyText: e.target.value }),
+      draftReply: () => msgM && this.setState({ replyText: msgM.kind === "interview" ? "Hi " + msgM.from.split(" ")[0] + ",\n\nThank you. Tuesday at 15:00 IST works for me, and Wednesday after 14:00 is a good backup. Looking forward to it.\n\nBest,\nAshmit" : "Hi " + msgM.from.split(" ")[0] + ",\n\nThanks for getting back to me. I've attached my resume and I'm happy to share anything else that helps.\n\nBest,\nAshmit" }),
+      sendReply: () => { if (!msgM || !s.replyText.trim()) return; setM(msgM.id, { sentReplies: [...(msgM.sentReplies || []), { time: "Just now", text: s.replyText.trim() }] }); this.setState({ replyText: "" }); },
+      archive: () => this.setState(p => ({ inbox: p.inbox.filter(m => m.id !== p.isel), isel: null })),
+      tabs: Object.keys(groups).map(t => ({ label: t, n: count(t), on: s.tab === t, pick: () => this.setState({ tab: t }),
+        style: { all: "unset", cursor: "pointer", boxSizing: "border-box", display: "flex", flexDirection: "column", gap: "12px", padding: "16px", borderRadius: "var(--rounded-lg)", border: "1px solid " + (s.tab === t ? "var(--color-primary)" : "var(--color-hairline)"), background: s.tab === t ? "var(--color-glow-soft)" : "var(--color-surface-1)", boxShadow: s.tab === t ? "var(--glow-active)" : "none", transition: "background var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard)" } })),
+      tab: s.tab, tabSub: subs[s.tab], isReview,
+      wrapRef: this.wrapRef, wide: s.pw >= 880, narrow: s.pw < 880,
+      cols: (isReview ? "16px " : "") + (s.pw >= 880 ? "minmax(140px,1fr) minmax(160px,1.4fr) 56px" : "minmax(0,1fr)"),
+      dateHead: isReview ? "Match" : "Date",
+      allChecked: drafts.length > 0 && checked.length === drafts.length,
+      toggleAll: () => this.setState({ checked: checked.length === drafts.length ? [] : drafts }),
+      noneSelected: checked.length === 0, approveLabel: checked.length ? "Approve " + checked.length + (checked.length === 1 ? " email" : " emails") : "Approve selected",
+      approveSelected: () => approve(checked), stop: e => e.stopPropagation(),
+      empty: rows.length === 0, emptyIcon: em[0], emptyTitle: em[1], emptyBody: em[2],
+      rows: rows.map(e => {
+        const job = window.GEData && e.job ? window.GEData.JOBS.find(j => j.id === e.job) : null;
+        const open = () => this.setState({ sel: e.id });
+        const conf = e.conf || 0;
+        const replyLabel = conf >= 80 ? "Likely to reply" : conf >= 55 ? "May reply" : "Unlikely to reply";
+        const replyColor = conf >= 80 ? "oklch(0.6 0.1 150)" : conf >= 55 ? "oklch(0.6 0.11 80)" : "var(--color-ink-subtle)";
+        const score = isReview && job ? job.score : null;
+        const matchColor = score == null ? "var(--color-ink-subtle)" : score >= 80 ? "oklch(0.6 0.1 150)" : score >= 60 ? "oklch(0.6 0.11 80)" : "oklch(0.58 0.14 22)";
+        return { ...e, statusLabel: L[e.status][0], tone: L[e.status][1], checked: checked.includes(e.id), selLabel: "Select email to " + e.to,
+          note: e.err || (e.reply ? "“" + e.reply + "”" : ""), date: isReview ? (job ? job.score + "%" : "—") : (e.sent || "Today"),
+          replyLabel, replyColor, matchColor,
+          bg: s.sel === e.id ? "var(--color-glow-soft)" : "transparent",
+          toggle: () => this.setState(p => ({ checked: p.checked.includes(e.id) ? p.checked.filter(i => i !== e.id) : [...p.checked, e.id] })),
+          open, key: ev => { if (ev.target === ev.currentTarget && (ev.key === "Enter" || ev.key === " ")) { ev.preventDefault(); open(); } } };
+      }),
+      drawerOpen: !!selE, close: () => this.setState({ sel: null }),
+      sel: selE ? { ...selE, statusLabel: L[selE.status][0], editable: selE.status === "draft", readonly: selE.status !== "draft", how: selE.how || "Verified contact", body: selE.body || "" } : { subject: "" },
+      timeline: tl,
+      wordCount: words + " words · aim for under 120",
+      attachName: selE ? "Ashmit_Jain_" + selE.co + ".pdf · tailored resume" : "",
+      docModalOpen: s.docModalOpen,
+      extraDocs: (s.extraDocs[selE ? selE.id : ""] || []).map((d, i) => ({ ...d, remove: () => this.setState(p => ({ extraDocs: { ...p.extraDocs, [selE.id]: p.extraDocs[selE.id].filter((_, j) => j !== i) } })) })),
+      openDocModal: () => selE && this.setState({ docModalOpen: true }), closeDocModal: () => this.setState({ docModalOpen: false }),
+      docLibrary: this.docLibraryData.map(d => ({ ...d, pick: () => selE && this.setState(p => ({ extraDocs: { ...p.extraDocs, [selE.id]: [...(p.extraDocs[selE.id] || []), { ...d, href: "Resume.dc.html?view=main" }] }, docModalOpen: false })) })),
+      uploadDoc: f => selE && f && this.setState(p => ({ extraDocs: { ...p.extraDocs, [selE.id]: [...(p.extraDocs[selE.id] || []), { name: f.name, icon: "file-text", href: "Resume.dc.html?view=main" }] }, docModalOpen: false })),
+      editSubject: e => setE(selE.id, { subject: e.target.value }), editBody: e => setE(selE.id, { body: e.target.value }),
+      approveOne: () => approve([selE.id]), discard: () => this.setState(p => ({ emails: p.emails.filter(e => e.id !== selE.id), sel: null })),
+    };
+  }
+}
+</script>
+</body>
+</html>

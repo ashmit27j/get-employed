@@ -1,0 +1,9 @@
+{
+  "extends": "@ge/config/tsconfig/base.json",
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2023"],
+    "jsx": "react-jsx",
+    "types": ["node"]
+  },
+  "include": ["src"]
+}

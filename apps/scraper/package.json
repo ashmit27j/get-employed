@@ -1,0 +1,11 @@
+{
+  "name": "@ge/scraper",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Python service; these scripts let turbo run it alongside the Node packages. Requires uv.",
+  "scripts": {
+    "dev": "uv run uvicorn app.main:app --reload --port 8000",
+    "lint": "uv run ruff check . && uv run ruff format --check .",
+    "test": "uv run pytest -q"
+  }
+}

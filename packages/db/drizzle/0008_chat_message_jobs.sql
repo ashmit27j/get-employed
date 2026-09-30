@@ -1,0 +1,1 @@
+ALTER TABLE "chat_messages" ADD COLUMN "job_ids" text[] DEFAULT '{}'::text[] NOT NULL;

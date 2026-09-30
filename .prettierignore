@@ -1,0 +1,7 @@
+prototype/
+pnpm-lock.yaml
+packages/db/drizzle/
+apps/scraper/
+.next/
+out/
+dist/

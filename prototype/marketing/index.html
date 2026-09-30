@@ -1,0 +1,139 @@
+<!-- TEMPORARY: copy of the design-system marketing kit, linked from the app Wordmark. Replace with the real marketing site. -->
+<!-- Review build: every edit is gated by an id in changes.js (ge("Cxx") in JS, html.cxx in CSS). Add ?review=0 to hide the review panel. -->
+<!doctype html><html><head><meta charset="utf-8"><title>GetEmployed — Website</title><meta name="viewport" content="width=device-width,initial-scale=1">
+<link id="ds-v1" rel="stylesheet" href="../_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/styles.css">
+<link id="ds-v2" rel="stylesheet" href="../design-system/tokens.css">
+<script src="changes.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/_ds_bundle.js"></script>
+<script src="../design-system/ge-ds.js"></script>
+<script src="ge-brand.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.17/dist/motion.js"></script>
+<style>
+html{scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none}html::-webkit-scrollbar,body::-webkit-scrollbar{display:none;width:0;height:0}body{overflow-x:hidden}
+.ge-track{animation:ge-marq 45s linear infinite}.ge-pebble{transition:color .25s,border-color .25s,background .25s}.ge-pebble:hover{color:var(--color-inverse-ink)!important;border-color:var(--color-inverse-canvas)!important;background:var(--color-inverse-canvas)!important}.ge-pebble>span{transition:background .25s,color .25s}.ge-pebble:hover>span{background:var(--color-inverse-surface-2)!important;color:var(--color-inverse-ink)!important}.ge-pebble:hover img{filter:brightness(0.1)}
+@keyframes ge-marq{to{transform:translateX(-50%)}}
+.ge-hl{border-radius:2px;padding:0 4px;margin:0 -4px;background:linear-gradient(rgba(123,155,219,.35),rgba(123,155,219,.35)) left center/0% 100% no-repeat;transition:background-size .7s cubic-bezier(.65,0,.35,1)}.ge-hl.on{background-size:100% 100%}
+.ge-breathe{animation:ge-breathe 6s ease-in-out infinite}@keyframes ge-breathe{50%{opacity:.55}}
+.ge-wipe{display:inline-block;padding:0 6px 6px 0;margin:0 -6px -6px 0;clip-path:inset(0 100% 0 0);animation:ge-wipe .75s cubic-bezier(.65,0,.35,1) forwards}
+.ge-un{color:var(--color-ink);animation:ge-dim .45s var(--ease-standard) 2.1s forwards}
+.ge-sel{border-radius:2px;background:linear-gradient(rgba(123,155,219,.35),rgba(123,155,219,.35)) left center/0% 100% no-repeat;animation:ge-select .4s cubic-bezier(.65,0,.35,1) 2.1s forwards}
+.ge-wipe.ge-wipeout{clip-path:inset(0 0 0 0);animation:ge-wipeout .6s cubic-bezier(.65,0,.35,1) forwards}
+.ge-wipeout .ge-un{color:var(--color-ink-tertiary);animation:none}
+.ge-wipeout .ge-sel{background-size:100% 100%;animation:none}
+.ge-fade{animation:ge-fade .35s var(--ease-standard)}
+.ge-pop{animation:ge-pop .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes ge-wipe{to{clip-path:inset(0 0 0 0)}}
+@keyframes ge-wipeout{to{clip-path:inset(0 0 0 100%)}}
+@keyframes ge-fade{from{opacity:0;transform:translateY(6px)}}
+@keyframes ge-pop{from{opacity:0;transform:translateY(-10px)}}
+@keyframes ge-dim{to{color:var(--color-ink-tertiary)}}
+@keyframes ge-select{to{background-size:100% 100%}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.ge-track{animation-duration:120s}.ge-wipe,.ge-un,.ge-sel,.ge-fade,.ge-pop,.ge-breathe{animation-duration:1ms!important;animation-delay:0s!important}}
+
+/* Blueprint grid frame — horizontal full-bleed rules, hatched gutters, column hairlines */
+:root{
+ --ge-line:color-mix(in srgb,var(--color-hairline-strong) 70%,transparent);
+ --ge-hatch:color-mix(in srgb,var(--color-hairline-strong) 55%,transparent);
+ --ge-rail:clamp(16px,1.6vw + 8px,40px);
+ --ge-edge:clamp(0px,5vw - 38px,72px);
+ --ge-col:min(1280px,100vw - 2*var(--ge-rail) - 2*var(--ge-edge));
+}
+.ge-frame{position:relative;overflow-x:clip}
+.ge-frame[data-rule]::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--ge-line);pointer-events:none;z-index:1}
+.ge-col{position:relative;width:var(--ge-col);margin:0 auto;box-sizing:border-box}
+.ge-col::before,.ge-col::after{content:"";position:absolute;top:0;bottom:0;width:var(--ge-rail);box-sizing:border-box;border-left:1px solid var(--ge-line);border-right:1px solid var(--ge-line);background:repeating-linear-gradient(315deg,var(--ge-hatch) 0 1px,transparent 0 50%) 0 0/10px 10px;pointer-events:none}
+.ge-col::before{right:calc(100% - 1px)}
+.ge-col::after{left:calc(100% - 1px)}
+.ge-col>*{position:relative}
+.ge-rule{position:relative}
+.ge-rule::before,.ge-rule::after{content:"";position:absolute;left:-100vw;right:-100vw;height:1px;background:var(--ge-line);pointer-events:none}
+.ge-rule::before{top:0}.ge-rule::after{bottom:0}
+.ge-anno{font-family:var(--font-mono);font-size:12px;line-height:1;letter-spacing:0;color:var(--color-ink-tertiary);opacity:.8;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+@media (max-width:767px){
+ :root{--ge-col:100%}
+ .ge-frame{--gutter:16px}
+ .ge-col::before,.ge-col::after{display:none}
+ .ge-frame[data-rule]::before,.ge-rule::before,.ge-rule::after{display:none}
+}
+
+/* C02 — tertiary text contrast */
+html.c02{--color-ink-tertiary:#7A818C}
+html:not(.c02){--color-ink-tertiary:#646B76}
+
+/* C03 — focus rings (off = original: none on unstyled buttons, browser default elsewhere) */
+html.c03 :where(a,button,summary,[role="tab"],[tabindex]):not([data-ds-focus]):focus-visible{outline:2px solid var(--color-primary-hover)!important;outline-offset:2px!important}
+html:not(.c03) :where(a,button,summary,[role="tab"],[tabindex]):not([data-ds-focus]):focus-visible{outline:revert!important;outline-offset:revert!important}
+html:not(.c03) [style*="all: unset"]:focus-visible{outline:none!important}
+
+/* C04 — responsive */
+html.c04 [data-r="h1"]{font-size:clamp(44px,7.5vw,80px)!important;letter-spacing:clamp(-3px,-0.036em,-1.4px)!important}
+html.c04 [data-r="h2"]{font-size:clamp(36px,5.5vw,56px)!important}
+html.c04 [data-r="h2-sm"]{font-size:clamp(32px,4.6vw,48px)!important}
+html.c04 [data-r="cta-h"]{font-size:clamp(56px,10vw,104px)!important;letter-spacing:-0.04em!important}
+@media (max-width:1024px){
+ html.c04 [data-r="grid3"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html.c04 [data-r="split"]{grid-template-columns:minmax(0,1fr)!important;gap:32px!important}
+ html.c04 [data-r="steps"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html.c04 [data-r="steps"]>[data-step]{border-left:none!important;border-top:1px solid var(--color-hairline)!important}
+ html.c04 [data-r="steps"]>[data-step]:nth-child(even){border-left:1px solid var(--color-hairline)!important}
+ html.c04 [data-r="steps"]>[data-step]:nth-child(-n+2){border-top:none!important}
+ html.c04 [data-r="footer-grid"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html.c04 [data-r="nav-links"]{display:none!important}
+ html.c04 [data-r="mock"]{grid-template-columns:minmax(0,1fr)!important}
+ html.c04 [data-r="mock"]>aside{display:none!important}
+}
+@media (max-width:768px){
+ html.c04 [data-r="grid3"],html.c04 [data-r="grid2"],html.c04 [data-r="steps"]{grid-template-columns:minmax(0,1fr)!important}
+ html.c04 [data-r="steps"]>[data-step]{border-left:none!important;border-top:1px solid var(--color-hairline)!important;padding:32px 0!important}
+ html.c04 [data-r="steps"]>[data-step]:first-child{border-top:none!important}
+ html.c04 [data-r="hero-search"]{flex-direction:column!important}
+ html.c04 [data-r="cta-panel"]{padding:72px 24px!important}
+ html.c04 [data-r="changelog"] article{grid-template-columns:minmax(0,1fr)!important;gap:8px!important}
+ html.c04 [data-r="tracker"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html.c04 [data-r="search-row"]{grid-template-columns:minmax(0,1fr) auto!important}
+ html.c04 [data-r="search-row"]>:nth-child(2),html.c04 [data-r="search-row"]>:nth-child(3){display:none!important}
+ html.c04 [data-r="screenshot"]{padding:8px!important}
+}
+</style></head><body><div id="root"></div>
+<script type="text/babel" src="Shared.jsx"></script>
+<script type="text/babel" src="ProductMock.jsx"></script>
+<script type="text/babel" src="Figures.jsx"></script>
+<script type="text/babel" src="HomeSections.jsx"></script>
+<script type="text/babel" src="Home.jsx"></script>
+<script type="text/babel" src="Pricing.jsx"></script>
+<script type="text/babel" src="Changelog.jsx"></script>
+<script type="text/babel">
+function ScrollProgressV1(){
+  const r=React.useRef(null);
+  React.useEffect(()=>{let q=0;const run=()=>{q=0;const max=document.documentElement.scrollHeight-innerHeight;if(r.current)r.current.style.transform="scaleX("+(max>0?Math.min(1,scrollY/max):0)+")";};const on=()=>{if(!q)q=requestAnimationFrame(run);};run();addEventListener("scroll",on,{passive:true});addEventListener("resize",on);const ro=new ResizeObserver(on);ro.observe(document.body);return()=>{removeEventListener("scroll",on);removeEventListener("resize",on);ro.disconnect();};},[]);
+  return <div ref={r} style={{position:"fixed",top:0,left:0,right:0,height:2,background:"var(--color-primary)",boxShadow:"var(--glow-underline)",transformOrigin:"0 50%",transform:"scaleX(0)",zIndex:100,pointerEvents:"none"}}></div>;
+}
+const ScrollProgress=pick("ScrollProgress",ScrollProgressV1);
+const NAV_V1=["Jobs","Companies","Pricing","Changelog"];
+const NAV_V2=["How it works","Pricing","Changelog","Self-host"]; /* C07 */
+const ANCHORS={"How it works":"how","Self-host":"selfhost","Self-host guide":"selfhost"};
+const FOOTER_V1=[{title:"Product",links:["Job search","Application tracker","Resume builder","Salary insights","Pricing"]},{title:"For employers",links:["Post a job","Talent search","Verified employer","Hiring plans"]},{title:"Resources",links:["Blog","Interview guides","Changelog","GitHub"]},{title:"Company",links:["About","Careers","Privacy","Terms"]}];
+const FOOTER_V2=[{title:"Product",links:["Job search","Resume tailor","Outbox","Tracker","Mock interviews","Pricing"]},{title:"Open source",links:["GitHub","Self-host guide","Changelog"]},{title:"Company",links:["About","Privacy","Terms"]}]; /* C11 */
+function App(){
+  const { TopNav, Footer } = DS;
+  const [rev,setRev]=React.useState(0);
+  React.useEffect(()=>{const f=()=>setRev(v=>v+1);addEventListener("ge-changes",f);return()=>removeEventListener("ge-changes",f);},[]);
+  const [page,setPage]=React.useState(()=>{const p=localStorage.getItem("ge-kit-page");return p&&p!=="signup"?p:"home";});
+  const toAuth=mode=>{(window.top||window).location.href=new URL("../Auth.dc.html"+(mode?"?mode="+mode:""),location.href).href;};
+  const go=p=>{if(p==="signup")return toAuth("signup");setPage(p);localStorage.setItem("ge-kit-page",p);window.scrollTo(0,0);};
+  const map={home:Home,Pricing:Pricing,Changelog:Changelog,};
+  const toAnchor=id=>{if(page!=="home")go("home");setTimeout(()=>{const el=document.getElementById(id);if(el)window.scrollTo({top:el.getBoundingClientRect().top+scrollY-56,behavior:reducedMotion()?"auto":"smooth"});},60);};
+  const nav=l=>{if(ge("C07")&&ANCHORS[l])return toAnchor(ANCHORS[l]);go(map[l]?l:"home");};
+  const Page=map[page]||Home;
+  return (<div key={rev}>
+    <ScrollProgress/>
+    <TopNav links={ge("C07")?NAV_V2:NAV_V1} active={page} onNavigate={nav} onSignIn={()=>toAuth("signin")} onCta={()=>toAuth("signup")} />
+    <main><Page go={go}/></main>
+    {<GridFrame><Footer columns={ge("C11")?FOOTER_V2:FOOTER_V1} onLink={l=>ANCHORS[l]?toAnchor(ANCHORS[l]):map[l]?go(l):null}/></GridFrame>}
+  </div>);
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script></body></html>

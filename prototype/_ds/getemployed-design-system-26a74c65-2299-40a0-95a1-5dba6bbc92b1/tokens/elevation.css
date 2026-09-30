@@ -1,0 +1,16 @@
+:root{
+/* Depth = surface + hairline. No drop shadows. */
+--elevation-0:none;
+--elevation-1:inset 0 0 0 1px var(--color-hairline);
+--elevation-2:inset 0 0 0 1px var(--color-hairline-strong);
+--edge-highlight:inset 0 1px 0 0 var(--color-highlight-edge);
+--focus-ring-shadow:0 0 0 2px rgba(138,168,227,0.5);
+/* Highlight glow — the one sanctioned "sleek" flourish. Primary CTA + active states only. */
+--glow-cta:0 0 0 1px rgba(123,155,219,0.35),0 6px 24px -6px rgba(123,155,219,0.55);
+--glow-cta-hover:0 0 0 1px rgba(147,175,230,0.5),0 8px 32px -6px rgba(147,175,230,0.65);
+--glow-active:0 0 0 1px rgba(238,243,255,0.10),0 0 16px -2px rgba(123,155,219,0.30);
+--glow-underline:0 0 8px 1px rgba(123,155,219,0.75),0 0 18px 2px rgba(123,155,219,0.35);
+--ease-standard:cubic-bezier(0.25,0.1,0.25,1); /* @kind other */
+--duration-fast:120ms; /* @kind other */
+--duration-base:180ms; /* @kind other */
+}

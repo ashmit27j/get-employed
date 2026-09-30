@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="design-system/tokens.css">
+<script src="design-system/ge-ds.js"></script>
+<style>body{margin:0}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}</style>
+</helmet>
+<div style="max-width:1200px;margin:0 auto;padding:64px 24px 120px;display:flex;flex-direction:column;gap:72px;font-family:var(--font-sans);color:var(--color-ink)">
+  <header style="display:flex;flex-direction:column;gap:16px">
+    <x-import component-from-global-scope="GE_DS.Wordmark" size="18" hint-size="140px,18px"></x-import>
+    <h1 style="margin:0;font-size:56px;line-height:1.1;letter-spacing:-1.8px;font-weight:600">Design system v2</h1>
+    <p style="margin:0;max-width:640px;font-size:18px;line-height:1.55;color:var(--color-ink-muted);text-wrap:pretty">Rebuilt from the marketing mockup. Every token and component here is used on the page or in the product app. Removed and renamed items are listed in design-system/CHANGES.md.</p>
+  </header>
+
+  <section data-screen-label="Color" style="display:flex;flex-direction:column;gap:24px">
+    <div style="font-size:13px;font-weight:500;letter-spacing:0.4px;text-transform:uppercase;color:var(--color-ink-subtle)">Color</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:64px;border-radius:12px;background:#7B9BDB;box-shadow:var(--glow-cta)"></div><div style="font-size:13px">primary</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#7B9BDB · 7.1:1</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:64px;border-radius:12px;background:#93AFE6"></div><div style="font-size:13px">primary-hover</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#93AFE6</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:64px;border-radius:12px;background:#6583C4"></div><div style="font-size:13px">primary-pressed</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#6583C4</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:64px;border-radius:12px;background:#7B9BDB;display:flex;align-items:center;justify-content:center;color:#0A101C;font-weight:500;font-size:14px">Aa</div><div style="font-size:13px">on-primary</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#0A101C · 6.7:1</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:64px;border-radius:12px;background:var(--color-surface-2);display:flex;align-items:center;padding:0 16px"><span style="font-size:15px;border-radius:2px;padding:0 4px;background:rgba(123,155,219,0.35)">selection</span></div><div style="font-size:13px">selection</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">blue 35%</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:64px;border-radius:12px;background:#3E9E5C"></div><div style="font-size:13px">success</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#3E9E5C</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px">
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:56px;border-radius:12px;background:#07090C;border:1px solid var(--color-hairline)"></div><div style="font-size:13px">canvas</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#07090C</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:56px;border-radius:12px;background:#0F1216;border:1px solid var(--color-hairline)"></div><div style="font-size:13px">surface-1</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#0F1216</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:56px;border-radius:12px;background:#16191E;border:1px solid var(--color-hairline)"></div><div style="font-size:13px">surface-2</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#16191E</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:56px;border-radius:12px;background:#1C2026;border:1px solid var(--color-hairline)"></div><div style="font-size:13px">surface-3</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#1C2026</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:56px;border-radius:12px;background:#272C33;border:1px solid var(--color-hairline)"></div><div style="font-size:13px">surface-4</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#272C33</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:56px;border-radius:12px;background:var(--color-surface-1);border:1px solid #252A30"></div><div style="font-size:13px">hairline</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#252A30</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:56px;border-radius:12px;background:var(--color-surface-2);border:1px solid #333941"></div><div style="font-size:13px">hairline-strong</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#333941</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="height:56px;border-radius:12px;background:#FFFFFF;display:flex;align-items:center;justify-content:center;color:#0A101C;font-size:13px;border-bottom:3px solid #E6EAF0">paper</div><div style="font-size:13px">paper · rule · ink</div><div style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#FFF #E6EAF0 #0A101C</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--color-hairline);border-radius:12px;overflow:hidden">
+      <div style="padding:20px;display:flex;flex-direction:column;gap:6px"><span style="font-size:22px;color:#E4E7EA">ink</span><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#E4E7EA · 15.9:1</span></div>
+      <div style="padding:20px;display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--color-hairline)"><span style="font-size:22px;color:#C4C8CE">ink-muted</span><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#C4C8CE · 11.6:1</span></div>
+      <div style="padding:20px;display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--color-hairline)"><span style="font-size:22px;color:#8B9199">ink-subtle</span><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#8B9199 · 6.2:1</span></div>
+      <div style="padding:20px;display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--color-hairline)"><span style="font-size:22px;color:#7B8189">ink-tertiary</span><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">#7B8189 · 4.9:1 (was 3.7)</span></div>
+    </div>
+  </section>
+
+  <section data-screen-label="Type" style="display:flex;flex-direction:column;gap:24px">
+    <div style="font-size:13px;font-weight:500;letter-spacing:0.4px;text-transform:uppercase;color:var(--color-ink-subtle)">Type</div>
+    <div style="display:flex;flex-direction:column;border-top:1px solid var(--color-hairline)">
+      <div style="display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--color-hairline)"><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">cta 104</span><span style="font-size:var(--type-cta-size);line-height:var(--type-cta-lh);letter-spacing:var(--type-cta-ls);font-weight:600;white-space:nowrap;overflow:hidden">Get employed.</span></div>
+      <div style="display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--color-hairline)"><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">hero 80</span><span style="font-size:var(--type-hero-size);line-height:var(--type-hero-lh);letter-spacing:var(--type-hero-ls);font-weight:600">Unemployed?</span></div>
+      <div style="display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--color-hairline)"><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">section 56</span><span style="font-size:var(--type-section-size);line-height:var(--type-section-lh);letter-spacing:var(--type-section-ls);font-weight:600">From one sentence to a booked interview.</span></div>
+      <div style="display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--color-hairline)"><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">section-sm 48</span><span style="font-size:var(--type-section-sm-size);line-height:var(--type-section-sm-lh);letter-spacing:var(--type-section-sm-ls);font-weight:600">Run it on your own machine.</span></div>
+      <div style="display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--color-hairline)"><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">stat 40</span><span style="font-size:var(--type-stat-size);line-height:var(--type-stat-lh);letter-spacing:var(--type-stat-ls);font-weight:600">₹299<span style="font-size:14px;color:var(--color-ink-subtle);letter-spacing:0;font-weight:400"> /mo</span></span></div>
+      <div style="display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--color-hairline)"><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">headline 28</span><span style="font-size:28px;line-height:1.2;letter-spacing:-0.6px;font-weight:600">Create your account</span></div>
+      <div style="display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--color-hairline)"><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">title 22</span><span style="font-size:22px;line-height:1.25;letter-spacing:-0.4px;font-weight:500">Know why a role fits before you open it</span></div>
+      <div style="display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--color-hairline)"><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">lead 18</span><span style="font-size:18px;line-height:1.55;color:var(--color-ink-muted)">Search in plain English, get a tailored resume and an outreach email for every match.</span></div>
+      <div style="display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--color-hairline)"><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">body 16 · small 14</span><span style="display:flex;flex-direction:column;gap:4px"><span style="font-size:16px">Every draft waits in your outbox until you approve it.</span><span style="font-size:14px;line-height:1.6;color:var(--color-ink-subtle)">Each job is scored 0–100 against your profile, with a one-line reason.</span></span></div>
+      <div style="display:grid;grid-template-columns:160px minmax(0,1fr);gap:24px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--color-hairline)"><span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">ui 13 · caption 12 · micro 11</span><span style="display:flex;gap:16px;align-items:baseline;flex-wrap:wrap"><span style="font-size:13px">Tracker / Every application</span><span style="font-size:12px;color:var(--color-ink-subtle)">© 2026 GetEmployed</span><span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.5px;color:var(--color-ink-tertiary)">01 · SEARCH</span><span style="font-size:13px;font-weight:500;letter-spacing:0.4px;text-transform:uppercase;color:var(--color-ink-subtle)">Eyebrow</span></span></div>
+    </div>
+  </section>
+
+  <section data-screen-label="Radius and depth" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:32px">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:13px;font-weight:500;letter-spacing:0.4px;text-transform:uppercase;color:var(--color-ink-subtle)">Radius</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="width:56px;height:56px;background:var(--color-surface-2);border:1px solid var(--color-hairline-strong);border-radius:4px"></div><span style="font-family:var(--font-mono);font-size:11px;color:var(--color-ink-subtle)">4</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="width:56px;height:56px;background:var(--color-surface-2);border:1px solid var(--color-hairline-strong);border-radius:6px"></div><span style="font-family:var(--font-mono);font-size:11px;color:var(--color-ink-subtle)">6</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="width:56px;height:56px;background:var(--color-surface-2);border:1px solid var(--color-hairline-strong);border-radius:8px"></div><span style="font-family:var(--font-mono);font-size:11px;color:var(--color-ink-subtle)">8</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="width:56px;height:56px;background:var(--color-surface-2);border:1px solid var(--color-hairline-strong);border-radius:12px"></div><span style="font-family:var(--font-mono);font-size:11px;color:var(--color-ink-subtle)">12</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="width:56px;height:56px;background:var(--color-surface-2);border:1px solid var(--color-hairline-strong);border-radius:16px"></div><span style="font-family:var(--font-mono);font-size:11px;color:var(--color-ink-subtle)">16</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="width:56px;height:56px;background:var(--color-surface-2);border:1px solid var(--color-hairline-strong);border-radius:20px"></div><span style="font-family:var(--font-mono);font-size:11px;color:var(--color-ink-subtle)">20</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="width:72px;height:32px;background:var(--color-surface-2);border:1px solid var(--color-hairline-strong);border-radius:9999px"></div><span style="font-family:var(--font-mono);font-size:11px;color:var(--color-ink-subtle)">full</span></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:13px;font-weight:500;letter-spacing:0.4px;text-transform:uppercase;color:var(--color-ink-subtle)">Depth</div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
+        <div style="height:72px;border-radius:12px;background:var(--color-surface-1);border:1px solid var(--color-hairline);box-shadow:var(--edge-highlight);display:flex;align-items:flex-end;padding:10px;font-family:var(--font-mono);font-size:11px;color:var(--color-ink-subtle)">edge</div>
+        <div style="height:72px;border-radius:12px;background:var(--color-surface-2);box-shadow:var(--glow-active);display:flex;align-items:flex-end;padding:10px;font-family:var(--font-mono);font-size:11px;color:var(--color-ink-subtle)">glow-active</div>
+        <div style="height:72px;border-radius:12px;background:var(--color-surface-1);border:1px solid var(--color-hairline);display:flex;flex-direction:column;justify-content:space-between;padding:10px;font-family:var(--font-mono);font-size:11px;color:var(--color-ink-subtle)"><span style="height:1px;background:var(--color-primary);box-shadow:var(--glow-underline)"></span>glow-underline</div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="Components" style="display:flex;flex-direction:column;gap:24px">
+    <div style="font-size:13px;font-weight:500;letter-spacing:0.4px;text-transform:uppercase;color:var(--color-ink-subtle)">Components</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
+      <div style="display:flex;flex-direction:column;gap:16px;padding:24px;border:1px solid var(--color-hairline);border-radius:12px">
+        <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">Button</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <x-import component-from-global-scope="GE_DS.Button" hint-size="100px,36px">Get started</x-import>
+          <x-import component-from-global-scope="GE_DS.Button" variant="secondary" hint-size="80px,36px">Sign in</x-import>
+          <x-import component-from-global-scope="GE_DS.Button" variant="tertiary" hint-size="80px,36px">Tertiary</x-import>
+          <x-import component-from-global-scope="GE_DS.Button" size="sm" hint-size="60px,28px">Small</x-import>
+          <x-import component-from-global-scope="GE_DS.Button" disabled="{{ true }}" hint-size="80px,36px">Disabled</x-import>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;padding:24px;border:1px solid var(--color-hairline);border-radius:12px">
+        <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">StatusBadge · Tag · PillTabs</span>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <x-import component-from-global-scope="GE_DS.StatusBadge" tone="success" hint-size="80px,22px">Verified</x-import>
+          <x-import component-from-global-scope="GE_DS.StatusBadge" tone="accent" hint-size="80px,22px">New match</x-import>
+          <x-import component-from-global-scope="GE_DS.StatusBadge" hint-size="80px,22px">Open source</x-import>
+          <x-import component-from-global-scope="GE_DS.Tag" label="Location" hint-size="120px,22px">Bengaluru</x-import>
+          <x-import component-from-global-scope="GE_DS.Tag" hint-size="100px,22px">gRPC</x-import>
+        </div>
+        <x-import component-from-global-scope="GE_DS.PillTabs" options="{{ billing }}" default-value="Yearly" label="Billing period" hint-size="180px,40px"></x-import>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;padding:24px;border:1px solid var(--color-hairline);border-radius:12px">
+        <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">TextInput</span>
+        <x-import component-from-global-scope="GE_DS.TextInput" label="Target role" placeholder="e.g. Backend engineer" hint="Used to tune your job alerts." hint-size="100%,80px"></x-import>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;padding:24px;border:1px solid var(--color-hairline);border-radius:12px">
+        <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle)">Highlight · SourceChip</span>
+        <div style="font-size:28px;font-weight:600;letter-spacing:-0.6px">Built <x-import component-from-global-scope="GE_DS.Highlight" hint-size="auto,28px">for engineers</x-import></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <x-import component-from-global-scope="GE_DS.SourceChip" name="LinkedIn" icon="lucide:linkedin" hint-size="120px,40px"></x-import>
+          <x-import component-from-global-scope="GE_DS.SourceChip" name="Naukri" hint-size="110px,40px"></x-import>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;align-items:stretch">
+      <x-import component-from-global-scope="GE_DS.PricingCard" tier="Pro" price="₹299" description="₹3,588 billed yearly · save 25%" featured="{{ true }}" cta="Upgrade to Pro" features="{{ proFeatures }}" hint-size="100%,380px"></x-import>
+      <x-import component-from-global-scope="GE_DS.TestimonialCard" quote="The mock interviews were tough in a useful way. My structure score went from 54 to 81 before the real one." name="Rohan Iyer" role="Backend Engineer, Pune" hint-size="100%,240px"></x-import>
+      <x-import component-from-global-scope="GE_DS.Card" eyebrow="Job feed" title="Know why a role fits before you open it" interactive="{{ true }}" hint-size="100%,160px"><span style="font-size:14px;color:var(--color-ink-subtle)">Card default · featured · screenshot · testimonial. Hover to lift.</span></x-import>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;align-items:start">
+      <x-import component-from-global-scope="GE_DS.CodeWindow" hint-size="100%,160px">$ docker compose up -d
+✓ web      ready on http://localhost:3000</x-import>
+      <x-import component-from-global-scope="GE_DS.Accordion" items="{{ faq }}" hint-size="100%,200px"></x-import>
+    </div>
+    <x-import component-from-global-scope="GE_DS.ChangelogRow" version="v2.4.0" date="Sep 18, 2026" title="Salary insights" tag="New" items="{{ changelog }}" hint-size="100%,120px"></x-import>
+    <div style="border:1px solid var(--color-hairline);border-radius:12px;overflow:hidden">
+      <x-import component-from-global-scope="GE_DS.TopNav" links="{{ nav }}" active="Pricing" sticky="{{ false }}" hint-size="100%,56px"></x-import>
+      <x-import component-from-global-scope="GE_DS.Footer" hint-size="100%,240px"></x-import>
+    </div>
+  </section>
+
+  <section data-screen-label="Marketing page" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px">
+      <div style="font-size:13px;font-weight:500;letter-spacing:0.4px;text-transform:uppercase;color:var(--color-ink-subtle)">Marketing page</div>
+      <a href="Marketing Page.dc.html" style="font-size:13px;color:var(--color-ink-subtle)">Open marketing page →</a>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      billing: ["Monthly", "Yearly"],
+      proFeatures: ["Unlimited searches and resumes", "Unlimited outreach emails", "Unlimited mock interviews", "Salary intelligence"],
+      faq: [["Will it send emails without asking me?", "No. Every draft waits in your outbox until you approve it."], ["Where do the jobs come from?", "Public listings on job boards and company careers pages, de-duplicated and refreshed daily."]],
+      changelog: ["Median pay and range on every listing", "Filter search results by salary band"],
+      nav: ["How it works", "Pricing", "Changelog", "Self-host"]
+    };
+  }
+}
+</script>
+</body>
+</html>

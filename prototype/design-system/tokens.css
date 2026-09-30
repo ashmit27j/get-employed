@@ -1,0 +1,98 @@
+/* GetEmployed Design System v2 — the single token source.
+   Rebuilt from the marketing mockup (marketing/index.html), Sept 2026.
+   Every token below is used by the mockup, a DS component, or the product app. See CHANGES.md for what was removed. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+:root{
+/* Accent — the only saturated hue */
+--color-primary:#7B9BDB;
+--color-primary-hover:#93AFE6;
+--color-primary-pressed:#6583C4;
+--color-on-primary:#0A101C;
+--color-glow:rgba(123,155,219,0.22);
+--color-glow-soft:rgba(123,155,219,0.10);
+--color-selection:rgba(123,155,219,0.35);
+
+/* Surfaces — canvas is the whitespace; panels lift one step at a time */
+--color-canvas:#07090C;
+--color-surface-1:#0F1216;
+--color-surface-2:#16191E;
+--color-surface-3:#1C2026;
+--color-surface-4:#272C33;
+--color-hairline:#252A30;
+--color-hairline-strong:#333941;
+
+/* Paper — the only light surface (resume preview, hovered source chip) */
+--color-paper:#FFFFFF;
+--color-paper-rule:#E6EAF0;
+--color-paper-ink:#0A101C;
+
+/* Text — all four pass 4.5:1 on canvas and surface-1/2 */
+--color-ink:#E4E7EA;
+--color-ink-muted:#C4C8CE;
+--color-ink-subtle:#8B9199;
+--color-ink-tertiary:#7B8189;
+
+/* Status */
+--color-success:#3E9E5C;
+
+/* Primary scale — tints of #7B9BDB for tiles, tinted panels and text on tint */
+--color-primary-50:#EEF3FC;--color-primary-100:#D5E0F6;--color-primary-200:#B4C8EE;--color-primary-300:#93AFE6;
+--color-primary-400:#7B9BDB;--color-primary-500:#6583C4;--color-primary-600:#4D69A6;--color-primary-700:#364D7F;
+--color-primary-800:#1F2D4D;--color-primary-900:#141D31;--color-primary-950:#0C1220;
+--color-primary-soft:rgba(123,155,219,0.14);--color-primary-line:rgba(123,155,219,0.40);
+
+/* Tones — status and category tags only. -ink is text/dot, -soft the fill, -line the border. Never for icons or CTAs */
+--color-success-ink:oklch(0.78 0.11 150);--color-success-soft:oklch(0.78 0.11 150 / 0.12);--color-success-line:oklch(0.78 0.11 150 / 0.35);
+--color-warning-ink:oklch(0.83 0.11 80);--color-warning-soft:oklch(0.83 0.11 80 / 0.12);--color-warning-line:oklch(0.83 0.11 80 / 0.35);
+--color-danger-ink:oklch(0.74 0.11 22);--color-danger-soft:oklch(0.74 0.11 22 / 0.12);--color-danger-line:oklch(0.74 0.11 22 / 0.35);
+--color-teal-ink:oklch(0.80 0.08 195);--color-teal-soft:oklch(0.80 0.08 195 / 0.12);--color-teal-line:oklch(0.80 0.08 195 / 0.35);
+--color-violet-ink:oklch(0.78 0.09 290);--color-violet-soft:oklch(0.78 0.09 290 / 0.12);--color-violet-line:oklch(0.78 0.09 290 / 0.35);
+
+/* Type */
+--font-sans:"Inter",-apple-system,system-ui,"Segoe UI",sans-serif;
+--font-mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+--type-cta-size:104px;--type-cta-lh:1.05;--type-cta-ls:-4px;
+--type-hero-size:80px;--type-hero-lh:1.05;--type-hero-ls:-3px;
+--type-section-size:56px;--type-section-lh:1.1;--type-section-ls:-1.8px;
+--type-section-sm-size:48px;--type-section-sm-lh:1.1;--type-section-sm-ls:-1.5px;
+--type-stat-size:40px;--type-stat-lh:1;--type-stat-ls:-1px;
+--type-headline-size:28px;--type-headline-lh:1.2;--type-headline-ls:-0.6px;
+--type-title-size:22px;--type-title-lh:1.25;--type-title-ls:-0.4px;
+--type-lead-size:18px;--type-lead-lh:1.55;--type-lead-ls:-0.1px;
+--type-body-size:16px;--type-body-lh:1.5;--type-body-ls:-0.05px;
+--type-small-size:14px;--type-small-lh:1.6;--type-small-ls:0;
+--type-ui-size:13px;--type-ui-lh:1.45;--type-ui-ls:0;
+--type-caption-size:12px;--type-caption-lh:1.4;--type-caption-ls:0;
+--type-micro-size:11px;--type-micro-lh:1.4;--type-micro-ls:0.5px;
+--type-eyebrow-size:13px;--type-eyebrow-lh:1.3;--type-eyebrow-ls:0.4px;
+
+/* Space — 4px base; 6 and 10 are the only half-steps (chip and list gaps) */
+--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;
+--space-8:32px;--space-10:40px;--space-12:48px;--space-section-sm:72px;--space-section:120px;
+--container-max:1280px;--gutter:24px;--nav-height:56px;
+
+/* Radius */
+--rounded-xs:4px;--rounded-sm:6px;--rounded-md:8px;--rounded-lg:12px;--rounded-xl:16px;--rounded-2xl:20px;--rounded-full:9999px;
+
+/* Depth — surface + hairline; light only as edge or glow, never drop shadows */
+--edge-highlight:inset 0 1px 0 0 rgba(238,243,255,0.07);
+--focus-ring-shadow:0 0 0 2px rgba(138,168,227,0.5);
+--glow-cta:0 0 0 1px rgba(123,155,219,0.35),0 6px 24px -6px rgba(123,155,219,0.55);
+--glow-cta-hover:0 0 0 1px rgba(147,175,230,0.5),0 8px 32px -6px rgba(147,175,230,0.65);
+--glow-active:0 0 0 1px rgba(238,243,255,0.10),0 0 16px -2px rgba(123,155,219,0.30);
+--glow-underline:0 0 8px 1px rgba(123,155,219,0.75),0 0 18px 2px rgba(123,155,219,0.35);
+
+/* Motion */
+--ease-standard:cubic-bezier(0.25,0.1,0.25,1);
+--ease-out-expo:cubic-bezier(0.16,1,0.3,1);
+--ease-wipe:cubic-bezier(0.65,0,0.35,1);
+--duration-fast:120ms;
+--duration-base:180ms;
+--duration-slow:400ms;
+--duration-reveal:1000ms;
+}
+html,body{background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-sans);font-size:var(--type-body-size);line-height:var(--type-body-lh);letter-spacing:var(--type-body-ls);-webkit-font-smoothing:antialiased;margin:0}
+a{color:var(--color-ink);text-decoration:none;transition:color var(--duration-fast) var(--ease-standard)}
+a:hover{color:var(--color-primary-hover)}
+::selection{background:var(--color-selection);color:var(--color-ink)}
+:where(a,button,summary,[role="tab"],[tabindex]):not([data-ds-focus]):focus-visible{outline:2px solid var(--color-primary-hover)!important;outline-offset:2px!important}

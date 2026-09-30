@@ -1,0 +1,293 @@
+@import "tailwindcss";
+@import "@ge/ui/theme.css";
+
+/* Scan the shared components for class names. */
+@source "../../../../packages/ui/src";
+
+/* ---------- Marketing pages ((marketing)/layout.tsx wraps them in [data-site]) ---------- */
+
+html:has([data-site]) {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-height);
+}
+body:has([data-site]) {
+  overflow-x: hidden;
+}
+
+/*
+ * Blueprint grid frame (prototype/marketing/index.html): full-bleed horizontal rules,
+ * hatched side gutters and column hairlines. Hidden on mobile.
+ */
+:root {
+  --ge-line: color-mix(in srgb, var(--color-hairline-strong) 70%, transparent);
+  --ge-hatch: color-mix(in srgb, var(--color-hairline-strong) 55%, transparent);
+  --ge-rail: clamp(16px, 1.6vw + 8px, 40px);
+  --ge-edge: clamp(0px, 5vw - 38px, 72px);
+  --ge-col: min(1280px, 100vw - 2 * var(--ge-rail) - 2 * var(--ge-edge));
+}
+.ge-frame {
+  position: relative;
+  overflow-x: clip;
+}
+.ge-frame[data-rule]::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: var(--ge-line);
+  pointer-events: none;
+  z-index: 1;
+}
+.ge-col {
+  position: relative;
+  width: var(--ge-col);
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.ge-col::before,
+.ge-col::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--ge-rail);
+  box-sizing: border-box;
+  border-left: 1px solid var(--ge-line);
+  border-right: 1px solid var(--ge-line);
+  background: repeating-linear-gradient(315deg, var(--ge-hatch) 0 1px, transparent 0 50%) 0 0 / 10px
+    10px;
+  pointer-events: none;
+}
+.ge-col::before {
+  right: calc(100% - 1px);
+}
+.ge-col::after {
+  left: calc(100% - 1px);
+}
+.ge-col > * {
+  position: relative;
+}
+.ge-rule {
+  position: relative;
+}
+.ge-rule::before,
+.ge-rule::after {
+  content: "";
+  position: absolute;
+  left: -100vw;
+  right: -100vw;
+  height: 1px;
+  background: var(--ge-line);
+  pointer-events: none;
+}
+.ge-rule::before {
+  top: 0;
+}
+.ge-rule::after {
+  bottom: 0;
+}
+@media (max-width: 767px) {
+  :root {
+    --ge-col: 100%;
+  }
+  .ge-frame {
+    --gutter: 16px;
+  }
+  .ge-col::before,
+  .ge-col::after,
+  .ge-frame[data-rule]::before,
+  .ge-rule::before,
+  .ge-rule::after {
+    display: none;
+  }
+}
+
+/* Hero headline: words wipe in, "employed" gets the selection marker, then the line wipes out. */
+.ge-wipe {
+  display: inline-block;
+  padding: 0 6px 6px 0;
+  margin: 0 -6px -6px 0;
+  clip-path: inset(0 100% 0 0);
+  animation: ge-wipe 0.75s var(--ease-wipe) forwards;
+}
+.ge-wipe.ge-wipeout {
+  clip-path: inset(0 0 0 0);
+  animation: ge-wipeout 0.6s var(--ease-wipe) forwards;
+}
+.ge-un {
+  color: var(--color-ink);
+  animation: ge-dim 0.45s var(--ease-standard) 2.1s forwards;
+}
+.ge-sel {
+  border-radius: 2px;
+  background: linear-gradient(var(--color-selection), var(--color-selection)) left center / 0% 100%
+    no-repeat;
+  animation: ge-select 0.4s var(--ease-wipe) 2.1s forwards;
+}
+.ge-wipeout .ge-un {
+  color: var(--color-ink-tertiary);
+  animation: none;
+}
+.ge-wipeout .ge-sel {
+  background-size: 100% 100%;
+  animation: none;
+}
+.ge-fade {
+  animation: ge-fade 0.35s var(--ease-standard);
+}
+.ge-pop {
+  animation: ge-pop 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.ge-track {
+  animation: ge-marquee 45s linear infinite;
+}
+@keyframes ge-wipe {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes ge-wipeout {
+  to {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+@keyframes ge-dim {
+  to {
+    color: var(--color-ink-tertiary);
+  }
+}
+@keyframes ge-select {
+  to {
+    background-size: 100% 100%;
+  }
+}
+@keyframes ge-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes ge-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+@keyframes ge-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:has([data-site]) {
+    scroll-behavior: auto;
+  }
+  /* The marquee keeps moving, slowly (DESIGN.md); everything else is instant. */
+  .ge-track {
+    animation-duration: 120s !important;
+    animation-iteration-count: infinite !important;
+  }
+  .ge-wipe,
+  .ge-un,
+  .ge-sel {
+    animation-delay: 0s !important;
+  }
+}
+
+/* ---------- App ---------- */
+
+/*
+ * Export PDF prints the resume (components/documents/PrintableResume.tsx): only the A4 pages,
+ * edge to edge, one sheet each. Replaced by the compiled PDF once resume.compile runs.
+ */
+@page {
+  size: A4;
+  margin: 0;
+}
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  [data-print-resume],
+  [data-print-resume] * {
+    visibility: visible;
+  }
+  [data-print-resume] {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 210mm;
+  }
+  [data-print-resume] [data-resume-page] {
+    border-radius: 0 !important;
+    break-after: page;
+  }
+}
+
+/* Assistant greeting (prototype/Assistant.dc.html): the line wipes in, then "work on" is selected. */
+@keyframes ge-as-wipe {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes ge-as-sel {
+  to {
+    background-size: 100% 100%;
+  }
+}
+@keyframes ge-wave-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Interview AI orb (prototype/ge-app.js AIOrb). */
+@keyframes ge-orb-pulse {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+@keyframes ge-orb-breathe {
+  0%,
+  100% {
+    transform: scale(0.97);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+@keyframes ge-orb-talk {
+  0%,
+  100% {
+    transform: scale(0.96);
+  }
+  25% {
+    transform: scale(1.05);
+  }
+  50% {
+    transform: scale(0.99);
+  }
+  75% {
+    transform: scale(1.06);
+  }
+}
+@keyframes ge-orb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* The brand mark and GitHub logo are white artwork; flip them on the light theme. */
+:root[data-theme="light"] img[src$="/ge-mark.png"],
+:root[data-theme="light"] img[src$="/ge-wordmark.png"],
+:root[data-theme="light"] img[src$="/github.png"] {
+  filter: invert(1);
+}

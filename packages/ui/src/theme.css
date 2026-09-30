@@ -1,0 +1,348 @@
+/*
+ * GetEmployed design system v2: the single token source for both apps.
+ * Values come from prototype/design-system/tokens.css; the spec is docs/design-system.md.
+ *
+ * Apps load it after Tailwind:
+ *   @import "tailwindcss";
+ *   @import "@ge/ui/theme.css";
+ *   @source "../../../../packages/ui/src";
+ *
+ * Every Tailwind default (palette, radii, shadows, type scale) is reset, so only these tokens
+ * exist as utilities: `bg-surface-1`, `text-ink-subtle`, `rounded-lg`, `shadow-edge`, `text-small`.
+ * `static` emits every token as a CSS variable, so inline styles and plain CSS can use them too.
+ */
+@theme static {
+  /* ─── Color ─────────────────────────────────────────────────────────── */
+  --color-*: initial;
+
+  /* Accent: the only saturated hue */
+  --color-primary: #7b9bdb;
+  --color-primary-hover: #93afe6;
+  --color-primary-pressed: #6583c4;
+  --color-on-primary: #0a101c;
+  --color-glow: rgba(123, 155, 219, 0.22);
+  --color-glow-soft: rgba(123, 155, 219, 0.1);
+  --color-selection: rgba(123, 155, 219, 0.35);
+
+  /* Primary scale: tints for tiles, tinted panels and text on tint */
+  --color-primary-50: #eef3fc;
+  --color-primary-100: #d5e0f6;
+  --color-primary-200: #b4c8ee;
+  --color-primary-300: #93afe6;
+  --color-primary-400: #7b9bdb;
+  --color-primary-500: #6583c4;
+  --color-primary-600: #4d69a6;
+  --color-primary-700: #364d7f;
+  --color-primary-800: #1f2d4d;
+  --color-primary-900: #141d31;
+  --color-primary-950: #0c1220;
+  --color-primary-soft: rgba(123, 155, 219, 0.14);
+  --color-primary-line: rgba(123, 155, 219, 0.4);
+
+  /* Surfaces: the canvas is the whitespace; panels lift one step at a time */
+  --color-canvas: #07090c;
+  --color-surface-1: #0f1216;
+  --color-surface-2: #16191e;
+  --color-surface-3: #1c2026;
+  --color-surface-4: #272c33;
+  --color-hairline: #252a30;
+  --color-hairline-strong: #333941;
+  --color-hairline-tertiary: #434b58;
+  --color-scrim: rgba(7, 9, 13, 0.72);
+
+  /* Paper: the only light surface (resume preview, hovered source chip) */
+  --color-paper: #ffffff;
+  --color-paper-rule: #e6eaf0;
+  --color-paper-ink: #0a101c;
+
+  /* Text: all four pass 4.5:1 on canvas and surface-1/2 */
+  --color-ink: #e4e7ea;
+  --color-ink-muted: #c4c8ce;
+  --color-ink-subtle: #8b9199;
+  --color-ink-tertiary: #7b8189;
+
+  /* Status and category tones. -ink is text/dot, -soft the fill, -line the border. Never for icons or CTAs */
+  --color-success: #3e9e5c;
+  --color-success-ink: oklch(0.78 0.11 150);
+  --color-success-soft: oklch(0.78 0.11 150 / 0.12);
+  --color-success-line: oklch(0.78 0.11 150 / 0.35);
+  --color-warning-ink: oklch(0.83 0.11 80);
+  --color-warning-soft: oklch(0.83 0.11 80 / 0.12);
+  --color-warning-line: oklch(0.83 0.11 80 / 0.35);
+  --color-danger-ink: oklch(0.74 0.11 22);
+  --color-danger-soft: oklch(0.74 0.11 22 / 0.12);
+  --color-danger-line: oklch(0.74 0.11 22 / 0.35);
+  --color-danger-text: oklch(0.8 0.05 22);
+  --color-teal-ink: oklch(0.8 0.08 195);
+  --color-teal-soft: oklch(0.8 0.08 195 / 0.12);
+  --color-teal-line: oklch(0.8 0.08 195 / 0.35);
+  --color-violet-ink: oklch(0.78 0.09 290);
+  --color-violet-soft: oklch(0.78 0.09 290 / 0.12);
+  --color-violet-line: oklch(0.78 0.09 290 / 0.35);
+
+  /* ─── Type ──────────────────────────────────────────────────────────── */
+  --font-*: initial;
+  /* --font-inter / --font-jetbrains-mono are set by next/font in each app layout. */
+  --font-sans: var(--font-inter, "Inter"), -apple-system, system-ui, "Segoe UI", sans-serif;
+  --font-mono:
+    var(--font-jetbrains-mono, "JetBrains Mono"), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --text-*: initial;
+  --text-cta: 104px;
+  --text-cta--line-height: 1.05;
+  --text-cta--letter-spacing: -4px;
+  --text-hero: 80px;
+  --text-hero--line-height: 1.05;
+  --text-hero--letter-spacing: -3px;
+  --text-section: 56px;
+  --text-section--line-height: 1.1;
+  --text-section--letter-spacing: -1.8px;
+  --text-section-sm: 48px;
+  --text-section-sm--line-height: 1.1;
+  --text-section-sm--letter-spacing: -1.5px;
+  --text-stat: 40px;
+  --text-stat--line-height: 1;
+  --text-stat--letter-spacing: -1px;
+  --text-headline: 28px;
+  --text-headline--line-height: 1.2;
+  --text-headline--letter-spacing: -0.6px;
+  --text-title: 22px;
+  --text-title--line-height: 1.25;
+  --text-title--letter-spacing: -0.4px;
+  --text-lead: 18px;
+  --text-lead--line-height: 1.55;
+  --text-lead--letter-spacing: -0.1px;
+  --text-body: 16px;
+  --text-body--line-height: 1.5;
+  --text-body--letter-spacing: -0.05px;
+  --text-small: 14px;
+  --text-small--line-height: 1.6;
+  --text-small--letter-spacing: 0;
+  --text-ui: 13px;
+  --text-ui--line-height: 1.45;
+  --text-ui--letter-spacing: 0;
+  --text-caption: 12px;
+  --text-caption--line-height: 1.4;
+  --text-caption--letter-spacing: 0;
+  --text-micro: 11px;
+  --text-micro--line-height: 1.4;
+  --text-micro--letter-spacing: 0.5px;
+  --text-eyebrow: 13px;
+  --text-eyebrow--line-height: 1.3;
+  --text-eyebrow--letter-spacing: 0.4px;
+
+  /* ─── Space and layout ──────────────────────────────────────────────── */
+  /* 4px base: p-1 = 4px, p-6 = 24px. 1.5 (6px) and 2.5 (10px) are the only half-steps. */
+  --spacing: 4px;
+  --container-*: initial;
+  --container-page: 1280px;
+  --container-prose: 640px;
+
+  /* Breakpoints: 768 → everything 1-up; 1024 → 3-up grids go 2-up. Mobile app layout is max-md. */
+  --breakpoint-*: initial;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  /* ─── Radius ────────────────────────────────────────────────────────── */
+  --radius-*: initial;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-full: 9999px;
+
+  /* ─── Depth: surface + hairline; light only as edge or glow, never drop shadows ── */
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --shadow-edge: inset 0 1px 0 0 rgba(238, 243, 255, 0.07);
+  --shadow-focus: 0 0 0 2px rgba(138, 168, 227, 0.5);
+  --shadow-glow-cta: 0 0 0 1px rgba(123, 155, 219, 0.35), 0 6px 24px -6px rgba(123, 155, 219, 0.55);
+  --shadow-glow-cta-hover:
+    0 0 0 1px rgba(147, 175, 230, 0.5), 0 8px 32px -6px rgba(147, 175, 230, 0.65);
+  --shadow-glow-active: 0 0 0 1px rgba(238, 243, 255, 0.1), 0 0 16px -2px rgba(123, 155, 219, 0.3);
+  --shadow-glow-underline:
+    0 0 8px 1px rgba(123, 155, 219, 0.75), 0 0 18px 2px rgba(123, 155, 219, 0.35);
+  --shadow-glow-dot: 0 0 8px var(--color-glow);
+  --shadow-hairline: inset 0 0 0 1px var(--color-hairline);
+
+  /* ─── Motion ────────────────────────────────────────────────────────── */
+  --ease-*: initial;
+  --ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-wipe: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --animate-*: initial;
+  --animate-spin: spin 0.8s linear infinite;
+  --animate-blink: blink 1s steps(2) infinite;
+  --animate-seg-gradient: seg-gradient 3s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes seg-gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+}
+
+/*
+ * Light theme: the same tokens with light values. <html data-theme="light"> switches it; the app
+ * sets the attribute before first paint from the saved choice (apps/app/src/lib/theme.ts).
+ */
+:root[data-theme="light"] {
+  --color-primary: #4a6bc4;
+  --color-primary-hover: #3d5cb0;
+  --color-primary-pressed: #334f99;
+  --color-on-primary: #ffffff;
+  --color-glow: rgba(74, 107, 196, 0.18);
+  --color-glow-soft: rgba(74, 107, 196, 0.08);
+  --color-selection: rgba(74, 107, 196, 0.22);
+  --color-primary-soft: rgba(74, 107, 196, 0.1);
+  --color-primary-line: rgba(74, 107, 196, 0.35);
+
+  --color-canvas: #f6f7f9;
+  --color-surface-1: #ffffff;
+  --color-surface-2: #f1f3f6;
+  --color-surface-3: #e8ebf0;
+  --color-surface-4: #dce1e8;
+  --color-hairline: #e2e6ec;
+  --color-hairline-strong: #d0d6df;
+  --color-hairline-tertiary: #b7bfcb;
+  --color-scrim: rgba(15, 20, 30, 0.4);
+
+  --color-ink: #10151c;
+  --color-ink-muted: #2e3642;
+  --color-ink-subtle: #5a6371;
+  --color-ink-tertiary: #69727f;
+
+  --color-success-ink: oklch(0.5 0.12 150);
+  --color-success-soft: oklch(0.6 0.12 150 / 0.12);
+  --color-success-line: oklch(0.5 0.12 150 / 0.35);
+  --color-warning-ink: oklch(0.55 0.12 70);
+  --color-warning-soft: oklch(0.7 0.12 80 / 0.16);
+  --color-warning-line: oklch(0.55 0.12 70 / 0.35);
+  --color-danger-ink: oklch(0.55 0.17 25);
+  --color-danger-soft: oklch(0.6 0.15 22 / 0.1);
+  --color-danger-line: oklch(0.55 0.17 25 / 0.35);
+  --color-danger-text: oklch(0.45 0.12 22);
+  --color-teal-ink: oklch(0.5 0.09 195);
+  --color-teal-soft: oklch(0.6 0.08 195 / 0.12);
+  --color-teal-line: oklch(0.5 0.09 195 / 0.35);
+  --color-violet-ink: oklch(0.5 0.13 290);
+  --color-violet-soft: oklch(0.6 0.1 290 / 0.12);
+  --color-violet-line: oklch(0.5 0.13 290 / 0.35);
+
+  --shadow-edge: inset 0 1px 0 0 rgba(255, 255, 255, 0.7);
+  --shadow-focus: 0 0 0 2px rgba(74, 107, 196, 0.45);
+  --shadow-glow-cta: 0 0 0 1px rgba(74, 107, 196, 0.3), 0 6px 18px -8px rgba(74, 107, 196, 0.5);
+  --shadow-glow-cta-hover:
+    0 0 0 1px rgba(61, 92, 176, 0.4), 0 8px 22px -8px rgba(61, 92, 176, 0.55);
+  --shadow-glow-active: 0 0 0 1px rgba(74, 107, 196, 0.2), 0 0 12px -4px rgba(74, 107, 196, 0.3);
+  --shadow-glow-underline: 0 0 6px 1px rgba(74, 107, 196, 0.45);
+  color-scheme: light;
+}
+:root[data-theme="light"] body {
+  color-scheme: light;
+}
+
+/* Names from prototype/design-system/DESIGN.md, for plain CSS and inline styles. */
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-section-sm: 72px;
+  --space-section: 120px;
+  --container-max: var(--container-page);
+  --gutter: 24px;
+  --nav-height: 56px;
+
+  --rounded-xs: var(--radius-xs);
+  --rounded-sm: var(--radius-sm);
+  --rounded-md: var(--radius-md);
+  --rounded-lg: var(--radius-lg);
+  --rounded-xl: var(--radius-xl);
+  --rounded-2xl: var(--radius-2xl);
+  --rounded-full: var(--radius-full);
+
+  --edge-highlight: var(--shadow-edge);
+  --focus-ring-shadow: var(--shadow-focus);
+  --glow-cta: var(--shadow-glow-cta);
+  --glow-cta-hover: var(--shadow-glow-cta-hover);
+  --glow-active: var(--shadow-glow-active);
+  --glow-underline: var(--shadow-glow-underline);
+
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --duration-slow: 400ms;
+  --duration-reveal: 1000ms;
+}
+
+@layer base {
+  html,
+  body {
+    margin: 0;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    letter-spacing: var(--text-body--letter-spacing);
+    -webkit-font-smoothing: antialiased;
+    color-scheme: dark;
+  }
+  a {
+    color: var(--color-ink);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-standard);
+  }
+  a:hover {
+    color: var(--color-primary-hover);
+  }
+  ::selection {
+    background: var(--color-selection);
+    color: var(--color-ink);
+  }
+  /* Keyboard focus everywhere. Components that draw their own ring opt out with data-ds-focus. */
+  :where(a, button, summary, input, select, textarea, [role="tab"], [tabindex]):not(
+      [data-ds-focus]
+    ):focus-visible {
+    outline: 2px solid var(--color-primary-hover);
+    outline-offset: 2px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-hairline-strong) transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

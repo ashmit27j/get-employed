@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Assistant · GetEmployed</title>
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/colors.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/typography.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/radius.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/base.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/styles.css">
+<script src="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/_ds_bundle.js"></script>
+<script src="ge-app.js"></script>
+<script src="ge-data.js"></script>
+<style>body{margin:0;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}@keyframes ge-as-wipe{to{clip-path:inset(0 0 0 0)}}@keyframes ge-wave-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}@keyframes ge-as-sel{to{background-size:100% 100%}}@media (prefers-reduced-motion:reduce){h1 span{animation-duration:1ms!important;animation-delay:0s!important}}</style>
+</helmet>
+<div data-ge-tabbar-pad="" style="display:flex;height:100vh;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)">
+  <x-import component-from-global-scope="GEApp.Sidebar" active="assistant" hint-size="232px,100vh"></x-import>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;min-height:0">
+    <x-import component-from-global-scope="GEApp.Topbar" crumbs="{{ crumbs }}" parent-href="Assistant.dc.html" hint-size="100%,56px"></x-import>
+    <div data-screen-label="Career assistant" style="flex:1;min-height:0;display:flex">
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;min-height:0">
+        <div ref="{{ scrollRef }}" style="flex:1;overflow-y:auto;overflow-x:hidden;padding:32px 24px">
+          <sc-if value="{{ isNew }}" hint-placeholder-val="{{ false }}">
+            <div style="max-width:760px;min-height:100%;margin:0 auto;display:flex;flex-direction:column;justify-content:center;gap:20px;padding-bottom:24px">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <h1 aria-label="What should we work on?" style="margin:0;font-size:var(--type-headline-size);font-weight:600;letter-spacing:-0.6px">{{ greet }}</h1>
+                <p style="margin:0;font-size:var(--type-body-size);color:var(--color-ink-subtle)">The assistant can search jobs, tailor resumes, draft outreach and book mock interviews.</p>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px">
+                <sc-for list="{{ prompts }}" as="p" hint-placeholder-count="4">
+                  <button type="button" onClick="{{ p.fill }}" style="all:unset;cursor:pointer;box-sizing:border-box;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:var(--rounded-md);border:1px solid var(--color-hairline);background:var(--color-surface-1);font-size:var(--type-body-sm-size);color:var(--color-ink-muted)" style-hover="background:var(--color-surface-2);border-color:var(--color-hairline-strong);color:var(--color-ink)">
+                    <span style="{{ p.iconStyle }}"></span>{{ p.text }}
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+          <div style="max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+            <sc-for list="{{ messages }}" as="m" hint-placeholder-count="4">
+              <x-import component-from-global-scope="GEApp.ChatBubble" role="{{ m.role }}" streaming="{{ m.streaming }}" time="{{ m.time }}" text="{{ m.text }}" hint-size="100%,80px">
+                <span style="white-space:pre-wrap">{{ m.text }}</span>
+                <sc-for list="{{ m.actions }}" as="a" hint-placeholder-count="0">
+                  <x-import component-from-global-scope="GEApp.ChatAction" icon="{{ a.icon }}" title="{{ a.title }}" detail="{{ a.detail }}" status="{{ a.status }}" href="{{ a.href }}" cta="{{ a.cta }}" hint-size="100%,48px"></x-import>
+                </sc-for>
+                <sc-if value="{{ m.hasJobs }}" hint-placeholder-val="{{ false }}">
+                  <div style="border:1px solid var(--color-hairline);border-radius:var(--rounded-md);overflow:hidden">
+                    <sc-for list="{{ m.jobs }}" as="j" hint-placeholder-count="3">
+                      <a href="{{ j.href }}" style="display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--color-hairline);text-decoration:none">
+                        <x-import component-from-global-scope="GEApp.MatchRing" value="{{ j.score }}" size="28" label="{{ false }}" hint-size="28px,28px"></x-import>
+                        <span style="display:flex;flex-direction:column;min-width:0">
+                          <span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ j.title }} · {{ j.co }}</span>
+                          <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ j.why }}</span>
+                        </span>
+                        <x-import component-from-global-scope="GEApp.SalaryBadge" type="{{ j.salary.type }}" min="{{ j.salary.min }}" max="{{ j.salary.max }}" confidence="{{ j.salary.conf }}" compact="{{ true }}" hint-size="120px,20px"></x-import>
+                      </a>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </x-import>
+            </sc-for>
+          </div>
+        </div>
+        <div style="border-top:1px solid var(--color-hairline);padding:16px 24px 24px">
+          <div style="max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px">
+            <form onSubmit="{{ send }}" style="{{ boxStyle }}">
+              <input type="file" ref="{{ fileRef }}" multiple="" onChange="{{ onFiles }}" style="display:none"></input>
+              <sc-if value="{{ listening }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:10px;padding:14px 16px 12px">
+                  <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">Listening…</span>
+                  <div aria-hidden="true" style="overflow:hidden;height:28px;display:flex;align-items:center">
+                    <div style="{{ waveTrackStyle }}">
+                      <sc-for list="{{ waveBars }}" as="wb" hint-placeholder-count="72"><span style="{{ wb }}"></span></sc-for>
+                    </div>
+                  </div>
+                  <div style="display:flex;justify-content:flex-end;gap:8px">
+                    <button type="button" onClick="{{ cancelMic }}" title="Cancel dictation" aria-label="Cancel dictation" style="all:unset;cursor:pointer;box-sizing:border-box;width:32px;height:32px;flex:none;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--rounded-md);background:var(--color-surface-3);color:var(--color-ink)" style-hover="background:var(--color-surface-4)">
+                      <span style="{{ xIcon }}"></span>
+                    </button>
+                    <button type="button" onClick="{{ confirmMic }}" title="Use transcript" aria-label="Use transcript" style="all:unset;cursor:pointer;box-sizing:border-box;width:32px;height:32px;flex:none;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--rounded-md);background:var(--color-primary);color:#0A101C;box-shadow:var(--glow-cta)" style-hover="background:var(--color-primary-hover)">
+                      <span style="{{ checkIcon }}"></span>
+                    </button>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ notListening }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;align-items:flex-start;gap:8px;padding:12px 16px 8px">
+                <textarea value="{{ draft }}" onChange="{{ onDraft }}" onKeyDown="{{ onKey }}" onFocus="{{ onFocus }}" onBlur="{{ onBlur }}" maxLength="3000" rows="2" placeholder="{{ placeholder }}" aria-label="Message" style="flex:1;min-width:0;resize:none;background:transparent;border:none;outline:none;color:var(--color-ink);font-family:var(--font-text);font-size:var(--type-body-sm-size);line-height:1.5;padding:2px 0"></textarea>
+              </div>
+              <sc-if value="{{ hasFiles }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;gap:6px;flex-wrap:wrap;padding:0 16px 10px">
+                  <sc-for list="{{ files }}" as="f" hint-placeholder-count="1">
+                    <x-import component-from-global-scope="GEApp.Chip" icon="paperclip" on-remove="{{ f.remove }}" hint-size="140px,28px">{{ f.name }}</x-import>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <div style="display:flex;align-items:center;gap:4px;padding:6px 8px;border-top:1px solid var(--color-hairline);flex-wrap:wrap">
+                <button type="button" onClick="{{ attach }}" style="all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 10px;border-radius:var(--rounded-md);font-size:var(--type-body-sm-size);color:var(--color-ink-muted)" style-hover="background:var(--color-surface-2);color:var(--color-ink)">
+                  <span style="width:15px;height:15px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/paperclip.svg) center/contain no-repeat"></span>Attach
+                </button>
+                <span aria-hidden="true" style="width:1px;height:16px;background:var(--color-hairline-strong)"></span>
+                <div style="position:relative">
+                  <button type="button" onClick="{{ togglePrompts }}" aria-expanded="{{ promptsOpen }}" style="all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 10px;border-radius:var(--rounded-md);font-size:var(--type-body-sm-size);color:var(--color-ink-muted)" style-hover="background:var(--color-surface-2);color:var(--color-ink)">
+                    <span style="width:15px;height:15px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/file-search.svg) center/contain no-repeat"></span>Browse prompts
+                  </button>
+                  <sc-if value="{{ promptsOpen }}" hint-placeholder-val="{{ false }}">
+                    <div onClick="{{ closePrompts }}" style="position:fixed;inset:0;z-index:20"></div>
+                    <div role="menu" style="position:absolute;left:0;bottom:calc(100% + 8px);z-index:21;width:300px;max-width:calc(100vw - 48px);padding:6px;border-radius:var(--rounded-lg);border:1px solid var(--color-hairline-strong);background:var(--color-surface-2);display:flex;flex-direction:column;gap:2px">
+                      <sc-for list="{{ prompts }}" as="p" hint-placeholder-count="4">
+                        <button type="button" role="menuitem" onClick="{{ p.fill }}" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--rounded-sm);font-size:var(--type-body-sm-size);color:var(--color-ink)" style-hover="background:var(--color-surface-3)">
+                          <span style="{{ p.iconStyle }}"></span>{{ p.text }}
+                        </button>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+                <span style="flex:1"></span>
+                <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-tertiary);padding:0 6px">{{ charCount }}</span>
+                <div style="position:relative">
+                  <button type="button" onClick="{{ toggleModels }}" aria-haspopup="listbox" aria-expanded="{{ modelsOpen }}" style="all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 10px;border-radius:var(--rounded-md);font-size:var(--type-body-sm-size);color:var(--color-ink-muted);transition:background var(--duration-base) var(--ease-standard)" style-hover="background:var(--color-surface-2);color:var(--color-ink)">
+                    <span style="width:14px;height:14px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/sparkles.svg) center/contain no-repeat;color:var(--color-primary)"></span>
+                    {{ modelName }}
+                    <span style="width:14px;height:14px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/chevron-down.svg) center/contain no-repeat"></span>
+                  </button>
+                  <sc-if value="{{ modelsOpen }}" hint-placeholder-val="{{ false }}">
+                    <div onClick="{{ closeModels }}" style="position:fixed;inset:0;z-index:20"></div>
+                    <div role="listbox" aria-label="Model" style="position:absolute;right:0;bottom:calc(100% + 8px);z-index:21;width:280px;max-width:calc(100vw - 48px);padding:6px;border-radius:var(--rounded-lg);border:1px solid var(--color-hairline-strong);background:var(--color-surface-2);display:flex;flex-direction:column;gap:2px">
+                      <sc-for list="{{ models }}" as="m" hint-placeholder-count="5">
+                        <button type="button" role="option" aria-selected="{{ m.on }}" onClick="{{ m.pick }}" style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--rounded-sm)" style-hover="background:var(--color-surface-3)">
+                          <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                            <span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ m.name }}</span>
+                            <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ m.desc }}</span>
+                          </span>
+                          <span style="{{ m.check }}"></span>
+                        </button>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+                <sc-if value="{{ showMic }}" hint-placeholder-val="{{ true }}">
+                  <button type="button" onClick="{{ toggleMic }}" aria-pressed="{{ listening }}" title="{{ micTitle }}" aria-label="{{ micTitle }}" style="{{ micStyle }}" style-hover="background:var(--color-surface-2);color:var(--color-ink)">
+                    <span style="{{ micIcon }}"></span>
+                  </button>
+                </sc-if>
+                <sc-if value="{{ canSend }}" hint-placeholder-val="{{ false }}">
+                  <button type="submit" title="Send" aria-label="Send" style="all:unset;cursor:pointer;box-sizing:border-box;width:32px;height:32px;flex:none;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--rounded-md);background:var(--color-primary);color:#0A101C;box-shadow:var(--glow-cta)" style-hover="background:var(--color-primary-hover)">
+                    <span style="width:16px;height:16px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/send-horizontal.svg) center/contain no-repeat"></span>
+                  </button>
+                </sc-if>
+              </div>
+              </sc-if>
+            </form>
+            <span style="font-size:var(--type-caption-size);color:var(--color-ink-tertiary);text-align:center">The assistant asks before sending email or booking anything.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  scrollRef = React.createRef();
+  fileRef = React.createRef();
+  state = { files: [], focus: false, promptsOpen: false, draft: "", busy: false, model: "auto", modelsOpen: false, listening: false, micText: "", msgs: [
+    { role: "user", text: "Find backend roles in Bengaluru that would take a 2027 grad. I'm fine with hybrid.", time: "10:02" },
+    { role: "assistant", text: "I searched 4 job boards and 60 careers pages. 6 roles fit; these three match your profile best.", time: "10:02", actions: [{ icon: "search", title: "Searched jobs", detail: "Backend · Bengaluru · Hybrid or on-site · 0–2 yrs", status: "done", href: "Jobs.dc.html", cta: "Open in Jobs" }], jobsIdx: [0, 2, 3] },
+    { role: "user", text: "Tailor my resume for the Razorpay one and draft an email to the hiring manager.", time: "10:04" },
+    { role: "assistant", text: "Done. I rewrote 4 bullets to surface your Kafka and Go work (ATS 62 → 84) and found Ananya Krishnan, the Engineering Manager for Payments. The email is waiting in your Outbox; nothing is sent until you approve it.", time: "10:04", actions: [{ icon: "file-check", title: "Tailored resume for Backend Engineer I · Razorpay", detail: "4 rewrites to review", status: "done", href: "Resume.dc.html?tab=tailor&job=j1", cta: "Review" }, { icon: "send", title: "Drafted outreach to Ananya Krishnan", detail: "ananya.k@razorpay.com · 94% confidence", status: "done", href: "Outbox.dc.html", cta: "Open Outbox" }] },
+  ] };
+  componentDidMount() {
+    const tid = new URLSearchParams(location.search).get("thread");
+    const t = tid && window.GEApp && window.GEApp.loadThreads().find(x => x.id === tid);
+    const SAMPLE = ["Job hunt, week of Sep 22", "Atlassian round 1 prep", "Why is my ATS score low?", "Stipend vs PPO offers", "Rewrite LinkedIn headline"];
+    if (t) this.setState({ msgs: t.msgs, title: t.title });
+    else if (tid && /^s\d$/.test(tid)) this.setState({ title: SAMPLE[+tid.slice(1)] });
+    else if (new URLSearchParams(location.search).has("new")) this.setState({ msgs: [] });
+    if (!window.GEData) { const t = setInterval(() => { if (window.GEData) { clearInterval(t); this.forceUpdate(); } }, 50); } this.scroll(); }
+  componentDidUpdate() { this.scroll(); }
+  componentWillUnmount() { clearInterval(this.iv); this.stopRecognition(); }
+  startMic() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    this.setState({ listening: true, micText: "" });
+    if (SR) {
+      try {
+        const r = this.rec = new SR(); r.continuous = true; r.interimResults = true;
+        r.onresult = e => { let txt = ""; for (let i = 0; i < e.results.length; i++) txt += e.results[i][0].transcript; this.setState({ micText: txt }); };
+        r.onerror = () => {};
+        r.start(); return;
+      } catch (e) {}
+    }
+    const words = "Find backend internships in Pune that accept 2027 grads".split(" "); let i = 0;
+    this.micIv = setInterval(() => { i++; this.setState({ micText: words.slice(0, i).join(" ") }); if (i >= words.length) clearInterval(this.micIv); }, 180);
+  }
+  stopRecognition() { clearInterval(this.micIv); if (this.rec) { try { this.rec.stop(); } catch (e) {} this.rec = null; } }
+  cancelMic() { this.stopRecognition(); this.setState({ listening: false, micText: "" }); }
+  confirmMic() { this.stopRecognition(); this.setState(s => ({ listening: false, micText: "", draft: (s.draft ? s.draft.replace(/\s*$/, " ") : "") + s.micText })); }
+  scroll() { const el = this.scrollRef.current; if (el) el.scrollTop = el.scrollHeight; }
+  reply(q) {
+    const t = q.toLowerCase();
+    if (/interview|mock|practi/.test(t)) return { text: "Booked a 15-minute technical mock for Backend Engineer I · Razorpay, tomorrow at 19:00. I'll focus on idempotency, queues and rate limiting, since those came up in the JD.", action: { icon: "calendar-check", title: "Booked mock interview", detail: "Sep 26, 19:00 · Technical · 15 min", href: "Interview.dc.html", cta: "Prepare" } };
+    if (/email|outreach|reach|draft/.test(t)) return { text: "I drafted two emails: one to Karthik Rao at Zepto and one to Priya Menon at Freshworks. Both mention a specific project and ask for a 15-minute chat.", action: { icon: "send", title: "Drafted 2 outreach emails", detail: "Waiting for your approval", href: "Outbox.dc.html", cta: "Review" } };
+    if (/tailor|resume|cv/.test(t)) return { text: "I tailored your resume for SDE-1, Platform at Zepto. The main change is leading with the Redis caching result, which the JD asks about twice.", action: { icon: "file-check", title: "Tailored resume for SDE-1 · Zepto", detail: "3 rewrites · ATS 62 → 79", href: "Resume.dc.html?tab=tailor&job=j2", cta: "Review" } };
+    return { text: "Here are remote roles open to freshers that match your React and Node.js experience. Postman is the strongest fit.", action: { icon: "search", title: "Searched jobs", detail: "Remote · 0–1 yrs · React or Node.js", href: "Jobs.dc.html", cta: "Open in Jobs" }, jobsIdx: [3, 2, 1] };
+  }
+  send(q) {
+    if (!q.trim() || this.state.busy) return; this.stopRecognition();
+    const r = this.reply(q), now = new Date(), time = now.getHours() + ":" + String(now.getMinutes()).padStart(2, "0");
+    this.setState(s => ({ draft: "", files: [], busy: true, title: s.title || (s.msgs.length ? s.title : (q.length > 42 ? q.slice(0, 40).trim() + "…" : q)), msgs: [...s.msgs, { role: "user", text: q, time }, { role: "assistant", text: "", streaming: true, actions: [{ ...r.action, status: "running", title: r.action.title.replace(/^(\w+)/, m => ({ Searched: "Searching", Booked: "Booking", Drafted: "Drafting", Tailored: "Tailoring" }[m] || m)) + "…" }] }] }));
+    let i = 0; const words = r.text.split(" ");
+    setTimeout(() => {
+      this.iv = setInterval(() => {
+        i += 1;
+        this.setState(s => { const m = [...s.msgs]; const last = { ...m[m.length - 1] }; last.text = words.slice(0, i).join(" "); last.actions = [{ ...r.action, status: "done" }]; if (i >= words.length) { last.streaming = false; last.time = time; last.jobsIdx = r.jobsIdx; } m[m.length - 1] = last; return { msgs: m, busy: i < words.length }; });
+        if (i >= words.length) clearInterval(this.iv);
+      }, 45);
+    }, 900);
+  }
+  renderVals() {
+    const D = window.GEData, s = this.state;
+    return {
+      scrollRef: this.scrollRef, draft: s.draft, busy: s.busy,
+      isNew: s.msgs.length === 0,
+      greet: this.greetEl || (this.greetEl = React.createElement("span", { "aria-hidden": "true", style: { display: "inline-block", padding: "0 6px 6px 0", margin: "0 -6px -6px 0", clipPath: "inset(0 100% 0 0)", animation: "ge-as-wipe .75s cubic-bezier(.65,0,.35,1) .1s forwards" } }, "What should we ", React.createElement("span", { style: { borderRadius: "2px", padding: "0 3px", margin: "0 -3px", background: "linear-gradient(rgba(123,155,219,.35),rgba(123,155,219,.35)) left center/0% 100% no-repeat", animation: "ge-as-sel .4s cubic-bezier(.65,0,.35,1) 1.1s forwards" } }, "work on"), "?")),
+      crumbs: "Assistant / " + (s.msgs.length === 0 ? "New chat" : s.title || (s.msgs[0].text.length > 42 ? s.msgs[0].text.slice(0, 40).trim() + "…" : s.msgs[0].text)),
+      ...(() => {
+        const models = [["auto", "Auto", "Picks the best model for each task"], ["claude-sonnet", "Claude Sonnet 4.5", "Strong at writing and resume edits"], ["gpt-5", "GPT-5", "General reasoning and search"], ["gemini-pro", "Gemini 2.5 Pro", "Long job descriptions and documents"], ["fast", "Fast", "Quick answers, lower accuracy"]];
+        const ic = (n, sz, c) => ({ width: sz + "px", height: sz + "px", flex: "none", color: c, background: "currentColor", mask: "url(https://unpkg.com/lucide-static@0.460.0/icons/" + n + ".svg) center/contain no-repeat" });
+        const round = { all: "unset", boxSizing: "border-box", width: "32px", height: "32px", display: "inline-flex", alignItems: "center", justifyContent: "center", borderRadius: "999px", transition: "background var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard)" };
+        const cantSend = s.busy || !s.draft.trim();
+        const iconS = n => ic(n, 16, "var(--color-ink-subtle)");
+        return {
+          models: models.map(([id, name, desc]) => ({ name, desc, on: s.model === id, check: ic("check", 16, s.model === id ? "var(--color-primary)" : "transparent"), pick: () => this.setState({ model: id, modelsOpen: false }) })),
+          modelName: models.find(m => m[0] === s.model)[1], modelsOpen: s.modelsOpen,
+          toggleModels: () => this.setState(p => ({ modelsOpen: !p.modelsOpen })), closeModels: () => this.setState({ modelsOpen: false }),
+          listening: s.listening, notListening: !s.listening, showMic: !s.listening && !s.draft.trim(), micTitle: "Dictate",
+          toggleMic: () => this.startMic(),
+          cancelMic: () => this.cancelMic(), confirmMic: () => this.confirmMic(),
+          waveBars: (() => { const hs = Array.from({ length: 36 }, (_, i) => Math.max(3, Math.round(Math.abs(6 + 9 * Math.sin(i * 0.55) + 5 * Math.sin(i * 1.7 + 1)) + 4))); return [...hs, ...hs].map(hgt => ({ width: "2px", flex: "none", borderRadius: "var(--rounded-pill)", background: "var(--color-primary)", height: hgt + "px" })); })(),
+          waveTrackStyle: { display: "flex", alignItems: "center", gap: "3px", width: "max-content", animation: "ge-wave-scroll 2.6s linear infinite" },
+          xIcon: ic("x", 14, "currentColor"), checkIcon: ic("check", 15, "currentColor"),
+          micStyle: { ...round, cursor: "pointer", borderRadius: "var(--rounded-md)", color: "var(--color-ink-muted)", background: "transparent" },
+          micIcon: ic("mic", 16, "currentColor"),
+          canSend: !cantSend, charCount: s.draft.length.toLocaleString("en-IN") + " / 3,000",
+          boxStyle: { display: "flex", flexDirection: "column", borderRadius: "var(--rounded-lg)", border: "1px solid " + (s.focus || s.listening ? "rgba(123,155,219,.7)" : "var(--color-hairline-strong)"), background: "var(--color-surface-1)", boxShadow: s.focus || s.listening ? "0 0 0 3px rgba(123,155,219,.12), 0 0 28px rgba(123,155,219,.10)" : "none", transition: "border-color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard)" },
+          onFocus: () => this.setState({ focus: true }), onBlur: () => this.setState({ focus: false }),
+          promptsOpen: s.promptsOpen, togglePrompts: () => this.setState(p => ({ promptsOpen: !p.promptsOpen })), closePrompts: () => this.setState({ promptsOpen: false }),
+          prompts: [["search", "Find remote React roles for freshers"], ["file-check", "Tailor my resume for Zepto"], ["send", "Draft outreach for my top matches"], ["mic", "Book a mock interview for tomorrow"], ["linkedin", "Rewrite my LinkedIn headline"], ["gauge", "Why is my ATS score low?"]].map(([icon, text]) => ({ icon, text, iconStyle: iconS(icon), fill: () => this.setState({ draft: text, promptsOpen: false }) })),
+          fileRef: this.fileRef, attach: () => this.fileRef.current && this.fileRef.current.click(),
+          onFiles: e => { const n = [...e.target.files].map(f => f.name); e.target.value = ""; this.setState(p => ({ files: [...p.files, ...n] })); },
+          hasFiles: s.files.length > 0, files: s.files.map((name, i) => ({ name, remove: () => this.setState(p => ({ files: p.files.filter((_, j) => j !== i) })) })),
+          placeholder: s.listening ? "Listening…" : "Ask to find jobs, tailor a resume, draft outreach, or book a mock interview",
+          cantSend, sendStyle: { ...round, cursor: cantSend ? "default" : "pointer", background: cantSend ? "var(--color-surface-3)" : "var(--color-primary)", color: cantSend ? "var(--color-ink-tertiary)" : "#0A101C" },
+        };
+      })(),
+      onDraft: e => this.setState({ draft: e.target.value }),
+      onKey: e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); this.send(s.draft); } },
+      send: e => { e.preventDefault(); this.send(s.draft); },
+      threads: [["Job hunt, week of Sep 22", "Today"], ["Atlassian round 1 prep", "Yesterday"], ["Why is my ATS score low?", "Sep 20"], ["Stipend vs PPO offers", "Sep 18"], ["Rewrite LinkedIn headline", "Sep 12"]].map(([title, when], i) => ({ title, when, style: { display: "flex", flexDirection: "column", gap: "2px", padding: "8px", borderRadius: "var(--rounded-sm)", cursor: "pointer", background: i === 0 ? "var(--color-surface-2)" : "transparent" } })),
+      messages: s.msgs.map(m => { const jobs = D && m.jobsIdx ? m.jobsIdx.map(i => ({ ...D.JOBS[i], href: "Job%20Detail.dc.html?id=" + D.JOBS[i].id })) : []; return { ...m, streaming: !!m.streaming, time: m.time || "", actions: (m.actions || []).map(a => ({ ...a })), jobs, hasJobs: jobs.length > 0 }; }),
+    };
+  }
+}
+</script>
+</body>
+</html>

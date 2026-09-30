@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Get started · GetEmployed</title>
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/colors.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/typography.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/radius.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/base.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/styles.css">
+<script src="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/_ds_bundle.js"></script>
+<script src="ge-app.js"></script>
+<script src="ge-data.js"></script>
+<style>body{margin:0;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}</style>
+</helmet>
+<div style="min-height:100vh;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text);display:flex;flex-direction:column">
+  <header data-ge-pad-mobile="" style="height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 32px;border-bottom:1px solid var(--color-hairline)">
+    <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Wordmark" size="16" hint-size="130px,16px"></x-import>
+    <div style="display:flex;align-items:center;gap:16px">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+        <div style="display:flex;align-items:center;gap:8px;font-size:var(--type-body-sm-size)">
+          <span style="{{ s.dot }}">{{ s.n }}</span>
+          <span data-ge-hide-mobile="" style="{{ s.label }}">{{ s.title }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <a href="Jobs.dc.html" style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle);text-decoration:none;white-space:nowrap">Skip for now</a>
+  </header>
+
+  <main style="flex:1;width:100%;max-width:720px;margin:0 auto;padding:48px 32px 96px;box-sizing:border-box;display:flex;flex-direction:column;gap:24px">
+    <sc-if value="{{ isImport }}" hint-placeholder-val="{{ true }}">
+      <section data-screen-label="Onboarding 1 · Import" style="display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:var(--type-eyebrow-size);font-weight:500;letter-spacing:var(--type-eyebrow-ls);text-transform:uppercase;color:var(--color-ink-subtle)">Step 1 of 3</span>
+          <h1 style="margin:0;font-size:var(--type-display-md-size);line-height:var(--type-display-md-lh);letter-spacing:var(--type-display-md-ls);font-weight:600">Start with your resume</h1>
+          <p style="margin:0;font-size:var(--type-body-size);color:var(--color-ink-subtle);text-wrap:pretty">We read it once to build your master profile. Every tailored resume, match score and outreach email comes from that profile.</p>
+        </div>
+        <x-import component-from-global-scope="GEApp.Dropzone" state="{{ upState }}" file-name="{{ fileName }}" file-size="{{ fileSize }}" progress="{{ progress }}" on-file="{{ onFile }}" hint-size="100%,260px"></x-import>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" on-click="{{ useSample }}" hint-size="150px,28px">Use a sample resume</x-import>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" on-click="{{ toReview }}" hint-size="150px,28px">Fill in manually</x-import>
+          <span style="flex:1"></span>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" disabled="{{ notParsed }}" on-click="{{ toReview }}" hint-size="120px,36px">Continue</x-import>
+        </div>
+        <p style="margin:0;font-size:var(--type-caption-size);color:var(--color-ink-tertiary)">Your file is parsed and discarded. We keep the structured profile only, and you can delete it any time in Settings.</p>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Onboarding 2 · Review" style="display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:var(--type-eyebrow-size);font-weight:500;letter-spacing:var(--type-eyebrow-ls);text-transform:uppercase;color:var(--color-ink-subtle)">Step 2 of 3</span>
+          <h1 style="margin:0;font-size:var(--type-display-md-size);line-height:var(--type-display-md-lh);letter-spacing:var(--type-display-md-ls);font-weight:600">Check what we found</h1>
+          <p style="margin:0;font-size:var(--type-body-size);color:var(--color-ink-subtle);text-wrap:pretty">Fix anything that's wrong now. Two fields need a look.</p>
+        </div>
+        <x-import component-from-global-scope="GEApp.Panel" title="About you" pad="20" hint-size="100%,220px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.TextInput" label="Full name" default-value="{{ P.contact.name }}" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.TextInput" label="Email" default-value="{{ P.contact.email }}" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.TextInput" label="Location" default-value="{{ P.contact.loc }}" hint-size="100%,64px"></x-import>
+            <x-import component-from-global-scope="GEApp.Select" label="Graduating" options="2027|2026|2028|Already graduated" hint="Not on your resume; we guessed from your dates" hint-size="100%,80px"></x-import>
+          </div>
+        </x-import>
+        <x-import component-from-global-scope="GEApp.Panel" title="Education" meta="2 entries" hint-size="100%,140px">
+          <sc-for list="{{ P.education }}" as="e" hint-placeholder-count="2">
+            <div style="display:flex;justify-content:space-between;gap:16px;padding:12px 20px;border-bottom:1px solid var(--color-hairline);font-size:var(--type-body-sm-size)">
+              <span style="display:flex;flex-direction:column"><span style="color:var(--color-ink)">{{ e.degree }}</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ e.school }} · {{ e.score }}</span></span>
+              <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle);white-space:nowrap">{{ e.dates }}</span>
+            </div>
+          </sc-for>
+        </x-import>
+        <x-import component-from-global-scope="GEApp.Panel" title="Experience and projects" meta="2 roles · 1 project" hint-size="100%,200px">
+          <sc-for list="{{ roles }}" as="r" hint-placeholder-count="3">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 20px;border-bottom:1px solid var(--color-hairline);font-size:var(--type-body-sm-size)">
+              <span style="display:flex;flex-direction:column;min-width:0"><span style="color:var(--color-ink)">{{ r.title }}</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ r.sub }}</span></span>
+              <sc-if value="{{ r.flag }}" hint-placeholder-val="{{ false }}">
+                <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.StatusBadge" tone="accent" hint-size="110px,20px">{{ r.flag }}</x-import>
+              </sc-if>
+            </div>
+          </sc-for>
+        </x-import>
+        <x-import component-from-global-scope="GEApp.Panel" title="Skills" sub="Remove anything you wouldn't want to be interviewed on." pad="20" hint-size="100%,140px">
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <sc-for list="{{ skills }}" as="k" hint-placeholder-count="10">
+              <x-import component-from-global-scope="GEApp.Chip" on-remove="{{ k.remove }}" hint-size="80px,28px">{{ k.name }}</x-import>
+            </sc-for>
+          </div>
+        </x-import>
+        <div style="display:flex;justify-content:space-between;gap:12px">
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" on-click="{{ toImport }}" hint-size="80px,36px">Back</x-import>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" on-click="{{ toSearch }}" hint-size="150px,36px">Looks right</x-import>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isSearch }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Onboarding 3 · First search" style="display:flex;flex-direction:column;gap:24px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:var(--type-eyebrow-size);font-weight:500;letter-spacing:var(--type-eyebrow-ls);text-transform:uppercase;color:var(--color-ink-subtle)">Step 3 of 3</span>
+          <h1 style="margin:0;font-size:var(--type-display-md-size);line-height:var(--type-display-md-lh);letter-spacing:var(--type-display-md-ls);font-weight:600">What are you looking for?</h1>
+          <p style="margin:0;font-size:var(--type-body-size);color:var(--color-ink-subtle);text-wrap:pretty">Describe it the way you'd tell a friend. We'll turn it into filters and check for new jobs every day.</p>
+        </div>
+        <x-import component-from-global-scope="GEApp.TextArea" rows="3" value="{{ query }}" on-change="{{ onQuery }}" hint-size="100%,96px"></x-import>
+        <x-import component-from-global-scope="GEApp.Panel" title="We understood" meta="31 jobs match today" pad="20" hint-size="100%,140px">
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <sc-for list="{{ chips }}" as="c" hint-placeholder-count="6">
+              <x-import component-from-global-scope="GEApp.Chip" icon="{{ c.icon }}" active="{{ true }}" on-remove="{{ c.remove }}" hint-size="100px,28px">{{ c.text }}</x-import>
+            </sc-for>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:var(--type-body-sm-size);color:var(--color-ink-muted);flex-wrap:wrap">
+            <span>Check for new jobs</span>
+            <x-import component-from-global-scope="GEApp.Segmented" options="Hourly|Daily|Weekly" value="Daily" hint-size="210px,32px"></x-import>
+          </div>
+        </x-import>
+        <div style="display:flex;justify-content:space-between;gap:12px">
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" on-click="{{ toReview }}" hint-size="80px,36px">Back</x-import>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" href="Jobs.dc.html" hint-size="170px,36px">Show my matches</x-import>
+        </div>
+      </section>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { step: 0, up: "idle", progress: 0, file: null, removed: [], chipsRemoved: [], query: "Backend or full-stack roles in Bengaluru or Mumbai for a 2027 grad, Go or Node, 10 LPA or more, hybrid is fine" };
+  componentDidMount() { if (!window.GEData) { const t = setInterval(() => { if (window.GEData) { clearInterval(t); this.forceUpdate(); } }, 50); } }
+  componentWillUnmount() { clearInterval(this.iv); }
+  upload(file) {
+    clearInterval(this.iv);
+    this.setState({ file, up: "uploading", progress: 0 });
+    this.iv = setInterval(() => this.setState(s => { const p = Math.min(100, s.progress + 9); if (p >= 100) clearInterval(this.iv); return { progress: p, up: p >= 100 ? "done" : "uploading" }; }), 90);
+  }
+  renderVals() {
+    const D = window.GEData, s = this.state;
+    const P = D ? D.PROFILE : { contact: {}, education: [], experience: [], projects: [], skills: {} };
+    const titles = ["Import", "Review", "First search"];
+    const all = Object.values(P.skills).flat();
+    const chips = [["briefcase", "Backend"], ["briefcase", "Full-stack"], ["map-pin", "Bengaluru"], ["map-pin", "Mumbai"], ["graduation-cap", "2027 grad"], ["code", "Go"], ["code", "Node.js"], ["wallet", "≥ ₹10 LPA"], ["building-2", "Hybrid okay"]];
+    return {
+      P, isImport: s.step === 0, isReview: s.step === 1, isSearch: s.step === 2,
+      steps: titles.map((title, i) => ({ n: i < s.step ? "✓" : i + 1, title,
+        dot: { width: "20px", height: "20px", borderRadius: "var(--rounded-full)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-mono)", fontSize: "11px", background: i === s.step ? "var(--color-primary)" : "var(--color-surface-2)", color: i === s.step ? "var(--color-on-primary)" : "var(--color-ink-subtle)", border: "1px solid " + (i === s.step ? "transparent" : "var(--color-hairline)") },
+        label: { color: i === s.step ? "var(--color-ink)" : "var(--color-ink-subtle)" } })),
+      upState: s.up, progress: s.progress, fileName: s.file ? s.file.name : "", fileSize: s.file ? s.file.size : "",
+      onFile: f => this.upload(f), useSample: () => this.upload({ name: "Ashmit_Jain_Resume_2025.pdf", size: "0.3 MB" }),
+      notParsed: s.up !== "done",
+      toImport: () => this.setState({ step: 0 }), toReview: () => this.setState({ step: 1 }), toSearch: () => this.setState({ step: 2 }),
+      roles: [...P.experience.map((x, i) => ({ title: x.role + " · " + x.co, sub: x.dates + " · " + x.bullets.length + " bullets", flag: i === 1 ? "Check dates" : "" })), ...P.projects.map(p => ({ title: p.name, sub: p.stack, flag: "Add a link" }))],
+      skills: all.filter(k => !s.removed.includes(k)).map(name => ({ name, remove: () => this.setState(p => ({ removed: [...p.removed, name] })) })),
+      query: s.query, onQuery: e => this.setState({ query: e.target.value }),
+      chips: chips.filter(([, t]) => !s.chipsRemoved.includes(t)).map(([icon, text]) => ({ icon, text, remove: () => this.setState(p => ({ chipsRemoved: [...p.chipsRemoved, text] })) })),
+    };
+  }
+}
+</script>
+</body>
+</html>

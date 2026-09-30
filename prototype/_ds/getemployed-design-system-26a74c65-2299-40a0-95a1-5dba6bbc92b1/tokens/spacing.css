@@ -1,0 +1,7 @@
+:root{
+--spacing-xxs:4px;--spacing-xs:8px;--spacing-sm:12px;--spacing-md:16px;--spacing-lg:24px;--spacing-xl:32px;--spacing-xxl:48px;--spacing-section:96px;
+--pad-button:8px 14px;--pad-input:8px 12px;--pad-tab:6px 14px;--pad-badge:2px 8px;
+--pad-card:24px;--pad-testimonial:32px;--pad-cta-banner:48px;--pad-footer:64px 32px;
+--container-max:1280px;--nav-height:56px;
+--bp-desktop-xl:1440px;--bp-desktop:1280px;--bp-tablet:1024px;--bp-mobile-lg:768px;--bp-mobile:480px;
+}

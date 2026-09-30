@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Account · GetEmployed</title>
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/colors.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/typography.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/radius.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/base.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/styles.css">
+<script src="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/_ds_bundle.js"></script>
+<script src="ge-app.js"></script>
+<style>body{margin:0;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)">
+  <x-import component-from-global-scope="GEApp.Sidebar" active="account" hint-size="232px,100vh"></x-import>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <x-import component-from-global-scope="GEApp.Topbar" crumbs="Settings / Account" parent-href="Settings.dc.html" hint-size="100%,56px"></x-import>
+    <main data-screen-label="Account" style="padding:32px 32px 96px;max-width:760px;width:100%;box-sizing:border-box;margin:0 auto;display:flex;flex-direction:column;gap:40px">
+      <x-import component-from-global-scope="GEApp.PageHeader" title="Account" sub="Sign-in, security and your data. Career details live on your Profile." hint-size="100%,64px"></x-import>
+
+      <section style="display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;gap:16px;padding:0 0 20px;border-bottom:1px solid var(--color-hairline);flex-wrap:wrap">
+          <x-import component-from-global-scope="GEApp.Avatar" name="{{ name }}" size="56" hint-size="56px,56px"></x-import>
+          <div style="flex:1;min-width:160px;display:flex;flex-direction:column;gap:2px">
+            <span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">Profile photo</span>
+            <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Shown in the app and on outreach signatures. PNG or JPG, up to 5 MB.</span>
+          </div>
+          <div style="display:flex;gap:8px">
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" hint-size="100px,28px">Upload photo</x-import>
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" hint-size="70px,28px">Remove</x-import>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+          <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">Full name</span>
+          <div style="width:220px"><x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.TextInput" value="{{ name }}" on-change="{{ onName }}" input-style="{{ smallInput }}" hint-size="220px,36px"></x-import></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+          <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">What should we call you?</span>
+          <div style="width:220px"><x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.TextInput" value="{{ nick }}" on-change="{{ onNick }}" input-style="{{ smallInput }}" hint-size="220px,36px"></x-import></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0">
+          <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">What best describes your work?</span>
+          <x-import component-from-global-scope="GEApp.InlineSelect" value="{{ role }}" options="Student|Professional|Freelancer|Between jobs" on-change="{{ onRole }}" hint-size="160px,32px"></x-import>
+        </div>
+      </section>
+
+      <section style="display:flex;flex-direction:column">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px">
+          <h2 style="margin:0;font-size:17px;font-weight:600">Active sessions</h2>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" on-click="{{ signOutOthers }}" hint-size="150px,28px">Sign out other sessions</x-import>
+        </div>
+        <sc-for list="{{ sessions }}" as="x" hint-placeholder-count="2">
+          <div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+            <span style="{{ x.icon }}"></span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ x.device }}</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ x.meta }}</span></div>
+            <sc-if value="{{ x.current }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.StatusBadge" tone="success" hint-size="90px,20px">This device</x-import></sc-if>
+            <sc-if value="{{ x.other }}" hint-placeholder-val="{{ true }}"><x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" on-click="{{ x.signOut }}" hint-size="70px,28px">Sign out</x-import></sc-if>
+          </div>
+        </sc-for>
+      </section>
+
+      <section style="display:flex;flex-direction:column">
+        <h2 style="margin:0 0 8px;font-size:17px;font-weight:600">Sign-in</h2>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+          <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">Email</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">ashmit27j@gmail.com · verified</span></div>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" hint-size="70px,28px">Change</x-import>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+          <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">Password</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Last changed Jun 12</span></div>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" hint-size="130px,28px">Change password</x-import>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+          <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">Two-step verification</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Ask for a code from an authenticator app when signing in on a new device.</span></div>
+          <x-import component-from-global-scope="GEApp.Toggle" label="Two-step verification" hint-size="32px,18px"></x-import>
+        </div>
+        <sc-for list="{{ providers }}" as="p" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+            <span style="width:32px;height:32px;flex:none;border-radius:var(--rounded-md);border:1px solid var(--color-hairline);background:var(--color-surface-1);display:flex;align-items:center;justify-content:center">
+              <sc-if value="{{ p.icon }}" hint-placeholder-val="{{ false }}"><img src="{{ p.icon }}" alt="" width="16" height="16" style="display:block;border-radius:3px"></sc-if>
+            </span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ p.name }}</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ p.sub }}</span></div>
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="{{ p.variant }}" size="sm" on-click="{{ p.toggle }}" hint-size="90px,28px">{{ p.cta }}</x-import>
+          </div>
+        </sc-for>
+      </section>
+
+      <section style="display:flex;flex-direction:column">
+        <h2 style="margin:0 0 8px;font-size:17px;font-weight:600">Connectors</h2>
+        <sc-for list="{{ connectors }}" as="c" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+            <span style="width:32px;height:32px;flex:none;border-radius:var(--rounded-md);border:1px solid var(--color-hairline);background:var(--color-surface-1);display:flex;align-items:center;justify-content:center;overflow:hidden">
+              <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ c.icon }}" alt="" width="16" height="16" style="display:block;border-radius:3px"></sc-if>
+              <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}"><span style="{{ c.iconStyle }}"></span></sc-if>
+            </span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ c.name }}</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Web</span></div>
+            <sc-if value="{{ c.connected }}" hint-placeholder-val="{{ true }}">
+              <button type="button" onClick="{{ c.toggle }}" style="all:unset;cursor:pointer;box-sizing:border-box;flex:none;width:92px;height:28px;text-align:center;border-radius:9999px;background:var(--color-surface-1);border:1px solid var(--color-hairline);color:var(--color-ink-subtle);font-size:13px;transition:background var(--duration-base) var(--ease-standard),color var(--duration-base) var(--ease-standard),border-color var(--duration-base) var(--ease-standard)" style-hover="background:rgba(214,96,96,.14);border-color:rgba(214,96,96,.45);color:oklch(0.80 0.09 22)">Disconnect</button>
+            </sc-if>
+            <sc-if value="{{ c.notConnected }}" hint-placeholder-val="{{ false }}">
+              <button type="button" onClick="{{ c.toggle }}" style="all:unset;cursor:pointer;box-sizing:border-box;flex:none;width:92px;height:28px;text-align:center;border-radius:9999px;background:var(--color-surface-3);border:1px solid var(--color-hairline-strong);color:var(--color-ink);font-size:13px;transition:background var(--duration-base) var(--ease-standard)" style-hover="background:var(--color-surface-4)">Connect</button>
+            </sc-if>
+          </div>
+        </sc-for>
+      </section>
+
+      <section style="display:flex;flex-direction:column">
+        <h2 style="margin:0 0 8px;font-size:17px;font-weight:600">Your data</h2>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0;border-bottom:1px solid var(--color-hairline)">
+          <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">Export data</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Resumes, tracker, outreach history and profile as a ZIP. We email the link.</span></div>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" on-click="{{ doExport }}" hint-size="100px,28px">{{ exportLabel }}</x-import>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 0">
+          <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">Delete account</span><span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle);text-wrap:pretty">Removes your resumes, searches, outreach history and interview recordings. Emails already sent stay in your Gmail.</span></div>
+          <button style="all:unset;cursor:pointer;flex:none;height:28px;padding:0 12px;border-radius:var(--rounded-md);border:1px solid oklch(0.74 0.11 22 / .5);color:oklch(0.80 0.09 22);font-size:13px;transition:background var(--duration-base) var(--ease-standard)" style-hover="background:rgba(214,96,96,.12)">Delete account</button>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { name: "Ashmit Jain", nick: "Ashmit", role: "Professional", li: false, gh: true, killed: [], exported: false, conn: { github: true, gmail: true, gcal: true, gdrive: true, notion: true, slack: false } };
+  renderVals() {
+    const s = this.state;
+    const dev = n => ({ width: "18px", height: "18px", flex: "none", margin: "0 7px", background: "var(--color-ink-subtle)", mask: "url(https://unpkg.com/lucide-static@0.460.0/icons/" + n + ".svg) center/contain no-repeat", WebkitMask: "url(https://unpkg.com/lucide-static@0.460.0/icons/" + n + ".svg) center/contain no-repeat" });
+    return {
+      name: s.name, nick: s.nick, onName: e => this.setState({ name: e.target.value }), onNick: e => this.setState({ nick: e.target.value }),
+      smallInput: { fontSize: "13px" },
+      role: s.role, onRole: v => this.setState({ role: v }),
+      connectors: [
+        { id: "github", name: "GitHub Integration", hasImg: true, icon: "assets/github.png" },
+        { id: "gmail", name: "Gmail", hasImg: false, iconName: "mail" },
+        { id: "gcal", name: "Google Calendar", hasImg: false, iconName: "calendar" },
+        { id: "gdrive", name: "Google Drive", hasImg: false, iconName: "hard-drive" },
+        { id: "notion", name: "Notion", hasImg: false, iconName: "book-open" },
+        { id: "slack", name: "Slack", hasImg: false, iconName: "hash" },
+      ].map(c => ({ name: c.name, hasImg: c.hasImg, icon: c.icon, iconStyle: c.iconName ? "width:16px;height:16px;background:var(--color-ink-subtle);mask:url(https://unpkg.com/lucide-static@0.460.0/icons/" + c.iconName + ".svg) center/contain no-repeat" : "", connected: s.conn[c.id], notConnected: !s.conn[c.id], toggle: () => this.setState(p => ({ conn: { ...p.conn, [c.id]: !p.conn[c.id] } })) })),
+      providers: [
+        { name: "Google", sub: "Connected Sep 3 · used to sign in", icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23FFC107' d='M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.6-.4-3.9z'/%3E%3Cpath fill='%23FF3D00' d='m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z'/%3E%3Cpath fill='%234CAF50' d='M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.5-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z'/%3E%3Cpath fill='%231976D2' d='M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z'/%3E%3C/svg%3E", cta: "Disconnect", variant: "tertiary", toggle: () => {} },
+        { name: "LinkedIn", sub: s.li ? "Connected · used to sign in" : "Not connected", icon: "assets/linkedin.svg", cta: s.li ? "Disconnect" : "Connect", variant: s.li ? "tertiary" : "secondary", toggle: () => this.setState({ li: !s.li }) },
+        { name: "GitHub", sub: s.gh ? "Connected as ashmit27j" : "Not connected", icon: "assets/github.png", cta: s.gh ? "Disconnect" : "Connect", variant: s.gh ? "tertiary" : "secondary", toggle: () => this.setState({ gh: !s.gh }) },
+      ],
+      sessions: [["c", "Chrome on macOS", "Mumbai, India · active now", "laptop", true], ["i", "Safari on iPhone", "Mumbai, India · 2 days ago", "smartphone", false], ["w", "Edge on Windows", "Pune, India · Sep 14", "monitor", false]].filter(x => !s.killed.includes(x[0])).map(([id, device, meta, icon, current]) => ({ device, meta, current, other: !current, icon: dev(icon), signOut: () => this.setState({ killed: [...s.killed, id] }) })),
+      signOutOthers: () => this.setState({ killed: ["i", "w"] }),
+      exportLabel: s.exported ? "Link sent" : "Export", doExport: () => this.setState({ exported: true }),
+    };
+  }
+}
+</script>
+</body>
+</html>

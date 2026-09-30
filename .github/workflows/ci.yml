@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  node:
+    name: Lint, typecheck, test, build (Node)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: getemployed
+          POSTGRES_PASSWORD: getemployed
+          POSTGRES_DB: getemployed
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U getemployed" --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      DATABASE_URL: postgres://getemployed:getemployed@localhost:5432/getemployed
+      BETTER_AUTH_SECRET: ci-only-secret-ci-only-secret-ci-only-secret
+      NEXT_PUBLIC_SITE_URL: http://localhost:4000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm turbo run lint typecheck test build --filter=!@ge/scraper
+      - name: Migrations apply and seed runs
+        run: pnpm db:migrate && pnpm db:seed
+      - name: End-to-end tests (site and app)
+        run: |
+          pnpm --filter @ge/app exec playwright install --with-deps chromium
+          pnpm --filter @ge/app test:e2e
+      - name: Migrations are up to date with the schema
+        run: pnpm db:generate && git diff --exit-code packages/db/drizzle
+
+  scraper:
+    name: Lint and test (scraper)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/scraper
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --frozen
+      - run: uv run ruff check . && uv run ruff format --check .
+      - run: uv run pytest -q

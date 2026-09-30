@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Saved searches · GetEmployed</title>
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/colors.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/typography.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/radius.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/base.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/styles.css">
+<script src="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/_ds_bundle.js"></script>
+<script src="ge-app.js"></script>
+<script src="ge-data.js"></script>
+<style>:root{--color-field:#171C25}body{margin:0;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}
+@keyframes ge-ss-dot{50%{opacity:.35;transform:scale(.8)}}
+@keyframes ge-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){[data-ge-anim]{animation:none!important}}</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)">
+  <x-import component-from-global-scope="GEApp.Sidebar" active="jobs" hint-size="232px,100vh"></x-import>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <x-import component-from-global-scope="GEApp.Topbar" crumbs="Saved searches" parent-href="Jobs.dc.html?board=Saved" hint-size="100%,56px"></x-import>
+    <main data-screen-label="Saved searches" style="padding:40px 32px 96px;max-width:960px;width:100%;box-sizing:border-box;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+          <a href="Jobs.dc.html?board=Saved" style="display:inline-flex;align-items:center;gap:6px;font-size:var(--type-body-sm-size);color:var(--color-ink-subtle);text-decoration:none" style-hover="color:var(--color-ink)"><span style="width:14px;height:14px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/arrow-left.svg) center/contain no-repeat"></span>Saved searches</a>
+          <h1 style="margin:0;font-size:var(--type-headline-size);line-height:1.15;font-weight:600;letter-spacing:-0.8px">Saved search</h1>
+        </div>
+        <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="md" on-click="{{ remove }}" hint-size="100px,36px">Delete search</x-import>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:24px">
+
+        <div style="min-width:0;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:14px;padding:20px;border-radius:var(--rounded-lg);border:1px solid var(--color-hairline);background:var(--color-surface-1)">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <label style="position:relative;display:block;flex:1 1 320px;min-width:0">
+                <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--color-primary);background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/sparkles.svg) center/contain no-repeat;pointer-events:none"></span>
+                <input value="{{ cur.q }}" onChange="{{ onQ }}" onKeyDown="{{ onKey }}" aria-label="Edit search" style="all:unset;box-sizing:border-box;width:100%;height:44px;padding:0 14px 0 40px;border-radius:var(--rounded-md);border:1px solid var(--color-hairline-strong);background:var(--color-field);font-size:var(--type-body-size);color:var(--color-ink)" style-hover="border-color:var(--color-hairline-strong)" style-focus="border-color:var(--color-primary)"></input>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:var(--type-body-sm-size);color:var(--color-ink-muted)">
+                <x-import component-from-global-scope="GEApp.Toggle" on="{{ cur.active }}" on-change="{{ setActive }}" label="Active" hint-size="32px,18px"></x-import>{{ activeLabel }}
+              </label>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <sc-for list="{{ cur.chipList }}" as="c" hint-placeholder-count="4">
+                <x-import component-from-global-scope="GEApp.Chip" icon="{{ c.icon }}" hint-size="90px,28px">{{ c.text }}</x-import>
+              </sc-for>
+            </div>
+          </div>
+
+          <x-import component-from-global-scope="GEApp.Panel" title="Matches" meta="{{ matchMeta }}" hint-size="100%,320px">
+            <sc-for list="{{ jobs }}" as="j" hint-placeholder-count="4">
+              <a href="{{ j.href }}" style="display:grid;grid-template-columns:36px minmax(0,1fr) auto auto;gap:14px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--color-hairline);text-decoration:none;transition:background var(--duration-base) var(--ease-standard)" style-hover="background:var(--color-surface-2)">
+                <x-import component-from-global-scope="GEApp.MatchRing" value="{{ j.score }}" size="36" label="{{ false }}" hint-size="36px,36px"></x-import>
+                <span style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                  <span style="display:flex;align-items:center;gap:8px;font-size:var(--type-body-size);font-weight:500;color:var(--color-ink)">{{ j.title }}
+                    <sc-if value="{{ j.isNew }}" hint-placeholder-val="{{ false }}">
+                      <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.StatusBadge" tone="accent" hint-size="44px,20px">New</x-import>
+                    </sc-if>
+                  </span>
+                  <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ j.co }} · {{ j.loc }} · {{ j.mode }} · {{ j.posted }} ago</span>
+                </span>
+                <x-import component-from-global-scope="GEApp.SalaryBadge" type="{{ j.salary.type }}" min="{{ j.salary.min }}" max="{{ j.salary.max }}" confidence="{{ j.salary.conf }}" compact="{{ true }}" hint-size="120px,20px"></x-import>
+                <span style="width:16px;height:16px;color:var(--color-ink-subtle);background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/chevron-right.svg) center/contain no-repeat"></span>
+              </a>
+            </sc-for>
+          </x-import>
+
+          <x-import component-from-global-scope="GEApp.Panel" title="Polling" sub="How this search checks for new postings." hint-size="100%,420px">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid var(--color-hairline);background:var(--color-field)">
+              <span style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;font-size:var(--type-body-sm-size);color:var(--color-ink)">
+                {{ statusDot }}
+                <span style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                  <span style="font-weight:500">{{ statusTitle }}</span>
+                  <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ statusSub }}</span>
+                </span>
+              </span>
+              <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" on-click="{{ checkNow }}" disabled="{{ checkDisabled }}" hint-size="100px,28px">{{ checkLabel }}</x-import>
+            </div>
+
+            <div style="display:grid;grid-template-columns:minmax(0,140px) minmax(0,1fr);gap:16px;align-items:center;padding:16px 20px;border-bottom:1px solid var(--color-hairline)">
+              <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">Check every</span>
+              <div><x-import component-from-global-scope="GEApp.Segmented" options="Hour|6 hours|Day|Week" value="{{ freq }}" on-change="{{ setFreq }}" hint-size="300px,32px"></x-import></div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:minmax(0,140px) minmax(0,1fr);gap:16px;align-items:start;padding:16px 20px;border-bottom:1px solid var(--color-hairline)">
+              <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle);padding-top:12px">Runs on</span>
+              <div role="radiogroup" aria-label="Runs on" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px">
+                <sc-for list="{{ runOpts }}" as="r" hint-placeholder-count="2">
+                  <button type="button" role="radio" aria-checked="{{ r.on }}" onClick="{{ r.pick }}" style="all:unset;cursor:pointer;box-sizing:border-box;display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:var(--rounded-md);border:1px solid {{ r.border }};background:{{ r.bg }};transition:background var(--duration-base) var(--ease-standard),border-color var(--duration-base) var(--ease-standard)" style-hover="border-color:var(--color-hairline-tertiary)">
+                    <span style="{{ r.iconStyle }}"></span>
+                    <span style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1">
+                      <span style="font-size:var(--type-body-sm-size);font-weight:500;color:var(--color-ink)">{{ r.name }}</span>
+                      <span style="font-size:var(--type-caption-size);line-height:1.4;color:var(--color-ink-subtle);text-wrap:pretty">{{ r.desc }}</span>
+                    </span>
+                    <span style="{{ r.radio }}"></span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+
+            <sc-if value="{{ isCloud }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:minmax(0,140px) minmax(0,1fr);gap:16px;align-items:start;padding:16px 20px;border-bottom:1px solid var(--color-hairline)">
+              <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">Cloud checks</span>
+              <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+                  <span style="font-family:var(--font-mono);font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ usageLabel }}</span>
+                  <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Resets Oct 1</span>
+                </div>
+                <div style="position:relative;height:6px;border-radius:var(--rounded-pill);background:var(--color-surface-3);overflow:hidden">
+                  <div style="position:absolute;left:0;top:0;bottom:0;width:{{ usedPct }};background:var(--color-ink-tertiary)"></div>
+                  <div style="position:absolute;top:0;bottom:0;left:{{ usedPct }};width:{{ thisPct }};background:var(--color-primary)"></div>
+                </div>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:var(--type-caption-size);color:var(--color-ink-subtle)">
+                  <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:var(--color-ink-tertiary)"></span>Used so far</span>
+                  <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:var(--color-primary)"></span>{{ thisLabel }}</span>
+                </div>
+                <sc-if value="{{ overLimit }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:var(--rounded-md);background:oklch(0.83 0.11 80 / .10);border:1px solid oklch(0.83 0.11 80 / .35)">
+                    <span style="display:flex;gap:10px;align-items:flex-start;color:oklch(0.88 0.08 80);font-size:var(--type-body-sm-size);line-height:1.45">
+                      <span style="width:16px;height:16px;flex:none;margin-top:2px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/triangle-alert.svg) center/contain no-repeat"></span>
+                      <span style="text-wrap:pretty">{{ overText }}</span>
+                    </span>
+                    <label style="display:flex;align-items:center;gap:10px;font-size:var(--type-body-sm-size);color:var(--color-ink-muted)">
+                      <x-import component-from-global-scope="GEApp.Toggle" on="{{ overages }}" on-change="{{ setOverages }}" label="Allow overages" hint-size="32px,18px"></x-import>
+                      Keep checking past the limit at ₹0.50 per check
+                    </label>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+            </sc-if>
+
+            <div style="display:grid;grid-template-columns:minmax(0,140px) minmax(0,1fr);gap:16px;align-items:center;padding:16px 20px">
+              <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">Notify me</span>
+              <div><x-import component-from-global-scope="GEApp.Segmented" options="Each new match|Daily digest|Off" value="{{ notify }}" on-change="{{ setNotify }}" hint-size="340px,32px"></x-import></div>
+            </div>
+          </x-import>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { id: new URLSearchParams(location.search).get("id") || "s1", cfg: {}, checking: false, nextMin: 38 };
+  CHECKS = { Hour: 720, "6 hours": 120, Day: 30, Week: 4 };
+  FREQ_MAP = { Hourly: "Hour", Daily: "Day", Weekly: "Week" };
+  MATCH = { s1: /backend|platform|api/i, s2: /frontend|react/i, s3: /security|intern/i };
+  componentDidMount() {
+    if (!window.GEData) { const t = setInterval(() => { if (window.GEData) { clearInterval(t); this.forceUpdate(); } }, 50); }
+    this.tk = setInterval(() => this.setState(p => ({ nextMin: p.nextMin <= 1 ? 60 : p.nextMin - 1 })), 60000);
+  }
+  componentWillUnmount() { clearInterval(this.tk); clearTimeout(this.ct); }
+  storedQ() { try { return JSON.parse(localStorage.getItem("ge-search-q") || "{}"); } catch (e) { return {}; } }
+  get(x) {
+    const c = this.state.cfg[x.id] || {};
+    return { q: c.q ?? this.storedQ()[x.id] ?? x.q, active: c.active ?? !!x.active, freq: c.freq ?? this.FREQ_MAP[x.freq] ?? "Day", runOn: c.runOn ?? "Cloud", notify: c.notify ?? "Each new match", overages: !!c.overages, last: c.last ?? x.last };
+  }
+  set(patch) { const id = this.state.id; this.setState(p => ({ cfg: { ...p.cfg, [id]: { ...(p.cfg[id] || {}), ...patch } } })); }
+  renderVals() {
+    const D = window.GEData || { JOBS: [], SEARCHES: [] }, s = this.state;
+    const all = D.SEARCHES;
+    const x = all.find(a => a.id === s.id) || all[0] || { id: "", q: "", chips: [], newCount: 0 };
+    const remove = () => { try { const d = JSON.parse(localStorage.getItem("ge-search-deleted") || "[]"); localStorage.setItem("ge-search-deleted", JSON.stringify([...new Set([...d, x.id])])); } catch (e) {} location.href = "Jobs.dc.html?board=Saved"; };
+    const c = this.get(x);
+    const re = this.MATCH[x.id];
+    let jobs = re ? D.JOBS.filter(j => re.test(j.title)) : [];
+    const want = Math.max(4, x.newCount || 0);
+    if (jobs.length < want) jobs = [...jobs, ...D.JOBS.filter(j => !jobs.includes(j))].slice(0, want);
+    const nNew = c.active ? Math.min(x.newCount || 0, jobs.length) : 0;
+    const LIMIT = 300, USED = 184;
+    const perMonth = this.CHECKS[c.freq] || 30;
+    const remainingDays = 2, thisProj = c.active && c.runOn === "Cloud" ? Math.round(perMonth * remainingDays / 30) : 0;
+    const over = c.active && c.runOn === "Cloud" && perMonth > LIMIT - USED;
+    const pct = v => Math.min(100, v / LIMIT * 100).toFixed(1) + "%";
+    const nextLabel = { Hour: s.nextMin + " min", "6 hours": "4 h " + s.nextMin + " min", Day: "14 h", Week: "3 days" }[c.freq];
+    const radio = on => ({ width: "14px", height: "14px", flex: "none", marginTop: "2px", boxSizing: "border-box", borderRadius: "50%", border: on ? "4px solid var(--color-primary)" : "1.5px solid var(--color-hairline-tertiary)" });
+    const ic = n => ({ width: "18px", height: "18px", flex: "none", marginTop: "1px", color: "var(--color-ink-subtle)", background: "currentColor", mask: "url(https://unpkg.com/lucide-static@0.460.0/icons/" + n + ".svg) center/contain no-repeat" });
+    return {
+      remove,
+      list: all.map(a => { const g = this.get(a), cur = a.id === x.id; return { q: g.q, current: cur ? "true" : undefined, dim: g.active ? 1 : 0.5,
+        meta: g.active ? "Every " + g.freq.toLowerCase() : "Paused", dot: g.active ? "var(--color-semantic-success)" : "var(--color-ink-tertiary)",
+        hasNew: g.active && a.newCount > 0, newCount: a.newCount,
+        bg: cur ? "var(--color-surface-2)" : "var(--color-surface-1)", border: cur ? "var(--color-hairline-tertiary)" : "var(--color-hairline)",
+        pick: () => { this.setState({ id: a.id }); try { history.replaceState(null, "", "?id=" + a.id); } catch (e) {} } }; }),
+      cur: { ...c, chipList: (x.chips || []).map(([icon, text]) => ({ icon, text })) },
+      onQ: e => { const v = e.target.value; this.set({ q: v }); try { localStorage.setItem("ge-search-q", JSON.stringify({ ...this.storedQ(), [x.id]: v })); } catch (er) {} },
+      onKey: e => { if (e.key === "Enter") e.target.blur(); },
+      setActive: v => this.set({ active: v }), activeLabel: c.active ? "Active" : "Paused",
+      matchMeta: jobs.length + " jobs" + (nNew ? " · " + nNew + " new" : ""),
+      jobs: jobs.map((j, i) => ({ ...j, isNew: i < nNew, href: "Job%20Detail.dc.html?id=" + j.id })),
+      statusDot: React.createElement("span", { "data-ge-anim": "", style: { width: 8, height: 8, flex: "none", borderRadius: "50%", background: s.checking ? "var(--color-primary)" : c.active ? "var(--color-semantic-success)" : "var(--color-ink-tertiary)", animation: s.checking || c.active ? "ge-ss-dot " + (s.checking ? "0.8s" : "2.4s") + " ease-in-out infinite" : "none" } }),
+      statusTitle: s.checking ? "Checking career pages and listings…" : c.active ? "Watching · next check in " + nextLabel : "Paused",
+      statusSub: c.active ? "Last checked " + c.last + " · " + (c.runOn === "Cloud" ? "in the cloud" : "on this device") : "Turn the search back on to resume checks.",
+      checkLabel: s.checking ? "Checking…" : "Check now", checkDisabled: s.checking,
+      checkNow: () => { if (s.checking) return; this.setState({ checking: true }); clearTimeout(this.ct); this.ct = setTimeout(() => { this.setState({ checking: false }); this.set({ last: "just now" }); }, 1800); },
+      freq: c.freq, setFreq: v => this.set({ freq: v }),
+      runOpts: [["Cloud", "cloud", "Runs when your device is off. Uses your monthly cloud checks."], ["Local", "laptop", "Free and unlimited. Runs only while this device is on and the app is open."]].map(([name, icon, desc]) => { const on = c.runOn === name; return { name, desc, on, iconStyle: ic(icon), radio: radio(on), bg: on ? "var(--color-glow-soft)" : "var(--color-surface-1)", border: on ? "var(--color-primary)" : "var(--color-hairline)", pick: () => this.set({ runOn: name }) }; }),
+      isCloud: c.runOn === "Cloud",
+      usageLabel: USED + " of " + LIMIT + " used",
+      usedPct: pct(USED), thisPct: pct(Math.min(thisProj, LIMIT - USED)),
+      thisLabel: "This search, rest of month ≈ " + thisProj + " · " + perMonth + " / month at this rate",
+      overLimit: over,
+      overText: "Checking every " + c.freq.toLowerCase() + " uses about " + perMonth + " checks a month, more than the " + (LIMIT - USED) + " you have left. Checks stop at the limit unless you allow overages.",
+      overages: c.overages, setOverages: v => this.set({ overages: v }),
+      notify: c.notify, setNotify: v => this.set({ notify: v }),
+    };
+  }
+}
+</script>
+</body>
+</html>

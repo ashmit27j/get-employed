@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Job detail · GetEmployed</title>
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/colors.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/typography.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/radius.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/base.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/styles.css">
+<script src="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/_ds_bundle.js"></script>
+<script src="ge-app.js"></script>
+<script src="ge-data.js"></script>
+<style>body{margin:0;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)">
+  <x-import component-from-global-scope="GEApp.Sidebar" active="jobs" hint-size="232px,100vh"></x-import>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <x-import component-from-global-scope="GEApp.Topbar" crumbs="{{ crumbs }}" parent-href="Jobs.dc.html" hint-size="100%,56px"></x-import>
+    <main data-screen-label="Job detail" style="padding:32px 32px 96px;max-width:1200px;width:100%;box-sizing:border-box;margin:0 auto;display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
+        <x-import component-from-global-scope="GEApp.CoLogo" name="{{ job.co }}" size="48" hint-size="48px,48px"></x-import>
+        <div style="flex:1;min-width:260px;display:flex;flex-direction:column;gap:8px">
+          <h1 style="margin:0;font-size:var(--type-headline-size);line-height:var(--type-headline-lh);letter-spacing:var(--type-headline-ls);font-weight:600">{{ job.title }}</h1>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:var(--type-body-sm-size);color:var(--color-ink-subtle)">
+            <span style="color:var(--color-ink-muted)">{{ job.co }}</span><span>·</span><span>{{ job.loc }}</span><span>·</span><span>{{ job.mode }}</span><span>·</span><span>{{ job.exp }}</span><span>·</span><span>Posted {{ job.posted }} ago via {{ job.src }}</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <x-import component-from-global-scope="GEApp.IconButton" icon="{{ saveIcon }}" title="Save to tracker" active="{{ saved }}" on-click="{{ toggleSave }}" size="36" hint-size="36px,36px"></x-import>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" href="Outbox.dc.html?box=outbox" hint-size="100px,36px">Reach out</x-import>
+          <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" href="{{ tailorHref }}" hint-size="130px,36px">Tailor resume</x-import>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+        <div style="display:flex;flex-direction:column;gap:24px;flex:2 1 520px;min-width:0">
+          <x-import component-from-global-scope="GEApp.Panel" title="Job description" meta="Parsed from the careers page" pad="24" hint-size="100%,720px">
+            <section style="display:flex;flex-direction:column;gap:8px">
+              <h2 style="margin:0;font-size:var(--type-body-size);font-weight:600">About the team</h2>
+              <p style="margin:0;font-size:var(--type-body-sm-size);line-height:1.6;color:var(--color-ink-muted);text-wrap:pretty">{{ job.co }}'s platform team owns the services that sit between merchants and banks: payment routing, retries, reconciliation and the event pipeline that feeds every downstream product. You'll join a group of eight engineers and ship to production in your first two weeks.</p>
+            </section>
+            <section style="display:flex;flex-direction:column;gap:8px">
+              <h2 style="margin:0;font-size:var(--type-body-size);font-weight:600">What you'll do</h2>
+              <ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:var(--type-body-sm-size);line-height:1.6;color:var(--color-ink-muted)">
+                <li>Build and operate high-throughput services that process millions of events a day.</li>
+                <li>Design idempotent APIs for payment retries and webhooks.</li>
+                <li>Write design docs, review code, and take part in a lightweight on-call rotation.</li>
+                <li>Work with product and SRE to improve p99 latency and error budgets.</li>
+              </ul>
+            </section>
+            <section style="display:flex;flex-direction:column;gap:12px">
+              <h2 style="margin:0;font-size:var(--type-body-size);font-weight:600">Requirements</h2>
+              <div style="display:flex;flex-direction:column;border:1px solid var(--color-hairline);border-radius:var(--rounded-md);overflow:hidden">
+                <sc-for list="{{ reqs }}" as="r" hint-placeholder-count="5">
+                  <div style="display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--color-hairline);font-size:var(--type-body-sm-size)">
+                    <span style="{{ r.iconStyle }}"></span>
+                    <span style="color:var(--color-ink)">{{ r.skill }}</span>
+                    <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ r.evidence }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </section>
+            <section style="display:flex;flex-direction:column;gap:8px">
+              <h2 style="margin:0;font-size:var(--type-body-size);font-weight:600">Benefits</h2>
+              <p style="margin:0;font-size:var(--type-body-sm-size);line-height:1.6;color:var(--color-ink-muted);text-wrap:pretty">Health cover for you and your family, a learning budget, relocation support for Bengaluru, and a hybrid schedule with three office days a week.</p>
+            </section>
+          </x-import>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px;flex:1 1 320px;min-width:0">
+          <x-import component-from-global-scope="GEApp.Panel" title="Match breakdown" pad="20" hint-size="100%,340px">
+            <div style="display:flex;gap:16px;align-items:center">
+              <x-import component-from-global-scope="GEApp.MatchRing" value="{{ job.score }}" size="80" hint-size="80px,80px"></x-import>
+              <p style="margin:0;font-size:var(--type-body-sm-size);color:var(--color-ink-muted);text-wrap:pretty">{{ job.why }}</p>
+            </div>
+            <x-import component-from-global-scope="GEApp.ScoreBar" label="Required skills" value="80" value-label="4 of 5" hint-size="100%,28px"></x-import>
+            <x-import component-from-global-scope="GEApp.ScoreBar" label="Experience level" value="95" hint-size="100%,28px"></x-import>
+            <x-import component-from-global-scope="GEApp.ScoreBar" label="Location and mode" value="100" hint-size="100%,28px"></x-import>
+            <x-import component-from-global-scope="GEApp.ScoreBar" label="Project relevance" value="86" gain="6" note="Tailoring can add ~6 by surfacing FestFlow's Kafka work." hint-size="100%,44px"></x-import>
+          </x-import>
+
+          <x-import component-from-global-scope="GEApp.Panel" title="Missing skills" sub="Mentioned in the JD, not found in your profile" pad="20" hint-size="100%,160px">
+            <sc-for list="{{ missing }}" as="m" hint-placeholder-count="1">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="flex:1;display:flex;flex-direction:column">
+                  <span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ m.name }}</span>
+                  <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ m.note }}</span>
+                </div>
+                <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" hint-size="96px,28px">I have this</x-import>
+              </div>
+            </sc-for>
+          </x-import>
+
+          <x-import component-from-global-scope="GEApp.Panel" title="Salary" pad="20" hint-size="100%,220px">
+            <x-import component-from-global-scope="GEApp.SalaryBadge" type="{{ job.salary.type }}" min="{{ job.salary.min }}" max="{{ job.salary.max }}" confidence="{{ job.salary.conf }}" samples="{{ job.salary.n }}" hint-size="220px,22px"></x-import>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="position:relative;height:24px">
+                <div style="position:absolute;left:0;right:0;top:11px;height:2px;background:var(--color-surface-3);border-radius:var(--rounded-pill)"></div>
+                <div style="position:absolute;left:22%;width:50%;top:8px;height:8px;background:var(--color-surface-4);border-radius:var(--rounded-pill)"></div>
+                <div style="{{ bandStyle }}"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--color-ink-tertiary)"><span>₹8</span><span>₹20</span><span>₹32 LPA</span></div>
+            </div>
+            <p style="margin:0;font-size:var(--type-caption-size);line-height:1.5;color:var(--color-ink-subtle);text-wrap:pretty">{{ salaryNote }}</p>
+          </x-import>
+
+          <x-import component-from-global-scope="GEApp.Panel" title="Contact discovery" meta="{{ contactMeta }}" pad="20" hint-size="100%,240px">
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:var(--type-body-sm-size)">
+              <sc-for list="{{ steps }}" as="st" hint-placeholder-count="3">
+                <div style="display:flex;gap:8px;align-items:center;color:var(--color-ink-muted)">
+                  <span style="{{ st.iconStyle }}"></span><span>{{ st.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ hasContact }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;gap:12px;align-items:center;padding:12px;border-radius:var(--rounded-md);background:var(--color-surface-2);border:1px solid var(--color-hairline)">
+                <x-import component-from-global-scope="GEApp.Avatar" name="{{ job.contact.name }}" size="32" hint-size="32px,32px"></x-import>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+                  <span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ job.contact.name }}</span>
+                  <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ job.contact.role }}</span>
+                </div>
+                <x-import component-from-global-scope="GEApp.ConfidenceMeter" value="{{ job.contact.conf }}" hint-size="60px,16px"></x-import>
+              </div>
+              <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" full-width="{{ true }}" href="Outbox.dc.html?box=outbox" hint-size="100%,28px">Draft outreach email</x-import>
+            </sc-if>
+          </x-import>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { saved: false };
+  componentDidMount() { if (!window.GEData) { const t = setInterval(() => { if (window.GEData) { clearInterval(t); this.forceUpdate(); } }, 50); } }
+  renderVals() {
+    const D = window.GEData;
+    const blank = { title: "", co: "", loc: "", mode: "", exp: "", posted: "", src: "", why: "", score: 0, skills: [], missing: [], salary: {}, contact: {} };
+    const id = new URLSearchParams(location.search).get("id") || "j1";
+    const job = D ? (D.JOBS.find(j => j.id === id) || D.JOBS[0]) : blank;
+    const ic = (n, c) => ({ width: "16px", height: "16px", flex: "none", color: c, background: "currentColor", mask: "url(https://unpkg.com/lucide-static@0.460.0/icons/" + n + ".svg) center/contain no-repeat" });
+    const ev = { Go: "FestFlow backend, 2 internships", Kafka: "FestFlow event queue", PostgreSQL: "FestFlow, Synoris APIs", gRPC: "FestFlow internal services", "Node.js": "Synoris APIs", React: "Synoris internship", TypeScript: "3 projects" };
+    const s = job.salary, lo = 8, hi = 32;
+    const c = job.contact || {};
+    const found = c.status === "found";
+    return {
+      job, crumbs: "Jobs / " + job.title, saved: this.state.saved, saveIcon: this.state.saved ? "bookmark-check" : "bookmark",
+      toggleSave: () => this.setState({ saved: !this.state.saved }), tailorHref: "Resume.dc.html?tab=tailor&job=" + job.id,
+      reqs: job.skills.map(k => { const miss = job.missing.includes(k); return { skill: k, iconStyle: ic(miss ? "circle-dashed" : "circle-check", miss ? "var(--color-ink-tertiary)" : "var(--color-primary)"), evidence: miss ? "Not in profile" : (ev[k] || "Listed in skills") }; }),
+      missing: job.missing.map(m => ({ name: m, note: "Mentioned " + (m.length % 3 + 1) + "× in the JD · often paired with " + (job.skills[0] || "") })),
+      bandStyle: { position: "absolute", top: "6px", height: "12px", borderRadius: "var(--rounded-pill)", left: ((s.min - lo) / (hi - lo) * 100) + "%", width: ((s.max - s.min) / (hi - lo) * 100) + "%", background: s.type === "stated" ? "var(--color-primary)" : "var(--color-glow)", border: s.type === "stated" ? "none" : "1px dashed var(--color-primary)", boxSizing: "border-box" },
+      salaryNote: s.type === "stated" ? "Stated in the posting. Grey band shows the market p25–p75 for 0–2 yr backend roles in " + job.loc + "." : "Estimated from " + s.n + " offers for similar roles in " + job.loc + " over the last 12 months. " + s.conf + "% confidence; the grey band is the market p25–p75.",
+      hasContact: found, contactMeta: found ? "1 of 6 people" : c.status === "searching" ? "Searching…" : "No contact yet",
+      steps: [
+        { label: "Company domain resolved", iconStyle: ic("circle-check", "var(--color-primary)") },
+        { label: found ? "6 people on the hiring team found" : "Looking for the hiring team", iconStyle: ic(found ? "circle-check" : "loader", found ? "var(--color-primary)" : "var(--color-ink-subtle)") },
+        { label: found ? "Email verified by SMTP handshake" : "Email not verified yet", iconStyle: ic(found ? "circle-check" : "circle-dashed", found ? "var(--color-primary)" : "var(--color-ink-tertiary)") },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

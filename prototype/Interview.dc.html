@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Interview prep · GetEmployed</title>
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/colors.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/typography.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/radius.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/base.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/styles.css">
+<script src="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/_ds_bundle.js"></script>
+<script src="ge-app.js"></script>
+<script src="ge-data.js"></script>
+<style>body{margin:0;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)">
+  <x-import component-from-global-scope="GEApp.Sidebar" active="interview" hint-size="232px,100vh"></x-import>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <x-import component-from-global-scope="GEApp.Topbar" crumbs="{{ crumbs }}" parent-href="Interview.dc.html" assistant-disabled="{{ isLive }}" hint-size="100%,56px"></x-import>
+    <main style="padding:32px 32px 96px;max-width:1200px;width:100%;box-sizing:border-box;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+      <sc-if value="{{ isSetup }}" hint-placeholder-val="{{ true }}">
+        <section data-screen-label="Interview setup" style="display:flex;flex-direction:column;gap:24px">
+          <x-import component-from-global-scope="GEApp.PageHeader" title="Mock interview" sub="{{ modeSub }}" hint-size="100%,64px"></x-import>
+          <div role="radiogroup" aria-label="Interview format" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+            <sc-for list="{{ modes }}" as="m" hint-placeholder-count="3">
+              <button role="radio" aria-checked="{{ m.on }}" onClick="{{ m.pick }}" style="{{ m.style }}" style-hover="border-color:var(--color-hairline-strong);background:var(--color-surface-2);opacity:1">
+                <span style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                  <span style="{{ m.icon }}"></span>
+                  <span style="{{ m.radio }}"></span>
+                </span>
+                <span style="font-size:var(--type-body-size);font-weight:600;color:var(--color-ink)">{{ m.title }}</span>
+                <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-muted);text-wrap:pretty">{{ m.sub }}</span>
+                <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ m.meta }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+          <div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:16px">
+            <x-import component-from-global-scope="GEApp.Panel" pad="20" hint-size="100%,340px">
+              <div style="display:flex;flex-direction:column;gap:16px">
+                <x-import component-from-global-scope="GEApp.Combobox" label="Company" options="Not company specific|Razorpay|Zepto|Atlassian|CRED|Postman|Freshworks" default-value="Not company specific" empty-label="Not company specific" placeholder="Search or type a company" hint-size="100%,64px"></x-import>
+                <x-import component-from-global-scope="GEApp.Dropdown" label="Role" options="Not role specific|Backend Engineer|Frontend Engineer|Full-stack Engineer|SDE-1|Software Engineer Intern|Graduate Software Engineer|iOS Engineer|Android Engineer|Data Engineer|Data Analyst|ML Engineer|DevOps Engineer|Security Engineer|Product Manager|QA Engineer" default-value="Not role specific" empty-label="Not role specific" placeholder="Not role specific" hint-size="100%,64px"></x-import>
+              </div>
+              <div style="display:flex;gap:24px;flex-wrap:wrap">
+                <x-import component-from-global-scope="GEApp.Dropdown" label="Interview type" options="Mixed|Technical|Behavioural|Aptitude" default-value="Mixed" hint-size="370px,64px"></x-import>
+                <x-import component-from-global-scope="GEApp.Dropdown" label="Length" options="10 min|15 min|30 min" default-value="15 min" hint-size="220px,64px"></x-import>
+                <x-import component-from-global-scope="GEApp.Dropdown" label="Strictness" options="Lenient|Standard|Strict" default-value="Standard" hint-size="220px,64px"></x-import>
+              </div>
+              <label style="display:flex;flex-direction:column;gap:8px;min-width:0">
+                <span style="display:flex;align-items:baseline;gap:6px">
+                  <span style="font-size:var(--type-body-sm-size);font-weight:500;color:var(--color-ink-muted)">AI model</span>
+                  <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle);white-space:nowrap">— % = usage this week</span>
+                </span>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <sc-for list="{{ modelList }}" as="m" hint-placeholder-count="4">
+                    <button type="button" onClick="{{ m.pick }}" style="{{ m.rowStyle }}">
+                      <span style="{{ m.dotStyle }}"></span>
+                      <span style="flex:1;min-width:0;text-align:left;font-size:var(--type-body-sm-size);color:{{ m.nameColor }}">{{ m.name }}</span>
+                      <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-subtle);width:34px;text-align:right">{{ m.pct }}%</span>
+                      <svg width="28" height="28" viewBox="0 0 28 28" style="flex:none">
+                        <circle cx="14" cy="14" r="11" fill="none" stroke="var(--color-hairline)" stroke-width="3"></circle>
+                        <circle cx="14" cy="14" r="11" fill="none" stroke="{{ m.ringColor }}" stroke-width="3" stroke-linecap="round" stroke-dasharray="{{ m.dashArray }}" transform="rotate(-90 14 14)"></circle>
+                      </svg>
+                    </button>
+                  </sc-for>
+                </div>
+              </label>
+            </x-import>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;gap:12px;font-size:var(--type-body-sm-size)">
+                <span style="color:var(--color-ink-muted)">Live sessions this month</span>
+                <span style="font-family:var(--font-mono);font-size:13px;color:var(--color-ink-subtle)">0 / 1</span>
+              </div>
+              <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Typed and Multiple choice don't count against this · Pro is unlimited.</span>
+            </div>
+          </div>
+          <div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:12px">
+            <sc-if value="{{ liveMode }}" hint-placeholder-val="{{ true }}">
+            <div style="position:relative;aspect-ratio:16/9;max-height:220px;border-radius:var(--rounded-xl);border:1px solid var(--color-hairline);background:var(--color-surface-1);overflow:hidden;display:flex;align-items:center;justify-content:center">
+              <video ref="{{ videoRef }}" autoplay="" muted="" playsinline="" style="{{ videoStyle }}"></video>
+              <sc-if value="{{ camOff }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:16px">
+                  <span style="width:20px;height:20px;color:var(--color-ink-subtle);background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/video-off.svg) center/contain no-repeat"></span>
+                  <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-muted)">{{ camMsg }}</span>
+                  <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" on-click="{{ enableCam }}" hint-size="130px,28px">Enable camera</x-import>
+                </div>
+              </sc-if>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;padding:16px;border-radius:var(--rounded-lg);border:1px solid var(--color-hairline);background:var(--color-surface-1)">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:var(--type-caption-size);font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:var(--color-ink-subtle)">Requirements</span>
+                <sc-for list="{{ requirements }}" as="c" hint-placeholder-count="2">
+                  <div style="display:flex;gap:8px;align-items:center;font-size:var(--type-body-sm-size);color:var(--color-ink)"><span style="{{ c.icon }}"></span>{{ c.label }}</div>
+                </sc-for>
+              </div>
+              <div style="height:1px;background:var(--color-hairline)"></div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:var(--type-caption-size);font-weight:600;letter-spacing:0.4px;text-transform:uppercase;color:var(--color-ink-subtle)">Tips</span>
+                <sc-for list="{{ tips }}" as="c" hint-placeholder-count="1">
+                  <div style="display:flex;gap:8px;align-items:center;font-size:var(--type-body-sm-size);color:var(--color-ink-muted)"><span style="{{ c.icon }}"></span>{{ c.label }}</div>
+                </sc-for>
+              </div>
+            </div>
+            <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Recordings stay on your device unless you choose to save them.</span>
+            </sc-if>
+            <sc-if value="{{ textMode }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:16px;padding:24px;border-radius:var(--rounded-xl);border:1px solid var(--color-hairline);background:var(--color-surface-1)">
+                <span style="font-size:var(--type-body-size);font-weight:600">{{ info.title }}</span>
+                <sc-for list="{{ info.lines }}" as="l" hint-placeholder-count="4">
+                  <div style="display:flex;gap:10px;align-items:flex-start;font-size:var(--type-body-sm-size);color:var(--color-ink-muted)"><span style="{{ l.icon }}"></span><span style="text-wrap:pretty">{{ l.text }}</span></div>
+                </sc-for>
+              </div>
+              <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">No camera or microphone needed.</span>
+            </sc-if>
+            <sc-if value="{{ startBlocked }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:var(--type-caption-size);color:oklch(0.74 0.11 22);text-align:center">{{ startReason }}</span>
+            </sc-if>
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="lg" full-width="{{ true }}" disabled="{{ startBlocked }}" on-click="{{ start }}" hint-size="100%,44px">{{ startLabel }}</x-import>
+          </div>
+          </div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ isLive }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="Interview live" style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:12px;padding:16px 20px;border-radius:var(--rounded-lg);border:1px solid var(--color-hairline);background:var(--color-surface-1)">
+            <div style="display:flex;align-items:flex-start;gap:16px">
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+                <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ liveQLabel }}</span>
+                <span style="font-size:var(--type-body-size);color:var(--color-ink);text-wrap:pretty">{{ liveQ }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex:none">
+                <span style="font-family:var(--font-mono);font-size:15px;color:var(--color-ink)">{{ timeLeft }}</span>
+                <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">left of 15:00</span>
+              </div>
+            </div>
+            <div style="display:flex;gap:4px">
+              <sc-for list="{{ liveSegs }}" as="g" hint-placeholder-count="6"><span style="{{ g.style }}"></span></sc-for>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:stretch;height:clamp(400px, calc(100vh - 320px), 700px)">
+            <div style="position:relative;flex:1;min-width:0;border-radius:var(--rounded-xl);border:1px solid var(--color-hairline);background:var(--color-surface-1);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:72px 24px 120px">
+              <div style="position:absolute;top:16px;left:16px;right:16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+                <div style="display:flex;align-items:center;gap:8px;height:28px;padding:0 10px;border-radius:999px;background:var(--color-surface-2);border:1px solid var(--color-hairline-strong);font-family:var(--font-mono);font-size:12px;color:var(--color-ink)">
+                  <span style="width:6px;height:6px;border-radius:50%;background:oklch(0.74 0.11 22)"></span>REC {{ clock }}
+                </div>
+                <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ speakHint }}</span>
+              </div>
+              <x-import component-from-global-scope="GEApp.AIOrb" speaking="{{ aiSpeaking }}" size="{{ orbSize }}" hint-size="180px,180px"></x-import>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center">
+                <span style="font-size:var(--type-body-size);font-weight:500;color:var(--color-ink)">AI interviewer</span>
+                <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ aiStatus }}</span>
+              </div>
+              <sc-if value="{{ captions }}" hint-placeholder-val="{{ true }}">
+                <div style="position:absolute;left:16px;right:16px;bottom:16px;display:flex;justify-content:center">
+                  <div style="max-width:640px;padding:12px 16px;border-radius:var(--rounded-lg);background:var(--color-surface-2);border:1px solid var(--color-hairline-strong);display:flex;flex-direction:column;gap:4px">
+                    <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ capWho }}</span>
+                    <span style="font-size:var(--type-body-size);color:var(--color-ink);text-wrap:pretty">{{ capText }}</span>
+                  </div>
+                </div>
+              </sc-if>
+              <div style="{{ selfTile }}">
+                <video ref="{{ videoRef }}" autoplay="" muted="" playsinline="" style="{{ videoStyle }}"></video>
+                <sc-if value="{{ camOff }}" hint-placeholder-val="{{ true }}">
+                  <x-import component-from-global-scope="GEApp.Avatar" name="Ashmit Jain" size="48" hint-size="48px,48px"></x-import>
+                </sc-if>
+                <div style="position:absolute;left:8px;bottom:8px;display:flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;background:var(--color-surface-2);font-size:var(--type-caption-size);color:var(--color-ink)">
+                  <sc-if value="{{ muted }}" hint-placeholder-val="{{ false }}"><span style="width:12px;height:12px;background:currentColor;mask:url(https://unpkg.com/lucide-static@0.460.0/icons/mic-off.svg) center/contain no-repeat"></span></sc-if>
+                  You
+                </div>
+              </div>
+            </div>
+            <sc-if value="{{ showTranscript }}" hint-placeholder-val="{{ false }}">
+              <div data-ge-hide-mobile="" style="width:340px;flex:none;display:flex;flex-direction:column;min-height:0;border-radius:var(--rounded-xl);border:1px solid var(--color-hairline);background:var(--color-surface-1);overflow:hidden">
+                <div style="height:48px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 16px;border-bottom:1px solid var(--color-hairline)">
+                  <span style="font-size:var(--type-body-sm-size);font-weight:500">Transcript</span>
+                  <x-import component-from-global-scope="GEApp.IconButton" icon="x" title="Close transcript" on-click="{{ toggleTranscript }}" hint-size="32px,32px"></x-import>
+                </div>
+                <div style="flex:1;min-height:0;padding:16px">
+                  <x-import component-from-global-scope="GEApp.TranscriptReadout" lines="{{ liveLines }}" live="{{ true }}" height="{{ trH }}" hint-size="100%,100%"></x-import>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+            <x-import component-from-global-scope="GEApp.MeetingButton" icon="{{ micIcon }}" label="{{ micLabel }}" off="{{ muted }}" on-click="{{ toggleMute }}" hint-size="48px,48px"></x-import>
+            <x-import component-from-global-scope="GEApp.MeetingButton" icon="{{ camIcon }}" label="{{ camLabel }}" off="{{ camOff }}" on-click="{{ toggleCam }}" hint-size="48px,48px"></x-import>
+            <x-import component-from-global-scope="GEApp.MeetingButton" icon="captions" label="{{ capLabel }}" off="{{ noCaptions }}" on-click="{{ toggleCaptions }}" hint-size="48px,48px"></x-import>
+            <x-import component-from-global-scope="GEApp.MeetingButton" icon="skip-forward" label="Skip question" on-click="{{ skipLive }}" hint-size="48px,48px"></x-import>
+            <span data-ge-hide-mobile="" style="display:inline-flex"><x-import component-from-global-scope="GEApp.MeetingButton" icon="scroll-text" label="{{ trLabel }}" on-click="{{ toggleTranscript }}" hint-size="48px,48px"></x-import></span>
+            <x-import component-from-global-scope="GEApp.MeetingButton" icon="phone-off" label="End and review" danger="{{ true }}" on-click="{{ end }}" hint-size="68px,48px"></x-import>
+          </div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ isTyped }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="Interview typed" style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+            <div style="flex:1;min-width:220px;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;gap:12px;font-size:var(--type-caption-size);color:var(--color-ink-subtle)"><span>{{ tLabel }}</span><span style="font-family:var(--font-mono)">{{ clock }}</span></div>
+              <div style="height:4px;border-radius:999px;background:var(--color-surface-3);overflow:hidden"><div style="{{ tBar }}"></div></div>
+            </div>
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" on-click="{{ end }}" hint-size="120px,28px">End and review</x-import>
+          </div>
+          <div style="display:flex;gap:16px;align-items:stretch;height:clamp(460px, calc(100vh - 240px), 780px)">
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;border-radius:var(--rounded-xl);border:1px solid var(--color-hairline);background:var(--color-surface-1);overflow:hidden">
+              <div ref="{{ chatRef }}" style="flex:1;min-height:0;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:20px">
+                <sc-for list="{{ tMsgs }}" as="m" hint-placeholder-count="2">
+                  <div style="{{ m.row }}">
+                    <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ m.who }}</span>
+                    <div style="{{ m.box }}">{{ m.text }}</div>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ tTyping }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">AI interviewer is writing a follow-up…</span>
+                </sc-if>
+              </div>
+              <sc-if value="{{ tOpen }}" hint-placeholder-val="{{ true }}">
+              <div style="flex:none;border-top:1px solid var(--color-hairline);padding:16px 20px;display:flex;flex-direction:column;gap:12px">
+                <textarea value="{{ tDraft }}" onChange="{{ editDraft }}" onKeyDown="{{ draftKey }}" rows="4" placeholder="Type your answer. Lead with your approach, then the details." aria-label="Your answer" style="width:100%;box-sizing:border-box;resize:vertical;min-height:96px;padding:12px;border-radius:var(--rounded-md);border:1px solid var(--color-hairline-strong);background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text);font-size:var(--type-body-sm-size);line-height:1.55;outline:none" style-focus="border-color:var(--color-primary);box-shadow:var(--focus-ring-shadow)"></textarea>
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                  <span style="flex:1;font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ tWords }}</span>
+                  <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" on-click="{{ tSkip }}" hint-size="70px,28px">Skip</x-import>
+                  <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="sm" disabled="{{ tNoDraft }}" on-click="{{ tSubmit }}" hint-size="120px,28px">Submit answer</x-import>
+                </div>
+              </div>
+              </sc-if>
+              <sc-if value="{{ tDone }}" hint-placeholder-val="{{ false }}">
+                <div style="flex:none;border-top:1px solid var(--color-hairline);padding:16px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                  <span style="flex:1;font-size:var(--type-body-sm-size);color:var(--color-ink-muted)">All 6 questions answered.</span>
+                  <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="sm" on-click="{{ end }}" hint-size="120px,28px">See feedback</x-import>
+                </div>
+              </sc-if>
+            </div>
+            <div data-ge-hide-mobile="" style="width:300px;flex:none;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;flex-direction:column;border-radius:var(--rounded-xl);border:1px solid var(--color-hairline);background:var(--color-surface-1);overflow:hidden">
+                <span style="padding:14px 16px;border-bottom:1px solid var(--color-hairline);font-size:var(--type-body-sm-size);font-weight:500">Questions</span>
+                <sc-for list="{{ tList }}" as="q" hint-placeholder-count="6">
+                  <div style="display:grid;grid-template-columns:18px minmax(0,1fr);gap:10px;padding:10px 16px;align-items:start">
+                    <span style="{{ q.icon }}"></span>
+                    <span style="{{ q.text }}">{{ q.q }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="padding:14px 16px;border-radius:var(--rounded-lg);border:1px solid var(--color-hairline);font-size:var(--type-caption-size);color:var(--color-ink-subtle);text-wrap:pretty">Aim for 80–150 words. Press ⌘ Enter to submit.</div>
+            </div>
+          </div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ isMcq }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="Interview MCQ" style="display:flex;flex-direction:column;gap:20px;max-width:760px;width:100%;margin:0 auto">
+          <sc-if value="{{ mqActive }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;gap:12px;font-size:var(--type-caption-size);color:var(--color-ink-subtle)">
+              <span>{{ mLabel }}</span>
+              <span style="display:flex;gap:12px"><span style="color:oklch(0.78 0.11 150)">{{ mRight }} correct</span><span style="color:oklch(0.74 0.11 22)">{{ mWrong }} wrong</span><span style="font-family:var(--font-mono)">{{ clock }}</span></span>
+            </div>
+            <div style="display:flex;gap:4px">
+              <sc-for list="{{ mSegs }}" as="g" hint-placeholder-count="8"><button onClick="{{ g.go }}" aria-label="{{ g.label }}" style="{{ g.style }}"></button></sc-for>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:20px;padding:28px;border-radius:var(--rounded-xl);border:1px solid var(--color-hairline);background:var(--color-surface-1)">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ mq.topic }}</span>
+              <span style="font-size:22px;line-height:1.35;font-weight:500;letter-spacing:-0.3px;color:var(--color-ink);text-wrap:pretty">{{ mq.q }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ mOpts }}" as="o" hint-placeholder-count="4">
+                <button onClick="{{ o.pick }}" disabled="{{ o.locked }}" style="{{ o.style }}">
+                  <span style="{{ o.letterStyle }}">{{ o.letter }}</span>
+                  <span style="flex:1;min-width:0;text-align:left">{{ o.text }}</span>
+                  <span style="{{ o.mark }}"></span>
+                </button>
+              </sc-for>
+            </div>
+            <sc-if value="{{ mAnswered }}" hint-placeholder-val="{{ false }}">
+              <div style="{{ mExplainBox }}">
+                <span style="font-weight:600;color:var(--color-ink)">{{ mVerdict }}</span>
+                <span style="color:var(--color-ink-muted);text-wrap:pretty">{{ mq.why }}</span>
+              </div>
+            </sc-if>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" disabled="{{ mFirst }}" on-click="{{ mPrev }}" hint-size="90px,28px">Previous</x-import>
+            <span style="flex:1"></span>
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="tertiary" size="sm" on-click="{{ restart }}" hint-size="80px,28px">Quit</x-import>
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" size="sm" disabled="{{ mNotAnswered }}" on-click="{{ mNext }}" hint-size="110px,28px">{{ mNextLabel }}</x-import>
+          </div>
+          </sc-if>
+          <sc-if value="{{ mqDone }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="GEApp.PageHeader" title="Test results" sub="{{ mSummarySub }}" hint-size="100%,64px">
+              <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" on-click="{{ restart }}" hint-size="120px,36px">Change format</x-import>
+              <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" on-click="{{ mRetake }}" hint-size="100px,36px">Retake</x-import>
+            </x-import>
+            <div style="display:flex;gap:20px;align-items:center;padding:24px;border-radius:var(--rounded-xl);border:1px solid var(--color-hairline);background:var(--color-surface-1)">
+              <x-import component-from-global-scope="GEApp.MatchRing" value="{{ mPct }}" size="88" hint-size="88px,88px"></x-import>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <span style="font-size:var(--type-body-size);font-weight:600">{{ mScoreLine }}</span>
+                <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-muted)">{{ mTimeLine }}</span>
+              </div>
+            </div>
+            <x-import component-from-global-scope="GEApp.Panel" title="Review" hint-size="100%,360px">
+              <sc-for list="{{ mReview }}" as="r" hint-placeholder-count="6">
+                <div style="display:grid;grid-template-columns:20px minmax(0,1fr);gap:14px;padding:14px 20px;border-bottom:1px solid var(--color-hairline);align-items:start">
+                  <span style="{{ r.icon }}"></span>
+                  <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                    <span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ r.q }}</span>
+                    <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ r.detail }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </x-import>
+          </sc-if>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ isReport }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="Interview feedback" style="display:flex;flex-direction:column;gap:24px">
+          <x-import component-from-global-scope="GEApp.PageHeader" title="Backend Engineer I · Razorpay" sub="Technical mock · Sep 24 · 15 min · 6 questions" hint-size="100%,64px">
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" hint-size="120px,36px">Replay session</x-import>
+            <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="primary" on-click="{{ restart }}" hint-size="120px,36px">Practise again</x-import>
+          </x-import>
+          <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+            <div style="flex:1 1 320px;min-width:0">
+              <x-import component-from-global-scope="GEApp.Panel" title="Rubric" meta="+5 since last session" pad="20" hint-size="100%,320px">
+                <div style="display:flex;gap:16px;align-items:center">
+                  <x-import component-from-global-scope="GEApp.MatchRing" value="76" size="88" hint-size="88px,88px"></x-import>
+                  <p style="margin:0;font-size:var(--type-body-sm-size);color:var(--color-ink-muted);text-wrap:pretty">Clear answers on idempotency and queues. Structure dropped on the system-design question; lead with the approach before details.</p>
+                </div>
+                <sc-for list="{{ rubric }}" as="r" hint-placeholder-count="4">
+                  <x-import component-from-global-scope="GEApp.ScoreBar" label="{{ r.label }}" value="{{ r.v }}" gain="{{ r.gain }}" hint-size="100%,28px"></x-import>
+                </sc-for>
+              </x-import>
+            </div>
+            <div style="flex:2 1 480px;min-width:0;display:flex;flex-direction:column;gap:16px">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">
+                <x-import component-from-global-scope="GEApp.MetricReadout" label="Eye contact" value="71" unit="%" trend="6" bar="71" hint="Looked down while thinking on Q4" hint-size="100%,120px"></x-import>
+                <x-import component-from-global-scope="GEApp.MetricReadout" label="Posture" value="88" unit="%" trend="2" bar="88" hint="Upright and centred" hint-size="100%,120px"></x-import>
+                <x-import component-from-global-scope="GEApp.MetricReadout" label="Speaking pace" value="142" unit="wpm" trend="-8" hint="In range; faster under pressure" hint-size="100%,120px"></x-import>
+                <x-import component-from-global-scope="GEApp.MetricReadout" label="Filler words" value="9" trend="-5" hint="Mostly ‘basically’" hint-size="100%,120px"></x-import>
+              </div>
+              <x-import component-from-global-scope="GEApp.Panel" title="Progress" sub="Overall score across your last five sessions" hint-size="100%,200px">
+                <div style="display:flex;align-items:flex-end;gap:12px;height:140px;padding:20px 20px 12px">
+                  <sc-for list="{{ history }}" as="h" hint-placeholder-count="5">
+                    <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end">
+                      <span style="font-family:var(--font-mono);font-size:12px;color:var(--color-ink-muted)">{{ h.score }}</span>
+                      <div style="{{ h.bar }}"></div>
+                      <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">{{ h.date }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </x-import>
+            </div>
+          </div>
+          <x-import component-from-global-scope="GEApp.Panel" title="Answer by answer" hint-size="100%,420px">
+            <sc-for list="{{ answers }}" as="a" hint-placeholder-count="4">
+              <div style="display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:16px;padding:16px 20px;border-bottom:1px solid var(--color-hairline);align-items:start">
+                <span style="font-family:var(--font-mono);font-size:13px;color:var(--color-ink-tertiary)">Q{{ a.n }}</span>
+                <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                  <span style="font-size:var(--type-body-sm-size);color:var(--color-ink)">{{ a.q }}</span>
+                  <span style="font-size:var(--type-body-sm-size);color:var(--color-ink-muted);text-wrap:pretty">{{ a.note }}</span>
+                  <span style="font-size:var(--type-caption-size);color:var(--color-ink-subtle)">Try: {{ a.tip }}</span>
+                </div>
+                <x-import component-from-global-scope="GEApp.MatchRing" value="{{ a.score }}" size="36" hint-size="36px,36px"></x-import>
+              </div>
+            </sc-for>
+          </x-import>
+        </section>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  videoRef = React.createRef();
+  chatRef = React.createRef();
+  state = { tab: "setup", mode: "live", cam: "off", sec: 372, words: 0, muted: false, captions: false, transcript: true, w: window.innerWidth, model: "GPT-4o", lq: 2, tq: 0, tMsgs: [], tDraft: "", tTyping: false, mq: 0, picks: {}, mqDone: false };
+  LIVE_Q = ["Walk me through a project you're proud of.", "You mentioned FestFlow used Kafka. What happened when a consumer crashed mid-batch?", "How would you make a payment-retry endpoint idempotent if the client times out and retries?", "Design a rate limiter for a public API.", "Tell me about a time you disagreed with a teammate on a technical decision.", "What would you want to learn in your first 90 days here?"];
+  TYPED_ACK = ["Thanks. That gives me good context.", "Good, offsets after the write is the right call.", "Clear. You covered the transaction boundary.", "Okay. Let's switch to a behavioural question.", "Thanks for being specific about the outcome.", "That's everything from me."];
+  MCQ = [
+    { topic: "APIs · Idempotency", q: "A retry arrives while the original request with the same idempotency key is still processing. What should the server return?", opts: ["200 OK with an empty body", "409 Conflict", "429 Too Many Requests", "500 Internal Server Error"], a: 1, why: "409 tells the client the same operation is in progress, so it should back off and retry later instead of creating a duplicate." },
+    { topic: "Distributed systems · Kafka", q: "With at-least-once delivery, what must a consumer be prepared for?", opts: ["Messages arriving out of order across all partitions", "Messages being lost after a crash", "The same message being delivered more than once", "Messages expiring before they are read"], a: 2, why: "At-least-once means no message is lost, but a crash before committing offsets causes redelivery. Consumers should be idempotent." },
+    { topic: "Data structures", q: "Which structure gives O(1) average-time lookup by key?", opts: ["Sorted array", "Hash map", "Balanced binary search tree", "Linked list"], a: 1, why: "A hash map computes the bucket directly from the key. A BST is O(log n); arrays and lists need a search." },
+    { topic: "System design · Rate limiting", q: "What does a token bucket rate limiter allow that a fixed window counter does not handle well?", opts: ["Controlled bursts up to the bucket size", "Unlimited requests after a quiet period", "Per-user limits", "Rejecting requests without storing state"], a: 0, why: "Tokens accumulate up to a cap, so short bursts are allowed while the long-run rate stays fixed." },
+    { topic: "Algorithms", q: "What is the time complexity of binary search on a sorted array of n items?", opts: ["O(1)", "O(n)", "O(log n)", "O(n log n)"], a: 2, why: "Each step halves the search space, so it takes about log₂ n comparisons." },
+    { topic: "Databases · Transactions", q: "Which isolation level prevents dirty reads but still allows non-repeatable reads?", opts: ["Read uncommitted", "Read committed", "Repeatable read", "Serializable"], a: 1, why: "Read committed only shows committed data, but a row can change between two reads in the same transaction." },
+    { topic: "Web · Caching", q: "Which header lets a client revalidate a cached response without downloading it again if unchanged?", opts: ["ETag", "Content-Length", "Accept-Encoding", "Set-Cookie"], a: 0, why: "The client sends If-None-Match with the ETag; the server answers 304 Not Modified when nothing changed." },
+    { topic: "Concurrency", q: "Two threads increment a shared counter without locking. What is the most likely result?", opts: ["The program deadlocks", "Some increments are lost", "The counter doubles every step", "The compiler rejects the code"], a: 1, why: "Read-modify-write is not atomic, so interleaved increments overwrite each other. Use an atomic or a lock." },
+  ];
+  modelOptions = "GPT-4o|Claude Sonnet 4.5|Gemini 2.5 Pro|Llama 3.3 70B";
+  modelUsage = { "GPT-4o": 68, "Claude Sonnet 4.5": 42, "Gemini 2.5 Pro": 25, "Llama 3.3 70B": 8 };
+  setModel = (v) => this.setState({ model: v });
+  buildModelList() {
+    const R = 11, C = 2 * Math.PI * R;
+    return this.modelOptions.split("|").map((name) => {
+      const pct = this.modelUsage[name] ?? 0;
+      const active = this.state.model === name;
+      return {
+        name, pct,
+        pick: () => this.setModel(name),
+        ringColor: active ? "var(--color-primary)" : "var(--color-ink-subtle)",
+        dashArray: `${(pct / 100) * C} ${C}`,
+        nameColor: active ? "var(--color-ink)" : "var(--color-ink-subtle)",
+        dotStyle: `width:6px;height:6px;border-radius:50%;background:${active ? "var(--color-primary)" : "transparent"};flex:none`,
+        rowStyle: `display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:8px 10px;border-radius:var(--rounded-md);border:1px solid ${active ? "var(--color-primary)" : "var(--color-hairline)"};background:${active ? "var(--color-surface-1)" : "transparent"};box-shadow:${active ? "var(--focus-ring-shadow)" : "none"};cursor:pointer;font-family:var(--font-text)`,
+      };
+    });
+  }
+  onResize = () => this.setState({ w: window.innerWidth });
+  setNav(v) { try { localStorage.setItem("ge-sidebar-collapsed", v ? "1" : "0"); } catch (e) {} window.dispatchEvent(new CustomEvent("ge-sidebar", { detail: v })); }
+  collapseNav() { if (this.prevNav == null) { try { this.prevNav = localStorage.getItem("ge-sidebar-collapsed") === "1"; } catch (e) { this.prevNav = false; } } this.setNav(true); }
+  restoreNav() { if (this.prevNav != null) { this.setNav(this.prevNav); this.prevNav = null; } }
+  stopCam() { this.stream && this.stream.getTracks().forEach(t => t.stop()); this.stream = null; this.setState({ cam: "off" }); }
+  componentDidMount() { window.addEventListener("resize", this.onResize); if (!window.GEData) { const t = setInterval(() => { if (window.GEData) { clearInterval(t); this.forceUpdate(); } }, 50); } }
+  componentDidUpdate(pp, ps) { const v = this.videoRef.current; if (v && this.stream && v.srcObject !== this.stream) v.srcObject = this.stream; const c = this.chatRef.current, sig = this.state.tMsgs.length + ":" + this.state.tTyping; if (c && this._chatSig !== sig) { this._chatSig = sig; requestAnimationFrame(() => { c.scrollTop = c.scrollHeight; }); } }
+  componentWillUnmount() { clearInterval(this.timer); clearTimeout(this.tt); this.restoreNav(); window.removeEventListener("resize", this.onResize); this.stream && this.stream.getTracks().forEach(t => t.stop()); }
+  enableCam = async () => {
+    try { this.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false }); this.setState({ cam: "on" }); }
+    catch (e) { this.setState({ cam: "denied" }); }
+  };
+  runLive() {
+    clearInterval(this.timer);
+    this.timer = setInterval(() => this.setState(s => ({ sec: s.sec + 1, words: s.muted || s.sec % 30 < 6 ? s.words : Math.min(s.words + 2, 60) })), 400);
+  }
+  tick() { clearInterval(this.timer); this.timer = setInterval(() => this.setState(s => ({ sec: s.sec + 1 })), 1000); }
+  submitTyped(skip) {
+    const s = this.state, text = skip ? "(Skipped)" : s.tDraft.trim();
+    if (!skip && !text) return;
+    const tq = s.tq + 1;
+    this.setState({ tMsgs: [...s.tMsgs, { who: "you", text }], tDraft: "", tTyping: true, tq });
+    clearTimeout(this.tt);
+    this.tt = setTimeout(() => this.setState(p => ({ tTyping: false, tMsgs: [...p.tMsgs, { who: "ai", text: tq < this.LIVE_Q.length ? this.TYPED_ACK[tq - 1] + " " + this.LIVE_Q[tq] : this.TYPED_ACK[this.LIVE_Q.length - 1] + " Select See feedback for your report." }] })), 1100);
+  }
+  renderVals() {
+    const D = window.GEData, s = this.state;
+    const ic = (n, c) => ({ width: "16px", height: "16px", flex: "none", color: c, background: "currentColor", mask: "url(https://unpkg.com/lucide-static@0.460.0/icons/" + n + ".svg) center/contain no-repeat" });
+    const answer = "I'd have the client send an idempotency key with every request. On the server, before processing, I check a table keyed on that key. If there's a completed result I return it; if it's in progress I return 409 so the client backs off; otherwise I insert the key in the same transaction as the payment so a retry can't double charge.".split(" ");
+    const go = t => {
+      clearInterval(this.timer); clearTimeout(this.tt);
+      if (t === "live") { this.setState({ tab: t, lq: 2, sec: 372 }); this.runLive(); this.collapseNav(); }
+      else if (t === "typed") { this.setState({ tab: t, sec: 0, tq: 0, tDraft: "", tTyping: false, tMsgs: [{ who: "ai", text: "Hi Ashmit. I'll ask six questions; take your time and type each answer. First: " + this.LIVE_Q[0] }] }); this.tick(); this.collapseNav(); }
+      else if (t === "mcq") { this.setState({ tab: t, sec: 0, mq: 0, picks: {}, mqDone: false }); this.tick(); this.collapseNav(); }
+      else { this.setState({ tab: t }); this.restoreNav(); }
+    };
+    const GREEN = "oklch(0.78 0.11 150)", RED = "oklch(0.74 0.11 22)";
+    const fmt = n => String(Math.floor(n / 60)).padStart(2, "0") + ":" + String(n % 60).padStart(2, "0");
+    const MODES = [["live", "Live interview", "mic", "Speak with an AI interviewer on camera. It follows up on what you say.", "Voice and video · 15 min"], ["typed", "Typed", "keyboard", "Read each question and type your answer. The AI replies with a follow-up.", "Text only · 6 questions"], ["mcq", "Multiple choice", "list-checks", "Quick technical questions with four options. See the answer right away.", "Text only · 8 questions"]];
+    const SEG_LABELS = { live: "Live interview", typed: "Typed", mcq: "Multiple choice" };
+    const SEG_IDS = { "Live interview": "live", "Typed": "typed", "Multiple choice": "mcq" };
+    const INFO = { typed: { title: "How the typed interview works", lines: ["Six questions drawn from the role and your resume.", "Type each answer, then submit. The AI acknowledges it and asks the next one.", "Skip any question; it counts as unanswered in the report.", "You get the same rubric as a live session, minus delivery metrics."] }, mcq: { title: "How the multiple-choice test works", lines: ["Eight questions on APIs, data structures, systems and databases.", "Pick one option. Correct answers turn green, wrong ones red.", "Each answer shows a short explanation.", "Your score and a full review appear at the end."] } };
+    const tWordsN = s.tDraft.trim() ? s.tDraft.trim().split(/\s+/).length : 0;
+    const mqi = this.MCQ[s.mq], pick = s.picks[s.mq];
+    const right = Object.keys(s.picks).filter(k => s.picks[k] === this.MCQ[k].a).length, answered = Object.keys(s.picks).length;
+    const bubble = ai => ({ padding: "14px 16px", borderRadius: "var(--rounded-lg)", border: "1px solid " + (ai ? "var(--color-hairline)" : "var(--color-hairline-strong)"), background: ai ? "var(--color-canvas)" : "var(--color-surface-2)", fontSize: "var(--type-body-sm-size)", lineHeight: 1.6, color: "var(--color-ink)", whiteSpace: "pre-wrap", textWrap: "pretty", maxWidth: "620px" });
+    const tDone = s.tq >= this.LIVE_Q.length && !s.tTyping;
+    const aiSpeaking = s.tab === "live" && s.sec % 30 < 6, mobile = s.w < 768;
+    const modelList = this.buildModelList();
+    const q = "How would you make a payment-retry endpoint idempotent if the client times out and retries?";
+    const yours = answer.slice(0, Math.max(1, s.words)).join(" ");
+    const sess = D ? D.SESSIONS.slice().reverse() : [];
+    const last = D ? D.SESSIONS[0].r : [0, 0, 0, 0], prev = D ? D.SESSIONS[1].r : [0, 0, 0, 0];
+    return {
+      modeSegValue: SEG_LABELS[s.mode], setModeSeg: v => this.setState({ mode: SEG_IDS[v] || "live" }),
+      modes: MODES.map(([id, title, icon, sub, meta]) => { const on = s.mode === id; return { title, sub, meta, on, pick: () => this.setState({ mode: id }), icon: { ...ic(icon, on ? "var(--color-primary)" : "var(--color-ink-subtle)"), width: "20px", height: "20px" },
+        radio: { width: "14px", height: "14px", boxSizing: "border-box", borderRadius: "50%", border: on ? "4px solid var(--color-primary)" : "1px solid var(--color-hairline-strong)" },
+        style: { all: "unset", cursor: "pointer", boxSizing: "border-box", display: "flex", flexDirection: "column", gap: "8px", padding: "18px", borderRadius: "var(--rounded-lg)", border: "1px solid " + (on ? "var(--color-primary)" : "var(--color-hairline)"), background: on ? "var(--color-glow-soft)" : "var(--color-surface-1)", opacity: on ? 1 : 0.55, boxShadow: on ? "var(--glow-active)" : "none", transition: "background var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard), opacity var(--duration-base) var(--ease-standard)" } }; }),
+      modeSub: { live: "A 15-minute voice session with an AI interviewer that asks questions from the job description and follows up on your answers. Voice is required; camera is optional.", typed: "Answer interview questions in writing. Good for practising structure before a live round.", mcq: "A short multiple-choice test on core technical topics, marked as you go." }[s.mode],
+      liveMode: s.mode === "live", textMode: s.mode !== "live",
+      info: INFO[s.mode] ? { title: INFO[s.mode].title, lines: INFO[s.mode].lines.map(text => ({ text, icon: { ...ic("check", "var(--color-ink-subtle)"), marginTop: "2px" } })) } : { title: "", lines: [] },
+      startLabel: s.mode === "mcq" ? "Start test" : "Start session",
+      liveQLabel: "Question " + (s.lq + 1) + " of " + this.LIVE_Q.length + " · " + (s.lq >= 4 ? "Behavioural" : "Technical"), liveQ: this.LIVE_Q[s.lq],
+      timeLeft: fmt(Math.max(0, 900 - s.sec)),
+      liveSegs: this.LIVE_Q.map((_, i) => ({ style: { flex: 1, height: "4px", borderRadius: "999px", background: i < s.lq ? "var(--color-primary)" : i === s.lq ? "var(--color-ink-muted)" : "var(--color-surface-3)" } })),
+      speakHint: aiSpeaking ? "Listen to the full question" : "Take a moment, then answer out loud",
+      skipLive: () => s.lq + 1 < this.LIVE_Q.length ? this.setState({ lq: s.lq + 1 }) : go("report"),
+      isTyped: s.tab === "typed", isMcq: s.tab === "mcq", chatRef: this.chatRef,
+      tLabel: "Question " + Math.min(s.tq + 1, this.LIVE_Q.length) + " of " + this.LIVE_Q.length,
+      tBar: { height: "100%", width: (s.tq / this.LIVE_Q.length * 100) + "%", background: "var(--color-primary)", borderRadius: "inherit", transition: "width 180ms var(--ease-standard)" },
+      tMsgs: s.tMsgs.map(m => ({ who: m.who === "ai" ? "AI interviewer" : "You", text: m.text, box: bubble(m.who === "ai"), row: { display: "flex", flexDirection: "column", gap: "6px", alignItems: m.who === "ai" ? "flex-start" : "flex-end" } })),
+      tTyping: s.tTyping, tOpen: !tDone, tDone,
+      tDraft: s.tDraft, editDraft: e => this.setState({ tDraft: e.target.value }), tNoDraft: !s.tDraft.trim() || s.tTyping,
+      draftKey: e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); if (!s.tTyping) this.submitTyped(false); } },
+      tWords: tWordsN + " words", tSubmit: () => !s.tTyping && this.submitTyped(false), tSkip: () => !s.tTyping && this.submitTyped(true),
+      tList: this.LIVE_Q.map((q, i) => { const done = i < s.tq, cur = i === s.tq; return { q, icon: { ...ic(done ? "circle-check" : cur ? "circle-dot" : "circle", done ? "var(--color-primary)" : cur ? "var(--color-ink)" : "var(--color-ink-tertiary)"), marginTop: "1px" }, text: { fontSize: "var(--type-caption-size)", lineHeight: 1.5, color: cur ? "var(--color-ink)" : done ? "var(--color-ink-muted)" : "var(--color-ink-subtle)" } }; }),
+      mqActive: !s.mqDone, mqDone: s.mqDone, mq: mqi,
+      mLabel: "Question " + (s.mq + 1) + " of " + this.MCQ.length, mRight: right, mWrong: answered - right,
+      mSegs: this.MCQ.map((q, i) => { const p = s.picks[i], c = p == null ? (i === s.mq ? "var(--color-ink-muted)" : "var(--color-surface-3)") : p === q.a ? GREEN : RED;
+        return { label: "Go to question " + (i + 1), go: () => this.setState({ mq: i }), style: { all: "unset", cursor: "pointer", flex: 1, height: "6px", borderRadius: "999px", background: c, outline: i === s.mq ? "1px solid var(--color-ink-muted)" : "none", outlineOffset: "2px" } }; }),
+      mOpts: mqi.opts.map((text, i) => { const done = pick != null, ok = done && i === mqi.a, bad = done && i === pick && i !== mqi.a, dim = done && !ok && !bad;
+        const col = ok ? GREEN : bad ? RED : null;
+        return { text, letter: "ABCD"[i], locked: done, pick: () => !done && this.setState(p => ({ picks: { ...p.picks, [p.mq]: i } })),
+          style: { all: "unset", boxSizing: "border-box", cursor: done ? "default" : "pointer", display: "flex", alignItems: "center", gap: "12px", padding: "14px 16px", borderRadius: "var(--rounded-md)", border: "1px solid " + (col || "var(--color-hairline-strong)"), background: col ? "color-mix(in oklch, " + col + " 12%, transparent)" : "var(--color-canvas)", opacity: dim ? 0.55 : 1, fontSize: "var(--type-body-sm-size)", color: "var(--color-ink)", transition: "background var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard)" },
+          letterStyle: { width: "26px", height: "26px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "6px", border: "1px solid " + (col || "var(--color-hairline-strong)"), background: col || "transparent", color: col ? "#0A101C" : "var(--color-ink-muted)", fontFamily: "var(--font-mono)", fontSize: "12px", fontWeight: 600 },
+          mark: col ? { ...ic(ok ? "check" : "x", col), width: "18px", height: "18px" } : { display: "none" } }; }),
+      mAnswered: pick != null, mNotAnswered: pick == null, mFirst: s.mq === 0,
+      mVerdict: pick == null ? "" : pick === mqi.a ? "Correct" : "Not quite. The answer is " + "ABCD"[mqi.a] + ".",
+      mExplainBox: { display: "flex", flexDirection: "column", gap: "4px", padding: "14px 16px", borderRadius: "var(--rounded-md)", border: "1px solid var(--color-hairline)", background: "var(--color-surface-2)", fontSize: "var(--type-body-sm-size)" },
+      mPrev: () => this.setState({ mq: Math.max(0, s.mq - 1) }),
+      mNextLabel: s.mq === this.MCQ.length - 1 ? "See results" : "Next",
+      mNext: () => { if (s.mq < this.MCQ.length - 1) this.setState({ mq: s.mq + 1 }); else { clearInterval(this.timer); this.setState({ mqDone: true }); } },
+      mRetake: () => go("mcq"),
+      mPct: Math.round(right / this.MCQ.length * 100), mScoreLine: right + " of " + this.MCQ.length + " correct", mTimeLine: "Finished in " + fmt(s.sec) + " · " + (answered - right) + " to revisit",
+      mSummarySub: "Multiple choice · " + this.MCQ.length + " questions",
+      mReview: this.MCQ.map((q, i) => { const p = s.picks[i], ok = p === q.a; return { q: q.q, icon: { ...ic(p == null ? "circle-dashed" : ok ? "circle-check" : "circle-x", p == null ? "var(--color-ink-tertiary)" : ok ? GREEN : RED), marginTop: "2px" }, detail: p == null ? "Not answered · Answer: " + q.opts[q.a] : ok ? "Your answer: " + q.opts[p] : "Your answer: " + q.opts[p] + " · Correct: " + q.opts[q.a] }; }),
+      modelOptions: this.modelOptions, model: s.model, setModel: this.setModel, modelList,
+      tabs: [{ value: "setup", label: "Setup" }, { value: "live", label: "Live session" }, { value: "report", label: "Feedback" }],
+      tab: s.tab, setTab: go, notLive: s.tab !== "live",
+      aiSpeaking, orbSize: mobile ? 140 : 180, aiStatus: aiSpeaking ? "Speaking" : s.muted ? "Waiting · you are muted" : "Listening",
+      captions: s.captions, noCaptions: !s.captions, capLabel: s.captions ? "Turn off captions" : "Turn on captions", toggleCaptions: () => this.setState(p => ({ captions: !p.captions })),
+      capWho: aiSpeaking ? "AI interviewer" : "You", capText: aiSpeaking ? q : yours,
+      muted: s.muted, micIcon: s.muted ? "mic-off" : "mic", micLabel: s.muted ? "Unmute" : "Mute", toggleMute: () => this.setState(p => ({ muted: !p.muted })),
+      camIcon: s.cam === "on" ? "video" : "video-off", camLabel: s.cam === "on" ? "Turn off camera" : "Turn on camera", toggleCam: () => s.cam === "on" ? this.stopCam() : this.enableCam(),
+      showTranscript: s.transcript && !mobile, trLabel: s.transcript ? "Hide transcript" : "Show transcript", toggleTranscript: () => this.setState(p => ({ transcript: !p.transcript })),
+      trH: Math.max(420, Math.min(760, window.innerHeight - 220)) - 84,
+      selfTile: { position: "absolute", right: "16px", bottom: s.captions ? (mobile ? "132px" : "104px") : "16px", width: mobile ? "104px" : "200px", aspectRatio: mobile ? "3/4" : "16/10", borderRadius: "var(--rounded-lg)", overflow: "hidden", background: "var(--color-surface-3)", border: "2px solid " + (!aiSpeaking && !s.muted ? "var(--color-primary)" : "var(--color-hairline-strong)"), display: "flex", alignItems: "center", justifyContent: "center", transition: "border-color var(--duration-base) var(--ease-standard), bottom 180ms var(--ease-standard)" }, isSetup: s.tab === "setup", isLive: s.tab === "live", isReport: s.tab === "report",
+      crumbs: { setup: "Interview prep", live: "Interview prep / Live", typed: "Interview prep / Typed", mcq: "Interview prep / Multiple choice", report: "Interview prep / Feedback" }[s.tab],
+      start: () => go(s.mode), end: () => go("report"), restart: () => go("setup"),
+      videoRef: this.videoRef, camOff: s.cam !== "on", enableCam: this.enableCam,
+      camMsg: s.cam === "denied" ? "Camera access was blocked. You can still practise with audio only." : "Check your framing before you start.",
+      videoStyle: { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", transform: "scaleX(-1)", display: s.cam === "on" ? "block" : "none" },
+      requirements: [{ label: "Microphone: MacBook Pro Microphone", icon: ic("circle-check", GREEN) }, { label: s.cam === "on" ? "Camera connected" : s.cam === "denied" ? "Camera access blocked" : "Camera not connected (optional)", icon: ic(s.cam === "on" ? "circle-check" : s.cam === "denied" ? "alert-circle" : "circle-dashed", s.cam === "on" ? GREEN : s.cam === "denied" ? "oklch(0.75 0.15 70)" : "var(--color-ink-tertiary)") }],
+      tips: [{ label: "Quiet room, face lit from the front", icon: ic("circle-dashed", "var(--color-ink-tertiary)") }],
+      startBlocked: s.mode === "live" && s.cam === "denied", startReason: "Camera access is blocked. Allow it in your browser, or continue with audio only.",
+      clock: String(Math.floor(s.sec / 60)).padStart(2, "0") + ":" + String(s.sec % 60).padStart(2, "0"),
+      liveLines: [
+        { who: "ai", t: "04:12", text: "You mentioned FestFlow used Kafka. What happened when a consumer crashed mid-batch?" },
+        { who: "you", t: "04:20", text: "We committed offsets only after the write to Postgres succeeded, so on restart the consumer re-read the batch. Writes were upserts, so duplicates were harmless." },
+        { who: "ai", t: "05:48", text: "Good. How would you make a payment-retry endpoint idempotent if the client times out and retries?" },
+        { who: "you", t: "06:02", text: yours },
+      ],
+      rubric: D ? D.RUBRIC.map((label, i) => ({ label, v: last[i], gain: Math.max(0, last[i] - prev[i]) })) : [],
+      history: sess.map((x, i) => ({ date: x.date, score: x.score, bar: { width: "100%", maxWidth: "40px", height: (x.score / 100 * 90) + "px", borderRadius: "var(--rounded-xs)", background: i === sess.length - 1 ? "var(--color-primary)" : "var(--color-surface-4)" } })),
+      answers: [
+        { n: 1, q: "Walk me through a project you're proud of.", score: 82, note: "Clear context and outcome. You named the 12k users and the queue design without being asked.", tip: "end with what you'd change next time." },
+        { n: 2, q: "What happened when a Kafka consumer crashed mid-batch?", score: 80, note: "Correct on offset commits and upserts. Could name at-least-once delivery explicitly.", tip: "say the delivery guarantee out loud." },
+        { n: 3, q: "How would you make a payment-retry endpoint idempotent?", score: 78, note: "Idempotency key and transaction boundary were right. Missed key expiry and what happens across regions.", tip: "mention a TTL on stored keys." },
+        { n: 4, q: "Design a rate limiter for a public API.", score: 61, note: "Jumped into Redis commands before stating the algorithm. Eye contact dropped while thinking.", tip: "state token bucket vs sliding window first, then trade-offs." },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

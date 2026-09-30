@@ -1,0 +1,36 @@
+{
+  "name": "@ge/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts",
+    "./load-env": "./src/load-env.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc",
+    "test": "vitest run",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx src/seed.ts"
+  },
+  "dependencies": {
+    "@ge/core": "workspace:*",
+    "better-auth": "^1.7.6",
+    "drizzle-orm": "^0.45.3",
+    "kysely": "0.29.6",
+    "postgres": "^3.4.9"
+  },
+  "devDependencies": {
+    "@ge/config": "workspace:*",
+    "@types/node": "^22.0.0",
+    "drizzle-kit": "^0.31.11",
+    "eslint": "^9.39.5",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.2"
+  }
+}

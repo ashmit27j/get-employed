@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>App components · GetEmployed</title>
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/colors.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/typography.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/radius.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/tokens/base.css">
+<link rel="stylesheet" href="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/styles.css">
+<script src="_ds/getemployed-design-system-26a74c65-2299-40a0-95a1-5dba6bbc92b1/_ds_bundle.js"></script>
+<script src="ge-app.js"></script>
+<style>body{margin:0;background:var(--color-canvas);color:var(--color-ink);font-family:var(--font-text)}a{color:var(--color-ink)}a:hover{color:var(--color-primary-hover)}</style>
+</helmet>
+<main style="max-width:1120px;margin:0 auto;padding:48px 32px 96px;display:flex;flex-direction:column;gap:48px;color:var(--color-ink);font-family:var(--font-text)">
+  <header style="display:flex;flex-direction:column;gap:12px">
+    <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Wordmark" size="16" hint-size="130px,16px"></x-import>
+    <h1 style="margin:0;font-size:var(--type-display-md-size);line-height:var(--type-display-md-lh);letter-spacing:var(--type-display-md-ls);font-weight:600">App components</h1>
+    <p style="margin:0;max-width:640px;font-size:var(--type-body-size);color:var(--color-ink-subtle);text-wrap:pretty">Product-surface additions to the GetEmployed Design System, namespace <span style="font-family:var(--font-mono);font-size:13px;color:var(--color-ink-muted)">GEApp</span> in ge-app.js. Built only from existing tokens and composed on Button, Card, StatusBadge, TextInput and Wordmark.</p>
+    <nav style="display:flex;gap:8px;flex-wrap:wrap;padding-top:8px">
+      <sc-for list="{{ pages }}" as="p" hint-placeholder-count="10">
+        <x-import component-from-global-scope="GetEmployedDesignSystem_26a74c.Button" variant="secondary" size="sm" href="{{ p.href }}" hint-size="110px,28px">{{ p.label }}</x-import>
+      </sc-for>
+    </nav>
+  </header>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:16px">
+    <x-import component-from-global-scope="GEApp.Panel" title="MobileTabBar" sub="Below 768px the sidebar becomes this bar. More opens MobileDrawer." pad="20" hint-size="100%,180px">
+      <div style="border:1px solid var(--color-hairline);border-radius:var(--rounded-md);overflow:hidden;max-width:390px">
+        <x-import component-from-global-scope="GEApp.MobileTabBar" active="resume" fixed="{{ false }}" on-more="{{ noop }}" hint-size="100%,57px"></x-import>
+      </div>
+      <a href="Mobile%20Preview.dc.html" style="font-size:var(--type-body-sm-size);color:var(--color-ink-subtle);text-decoration:none">See every page at 390px →</a>
+    </x-import>
+    <x-import component-from-global-scope="GEApp.Panel" title="MatchRing" sub="Match / ATS score. Blue at 80+, muted 60–79, tertiary below." pad="20" hint-size="100%,180px">
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+        <x-import component-from-global-scope="GEApp.MatchRing" value="92" size="80" hint-size="80px,80px"></x-import>
+        <x-import component-from-global-scope="GEApp.MatchRing" value="74" size="44" hint-size="44px,44px"></x-import>
+        <x-import component-from-global-scope="GEApp.MatchRing" value="52" size="28" label="{{ false }}" hint-size="28px,28px"></x-import>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="GEApp.Panel" title="ScoreBar" sub="Breakdown row with optional potential gain." pad="20" hint-size="100%,180px">
+      <x-import component-from-global-scope="GEApp.ScoreBar" label="Project relevance" value="72" gain="8" hint-size="100%,28px"></x-import>
+      <x-import component-from-global-scope="GEApp.ScoreBar" label="Required skills" value="80" value-label="4 of 5" hint-size="100%,28px"></x-import>
+    </x-import>
+    <x-import component-from-global-scope="GEApp.Panel" title="SalaryBadge" sub="Stated is solid; estimated is ~, dashed, with confidence." pad="20" hint-size="100%,180px">
+      <x-import component-from-global-scope="GEApp.SalaryBadge" type="stated" min="18" max="26" hint-size="200px,22px"></x-import>
+      <x-import component-from-global-scope="GEApp.SalaryBadge" type="estimated" min="16" max="22" confidence="78" samples="142" hint-size="240px,22px"></x-import>
+      <x-import component-from-global-scope="GEApp.SalaryBadge" type="estimated" min="15" max="21" confidence="55" samples="31" hint-size="240px,22px"></x-import>
+    </x-import>
+    <x-import component-from-global-scope="GEApp.Panel" title="ConfidenceMeter" sub="Contact and estimate confidence, three steps." pad="20" hint-size="100%,140px">
+      <div style="display:flex;gap:24px">
+        <x-import component-from-global-scope="GEApp.ConfidenceMeter" value="94" hint-size="60px,16px"></x-import>
+        <x-import component-from-global-scope="GEApp.ConfidenceMeter" value="71" hint-size="60px,16px"></x-import>
+        <x-import component-from-global-scope="GEApp.ConfidenceMeter" value="48" hint-size="60px,16px"></x-import>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="GEApp.Panel" title="QuotaBar" sub="Neutral until 80% used, then Blue; alert at the limit." pad="20" hint-size="100%,180px">
+      <x-import component-from-global-scope="GEApp.QuotaBar" label="Saved searches" used="3" max="5" hint-size="100%,32px"></x-import>
+      <x-import component-from-global-scope="GEApp.QuotaBar" label="Outreach emails" used="44" max="50" hint-size="100%,32px"></x-import>
+      <x-import component-from-global-scope="GEApp.QuotaBar" label="Mock interviews" used="1" max="1" hint-size="100%,32px"></x-import>
+    </x-import>
+    <x-import component-from-global-scope="GEApp.Panel" title="Chip" sub="Filter chip: default, active, removable, add." pad="20" hint-size="100%,140px">
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <x-import component-from-global-scope="GEApp.Chip" icon="globe" hint-size="80px,28px">Remote</x-import>
+        <x-import component-from-global-scope="GEApp.Chip" icon="map-pin" active="{{ true }}" removable="{{ true }}" hint-size="110px,28px">Bengaluru</x-import>
+        <x-import component-from-global-scope="GEApp.Chip" icon="plus" dashed="{{ true }}" hint-size="80px,28px">Kafka</x-import>
+      </div>
+    </x-import>
+    <x-import component-from-global-scope="GEApp.Panel" title="StageCard" sub="Kanban card. Draggable; flags show pipeline events." pad="20" hint-size="100%,200px">
+      <x-import component-from-global-scope="GEApp.StageCard" title="SDE-1, Consumer" company="Swiggy" score="79" meta="Applied Sep 21" flags="tailored|emailed|replied" hint-size="100%,120px"></x-import>
+    </x-import>
+    <x-import component-from-global-scope="GEApp.Panel" title="MetricReadout" sub="Interview metric tile with trend and optional bar." pad="20" hint-size="100%,200px">
+      <x-import component-from-global-scope="GEApp.MetricReadout" label="Eye contact" value="71" unit="%" trend="6" bar="71" hint="Looked down while thinking on Q4" hint-size="100%,120px"></x-import>
+    </x-import>
+    <x-import component-from-global-scope="GEApp.Panel" title="Controls" sub="Segmented, Toggle, IconButton, Avatar, CoLogo." pad="20" hint-size="100%,160px">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <x-import component-from-global-scope="GEApp.Segmented" options="Hourly|Daily|Weekly" hint-size="210px,32px"></x-import>
+        <x-import component-from-global-scope="GEApp.Toggle" default-on="{{ true }}" label="Demo" hint-size="32px,18px"></x-import>
+        <x-import component-from-global-scope="GEApp.IconButton" icon="bookmark" title="Save" hint-size="32px,32px"></x-import>
+        <x-import component-from-global-scope="GEApp.Avatar" name="Ananya Krishnan" hint-size="28px,28px"></x-import>
+        <x-import component-from-global-scope="GEApp.CoLogo" name="Razorpay" hint-size="32px,32px"></x-import>
+      </div>
+    </x-import>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr));gap:16px">
+    <x-import component-from-global-scope="GEApp.Panel" title="DiffBlock + DiffText" sub="Rewrite review. Additions use the Blue soft wash; removals strike through in tertiary." pad="20" hint-size="100%,260px">
+      <x-import component-from-global-scope="GEApp.DiffBlock" section="Projects · FestFlow" before="Implemented a queue so ticket scans don't drop during peak entry." after="Designed a Kafka-backed queue that absorbed 900 scans/min at peak entry with zero dropped events." reason="Matches ‘Kafka’ and ‘high-throughput’ in the JD." hint-size="100%,150px"></x-import>
+      <p style="margin:0;font-size:var(--type-body-sm-size);color:var(--color-ink-muted)">Inline: built a <x-import component-from-global-scope="GEApp.DiffText" kind="remove" hint-size="60px,18px">college</x-import> <x-import component-from-global-scope="GEApp.DiffText" kind="add" hint-size="100px,18px">Go REST API serving 12k users</x-import> for the fest.</p>
+    </x-import>
+    <x-import component-from-global-scope="GEApp.Panel" title="Dropzone" sub="Idle, drag-over and uploading/done states." pad="20" hint-size="100%,260px">
+      <x-import component-from-global-scope="GEApp.Dropzone" hint-size="100%,220px"></x-import>
+      <x-import component-from-global-scope="GEApp.Dropzone" state="uploading" file-name="Ashmit_Jain_Resume_2025.pdf" progress="64" hint-size="100%,80px"></x-import>
+    </x-import>
+    <x-import component-from-global-scope="GEApp.Panel" title="ChatBubble + ChatAction" sub="Assistant turns carry action cards for work they triggered." pad="20" hint-size="100%,260px">
+      <x-import component-from-global-scope="GEApp.ChatBubble" role="user" hint-size="100%,48px">Tailor my resume for Razorpay.</x-import>
+      <x-import component-from-global-scope="GEApp.ChatBubble" role="assistant" streaming="{{ true }}" hint-size="100%,120px">
+        <span>I rewrote 4 bullets to surface your Kafka work.</span>
+        <x-import component-from-global-scope="GEApp.ChatAction" icon="file-check" title="Tailored resume for Razorpay" detail="4 rewrites to review" href="Resume.dc.html?tab=tailor" cta="Review" hint-size="100%,48px"></x-import>
+        <x-import component-from-global-scope="GEApp.ChatAction" title="Finding the hiring manager…" status="running" hint-size="100%,48px"></x-import>
+      </x-import>
+    </x-import>
+    <x-import component-from-global-scope="GEApp.Panel" title="TranscriptReadout" sub="Timestamped interview transcript; live mode shows a caret." pad="20" hint-size="100%,260px">
+      <x-import component-from-global-scope="GEApp.TranscriptReadout" lines="{{ lines }}" live="{{ true }}" height="220" hint-size="100%,200px"></x-import>
+    </x-import>
+    <x-import component-from-global-scope="GEApp.Panel" title="TextArea, Select, EmptyState" sub="Form fields matching TextInput; dashed empty state." pad="20" hint-size="100%,260px">
+      <x-import component-from-global-scope="GEApp.Select" label="Sending window" options="09:00 – 18:00 IST|Any time" hint-size="100%,64px"></x-import>
+      <x-import component-from-global-scope="GEApp.TextArea" label="Message" rows="2" default-value="Hi Ananya, I saw the Backend Engineer I opening…" hint-size="100%,80px"></x-import>
+      <x-import component-from-global-scope="GEApp.EmptyState" icon="inbox" title="Nothing waiting for review" hint-size="100%,160px"></x-import>
+    </x-import>
+  </div>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      noop: () => {},
+      pages: [["Mobile preview", "Mobile%20Preview.dc.html"], ["Onboarding", "Onboarding.dc.html"], ["Jobs", "Jobs.dc.html"], ["Deep search", "Jobs.dc.html?board=Deep%20Search"], ["Job detail", "Job%20Detail.dc.html"], ["Resume", "Resume.dc.html"], ["Tailoring", "Resume.dc.html?tab=tailor"], ["Outbox", "Outbox.dc.html"], ["Tracker", "Tracker.dc.html"], ["Interview", "Interview.dc.html"], ["Assistant", "Assistant.dc.html"], ["Settings", "Settings.dc.html"]].map(([label, href]) => ({ label, href })),
+      lines: [{ who: "ai", t: "05:48", text: "How would you make a payment-retry endpoint idempotent?" }, { who: "you", t: "06:02", text: "I'd have the client send an idempotency key with every request and check it before processing.", note: "Mention a TTL on stored keys." }],
+    };
+  }
+}
+</script>
+</body>
+</html>

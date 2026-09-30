@@ -1,0 +1,9 @@
+{
+  "identities": [
+    {
+      "name": "getemployed",
+      "credentials": [{ "accessKey": "getemployed", "secretKey": "getemployed-secret" }],
+      "actions": ["Admin", "Read", "Write", "List", "Tagging"]
+    }
+  ]
+}

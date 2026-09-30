@@ -1,0 +1,72 @@
+# Runs all of GetEmployed on one machine with your own keys.
+#   cp .env.example .env   # fill in your keys; keep SELF_HOSTED=true
+#   docker compose -f docker-compose.selfhost.yml up -d --build
+# Open http://localhost:4000
+x-env: &env
+  env_file: .env
+  environment:
+    SELF_HOSTED: "true"
+    DATABASE_URL: postgres://getemployed:getemployed@postgres:5432/getemployed
+    SCRAPER_URL: http://scraper:8000
+    S3_ENDPOINT: http://storage:8333
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: getemployed
+      POSTGRES_PASSWORD: getemployed
+      POSTGRES_DB: getemployed
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U getemployed"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  # S3-compatible file storage (resumes, PDFs, cached interview audio). Buckets are created by the app.
+  storage:
+    image: chrislusf/seaweedfs:latest
+    command: server -dir=/data -s3 -s3.port=8333 -s3.config=/etc/seaweedfs/s3.json
+    volumes:
+      - storagedata:/data
+      - ./docker/seaweedfs-s3.json:/etc/seaweedfs/s3.json:ro
+    restart: unless-stopped
+
+  migrate:
+    build: { context: ., target: migrate }
+    <<: *env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  app:
+    build: { context: ., target: app }
+    <<: *env
+    ports:
+      - "4000:4000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  worker:
+    build: { context: ., target: worker }
+    <<: *env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  # Internal only: no published port. The worker reaches it at http://scraper:8000.
+  scraper:
+    build: { context: apps/scraper }
+    <<: *env
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  storagedata:
