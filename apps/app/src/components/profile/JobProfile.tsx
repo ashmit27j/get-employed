@@ -373,7 +373,9 @@ export function JobProfile({
   const [doc, setDoc] = useState(initial.doc);
   const [d, setD] = useState(initial.details);
   // What the server has; edits are only stored when Save is selected.
-  const [saved, setSaved] = useState(() => JSON.stringify(initial));
+  const [saved, setSaved] = useState(() =>
+    JSON.stringify({ doc: initial.doc, details: initial.details }),
+  );
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [locked, setLocked] = useState(initialLocked);

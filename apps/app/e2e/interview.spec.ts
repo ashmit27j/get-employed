@@ -28,7 +28,8 @@ test("A typed interview is graded and saved", async ({ page }) => {
     "First I built FestFlow, a ticketing system for our college fest. The problem was that 12k users hit it at once, so I decided on a queue. The result was no dropped orders, and I learned to load test early.",
   );
   await page.getByRole("button", { name: "Submit answer" }).click();
-  await expect(page.getByText("AI interviewer is writing a follow-up…")).toBeVisible();
+  // Without an LLM the rules acknowledge and ask the next planned question.
+  await expect(page.getByText("Question 2 of 6")).toBeVisible();
   for (let i = 0; i < 5; i++) {
     await expect(page.getByRole("button", { name: "Skip" })).toBeEnabled({ timeout: 5000 });
     await page.getByRole("button", { name: "Skip" }).click();
@@ -74,9 +75,7 @@ test("The live setup lists its requirements", async ({ page }) => {
   await expect(page.getByText("Live sessions this month")).toBeVisible();
 });
 
-test("A live session falls back to typed answers when speech recognition fails", async ({
-  page,
-}) => {
+test("A live session falls back from Web Speech to Whisper to typing", async ({ page }) => {
   // Brave and Firefox expose the API and then fail with "network" (docs/interviews.md).
   await page.addInitScript(() => {
     class FailingRecognition {
@@ -95,6 +94,9 @@ test("A live session falls back to typed answers when speech recognition fails",
       webkitSpeechRecognition: FailingRecognition,
       SpeechRecognition: FailingRecognition,
     });
+    // No microphone in the test browser, so Whisper can't record either: typing is last.
+    navigator.mediaDevices.getUserMedia = () =>
+      Promise.reject(new DOMException("denied", "NotAllowedError"));
     window.speechSynthesis.speak = (u: SpeechSynthesisUtterance) =>
       setTimeout(() => u.onend?.(new Event("end") as SpeechSynthesisEvent), 20);
   });
@@ -103,8 +105,10 @@ test("A live session falls back to typed answers when speech recognition fails",
   await expect(page.getByText("Question 1 of 6", { exact: false })).toBeVisible();
   await page.getByRole("button", { name: "Answer" }).click();
   await expect(
-    page.getByText("Speech recognition stopped working in this browser.", { exact: false }),
+    page.getByText("Switched to on-device transcription; answer again.", { exact: false }),
   ).toBeVisible();
+  await page.getByRole("button", { name: "Answer" }).click();
+  await expect(page.getByText("Microphone access is blocked.", { exact: false })).toBeVisible();
   await page
     .getByLabel("Your answer")
     .fill("I built FestFlow, a ticketing app for our college fest used by 12k students.");

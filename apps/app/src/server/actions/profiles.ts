@@ -33,7 +33,9 @@ export async function connectGithub(login: string) {
     .values({ userId: user.id, kind: "github", source: name })
     .onConflictDoUpdate({
       target: [linkedProfiles.userId, linkedProfiles.kind],
-      set: same ? { source: name } : { source: name, snapshot: null, importedAt: null },
+      set: same
+        ? { source: name, error: null }
+        : { source: name, snapshot: null, importedAt: null, error: null },
     });
   await enqueue(
     "profile.import-github",
@@ -67,7 +69,7 @@ export async function importLinkedinUrl(
     .values({ userId: user.id, kind: "linkedin", source: parsed.data })
     .onConflictDoUpdate({
       target: [linkedProfiles.userId, linkedProfiles.kind],
-      set: { source: parsed.data, snapshot: null, suggestions: [], importedAt: null },
+      set: { source: parsed.data, snapshot: null, suggestions: [], importedAt: null, error: null },
     });
   await enqueue(
     "profile.import-linkedin",

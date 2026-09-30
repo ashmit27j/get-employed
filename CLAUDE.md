@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Status
 
-Phases 1–5 are done: every screen is ported and runs on seed data with rule-based logic. Phase 6 (backend wiring: LLM, ingestion, sending, TTS) is next. The phases are in `docs/roadmap.md`, and each one starts only after the owner says to.
+Phases 1–6 are done: every screen is ported and backed by real work (job ingestion, matching, resume parsing and tailoring, sending, the Assistant, interviews). Gemini calls live in `packages/ai` and each has a rule-based fallback (D26). The phases are in `docs/roadmap.md`, and each one starts only after the owner says to.
 
 ## Commands
 

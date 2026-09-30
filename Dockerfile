@@ -22,6 +22,8 @@ EXPOSE 4000
 CMD ["pnpm", "--filter", "@ge/app", "start"]
 
 FROM deps AS worker
+# Tectonic compiles resumes to PDF (resume.compile); it fetches TeX packages on first use.
+RUN apk add --no-cache tectonic
 ENV NODE_ENV=production
 CMD ["pnpm", "--filter", "@ge/worker", "start"]
 

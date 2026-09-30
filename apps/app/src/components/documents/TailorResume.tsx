@@ -14,7 +14,7 @@ import {
 } from "@/server/actions/documents";
 import type { TailorData } from "@/server/documents";
 import { TemplatePicker } from "./DocBlocks";
-import { PreviewAside, printResume } from "./PreviewAside";
+import { PreviewAside, exportResume } from "./PreviewAside";
 
 type Status = ResumeDiff["status"];
 
@@ -111,7 +111,7 @@ export function TailorResume({ data }: { data: TailorData }) {
             variant="secondary"
             size="sm"
             iconLeft={<Icon name="download" size={14} />}
-            onClick={printResume}
+            onClick={() => void exportResume(resume?.id)}
           >
             Export PDF
           </Button>
@@ -212,6 +212,7 @@ export function TailorResume({ data }: { data: TailorData }) {
           onOpenPicker={() => setPicker(true)}
           highlights={diffs.filter((d) => d.status === "accepted").map((d) => d.new)}
           subject={`Resume for ${job.company}`}
+          resumeId={resume?.id}
           footer={
             <span className="text-caption text-ink-subtle">
               Highlighted lines are accepted rewrites.

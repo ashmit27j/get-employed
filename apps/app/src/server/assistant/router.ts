@@ -30,7 +30,7 @@ export interface Reply {
   jobIds: string[];
 }
 
-interface Ctx {
+export interface Ctx {
   userId: string;
   cards: JobCard[];
   /** Jobs the previous assistant message listed, for "the Razorpay one" or "the first one". */
@@ -57,7 +57,7 @@ function resolveJob(text: string, ctx: Ctx): JobCard | null {
   return null;
 }
 
-async function searchJobs(text: string, ctx: Ctx): Promise<Reply> {
+export async function searchJobs(text: string, ctx: Ctx): Promise<Reply> {
   const f = parseFilters(text);
   const hits = ctx.cards.filter((c) => !c.hidden && matchesFilters(c, f));
   const top = hits.slice(0, 3);
@@ -86,7 +86,7 @@ async function searchJobs(text: string, ctx: Ctx): Promise<Reply> {
   };
 }
 
-async function tailor(job: JobCard): Promise<Reply> {
+export async function tailor(job: JobCard): Promise<Reply> {
   await createTailoredResume(job.id);
   return {
     text: `I set up a tailored copy of your resume for ${job.title} at ${job.company}. Review each suggested rewrite before you use it; your main resume doesn't change.`,
@@ -104,7 +104,7 @@ async function tailor(job: JobCard): Promise<Reply> {
   };
 }
 
-async function outreach(job: JobCard): Promise<Reply> {
+export async function outreach(job: JobCard): Promise<Reply> {
   const id = await draftForJob(job.id);
   if (!id)
     return {
@@ -145,7 +145,7 @@ async function outreach(job: JobCard): Promise<Reply> {
   };
 }
 
-async function tracker(userId: string): Promise<Reply> {
+export async function tracker(userId: string): Promise<Reply> {
   const db = getDb();
   const apps = await db
     .select({ stage: schema.applications.stage })
@@ -185,7 +185,7 @@ async function tracker(userId: string): Promise<Reply> {
   };
 }
 
-async function ats(userId: string): Promise<Reply> {
+export async function ats(userId: string): Promise<Reply> {
   const [{ doc }, { keywords, postings }] = await Promise.all([
     loadProfile(userId),
     mainAtsKeywords(userId),
@@ -212,7 +212,7 @@ async function ats(userId: string): Promise<Reply> {
   };
 }
 
-function interview(job: JobCard | null): Reply {
+export function interview(job: JobCard | null): Reply {
   return {
     text: job
       ? `A 15-minute technical mock for ${job.title} at ${job.company} is ready to start whenever you are. It focuses on what the job description asks for.`
@@ -231,7 +231,7 @@ function interview(job: JobCard | null): Reply {
   };
 }
 
-async function linkedin(userId: string): Promise<Reply> {
+export async function linkedin(userId: string): Promise<Reply> {
   const li = await loadLinkedin(userId);
   const headline = li.suggestions.find((s) => /headline/i.test(s.section));
   return {

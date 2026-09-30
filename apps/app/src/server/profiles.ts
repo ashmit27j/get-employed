@@ -11,11 +11,14 @@ export interface LinkedinData {
   source: string | null;
   snapshot: LinkedinSnapshot | null;
   suggestions: LinkedinSuggestion[];
+  /** Why the last import failed, for the page to show. */
+  error: string | null;
 }
 
 export interface GithubData {
   login: string | null;
   snapshot: GithubSnapshot | null;
+  error: string | null;
 }
 
 async function row(userId: string, kind: "linkedin" | "github") {
@@ -32,10 +35,15 @@ export async function loadLinkedin(userId: string): Promise<LinkedinData> {
     source: r?.source ?? null,
     snapshot: (r?.snapshot as LinkedinSnapshot | null) ?? null,
     suggestions: r?.suggestions ?? [],
+    error: r?.error ?? null,
   };
 }
 
 export async function loadGithub(userId: string): Promise<GithubData> {
   const r = await row(userId, "github");
-  return { login: r?.source ?? null, snapshot: (r?.snapshot as GithubSnapshot | null) ?? null };
+  return {
+    login: r?.source ?? null,
+    snapshot: (r?.snapshot as GithubSnapshot | null) ?? null,
+    error: r?.error ?? null,
+  };
 }

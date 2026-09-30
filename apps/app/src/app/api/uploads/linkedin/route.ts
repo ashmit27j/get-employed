@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     .values({ userId, kind: "linkedin", source: key })
     .onConflictDoUpdate({
       target: [linkedProfiles.userId, linkedProfiles.kind],
-      set: { source: key, snapshot: null, suggestions: [], importedAt: null },
+      set: { source: key, snapshot: null, suggestions: [], importedAt: null, error: null },
     });
   await enqueue("profile.import-linkedin", { userId, key }, { singletonKey: `linkedin:${userId}` });
   return Response.json({ key, name: file.name, size: file.size });

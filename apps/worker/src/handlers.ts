@@ -1,32 +1,37 @@
 import type { QueueName } from "@ge/core";
+import type { Ctx } from "./ctx";
+import { cleanup, ingestSearch, refreshSaved } from "./ingest/handlers";
+import { computeMatches } from "./match";
+import { draftFollowUps, findContact, sendEmail, writeDraft } from "./outreach";
+import { gradeSessionJob } from "./interview";
+import { importGithub, importLinkedin } from "./profiles";
+import { compileResumeJob, parseResumeJob, tailorResumeJob } from "./resume";
 
-export type Handler = (data: unknown) => Promise<void>;
-
-const notYet =
-  (queue: QueueName): Handler =>
-  async () => {
-    // Phase 6 wires each queue (docs/roadmap.md). Until then jobs complete as no-ops.
-    console.warn(`[worker] ${queue}: handler not implemented yet`);
-  };
+export type Handler = (ctx: Ctx, data: unknown) => Promise<void>;
 
 /** One handler per queue in QUEUES. The Record type makes a missing queue a compile error. */
 export const handlers: Record<QueueName, Handler> = {
-  "ingest.search": notYet("ingest.search"),
-  "ingest.refresh-saved": notYet("ingest.refresh-saved"),
-  "match.compute": notYet("match.compute"),
-  "contact.find": notYet("contact.find"),
-  "email.draft": notYet("email.draft"),
-  "email.send": notYet("email.send"),
-  "email.track": notYet("email.track"),
-  "resume.parse": notYet("resume.parse"),
-  "resume.tailor": notYet("resume.tailor"),
-  "resume.compile": notYet("resume.compile"),
-  "profile.import-linkedin": notYet("profile.import-linkedin"),
-  "profile.import-github": notYet("profile.import-github"),
-  "interview.grade": notYet("interview.grade"),
+  "ingest.search": ingestSearch,
+  "ingest.refresh-saved": (ctx) => refreshSaved(ctx),
+  "ingest.cleanup": (ctx) => cleanup(ctx),
+  "match.compute": computeMatches,
+  "contact.find": findContact,
+  "email.draft": writeDraft,
+  "email.send": sendEmail,
+  "email.track": (ctx) => draftFollowUps(ctx),
+  "resume.parse": parseResumeJob,
+  "resume.tailor": tailorResumeJob,
+  "resume.compile": compileResumeJob,
+  "profile.import-linkedin": importLinkedin,
+  "profile.import-github": importGithub,
+  "interview.grade": gradeSessionJob,
 };
 
 /** Cron schedules (UTC). */
-export const schedules: { queue: QueueName; cron: string }[] = [
+export const schedules: { queue: QueueName; cron: string; data?: object }[] = [
   { queue: "ingest.refresh-saved", cron: "0 * * * *" },
+  // Company boards refresh even when nobody searches, so the feed stays current.
+  { queue: "ingest.search", cron: "30 * * * *", data: {} },
+  { queue: "ingest.cleanup", cron: "15 3 * * *" },
+  { queue: "email.track", cron: "0 4 * * *" },
 ];

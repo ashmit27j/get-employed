@@ -46,6 +46,10 @@ const ROLES = [
 ];
 const TYPES: InterviewType[] = ["Mixed", "Technical", "Behavioural", "Aptitude"];
 const LENGTHS = ["10 min", "15 min", "30 min"];
+const STRICTNESS = ["Lenient", "Standard", "Strict"] as const;
+type Strictness = (typeof STRICTNESS)[number];
+/** Follow-up questions Gemini may ask in one session, on top of the planned six. */
+const MAX_FOLLOW_UPS = 2;
 
 const MODES: { id: Mode; title: string; icon: IconName; sub: string; meta: string }[] = [
   {
@@ -127,6 +131,7 @@ export function Interview({
   const [role, setRole] = useState(NO_ROLE);
   const [type, setType] = useState<InterviewType>("Mixed");
   const [length, setLength] = useState("15 min");
+  const [strictness, setStrictness] = useState<Strictness>("Standard");
   const [cam, setCam] = useState<"off" | "on" | "denied">("off");
   const [sec, setSec] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -219,50 +224,117 @@ export function Interview({
   useEffect(() => {
     secRef.current = sec;
   }, [sec]);
-  const say = (who: TranscriptLine["who"], text: string) =>
-    setLines((l) => [...l, { who, t: fmt(secRef.current), text }]);
+  // Kept in refs as well, so async turns read the latest transcript.
+  const linesRef = useRef<TranscriptLine[]>([]);
+  const say = (who: TranscriptLine["who"], text: string) => {
+    const line = { who, t: fmt(secRef.current), text };
+    linesRef.current = [...linesRef.current, line];
+    setLines(linesRef.current);
+  };
+  /** Every question actually asked (follow-ups too) with its answer, for grading. */
+  const qa = useRef<{ q: string; a: string }[]>([]);
+  const asking = useRef("");
+  const followUps = useRef(0);
 
-  /* ---------- Live ---------- */
-  const ask = async (i: number, lastAnswer?: string) => {
-    const q = questions[i]!.q;
-    const text =
-      i === 0
-        ? `Hi ${firstName}. I'll ask ${questions.length} questions. Take your time. First: ${q}`
-        : `${acknowledge(lastAnswer ?? "", i - 1)} ${q}`;
-    say("ai", text);
-    await voice.speak(text);
+  /**
+   * The interviewer's next line after answer `i`: Gemini decides between a follow-up and the
+   * next planned question when configured (/api/interview/turn); the rules move on otherwise.
+   */
+  const nextLine = async (
+    answer: string,
+    i: number,
+  ): Promise<{ text: string; followUp: boolean }> => {
+    const planned = i + 1 < questions.length ? questions[i + 1]!.q : null;
+    const closing = `That's everything from me. Select ${screen === "typed" ? "See feedback" : "End and review"} for your report.`;
+    if (data.ai) {
+      try {
+        const res = await fetch("/api/interview/turn", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            role: label,
+            strictness,
+            transcript: linesRef.current.map((l) => ({ who: l.who, text: l.text })),
+            nextQuestion: planned,
+            followUpsLeft: Math.max(0, MAX_FOLLOW_UPS - followUps.current),
+          }),
+        });
+        const json = (await res.json()) as {
+          text?: string;
+          followUp?: boolean;
+          fallback?: boolean;
+        };
+        if (res.ok && json.text && !json.fallback)
+          return {
+            text: planned || json.followUp ? json.text : `${json.text} ${closing}`,
+            followUp: !!json.followUp,
+          };
+      } catch {
+        // Offline or the LLM failed: the rules take over for this turn.
+      }
+    }
+    return {
+      text: planned
+        ? `${acknowledge(answer, i)} ${planned}`
+        : `${acknowledge(answer, i)} ${closing}`,
+      followUp: false,
+    };
   };
-  const closeLive = async (lastAnswer: string) => {
-    setFinished(true);
-    const text = `${acknowledge(lastAnswer, questions.length - 1)} That's everything from me. Select End and review for your report.`;
-    say("ai", text);
-    await voice.speak(text);
-  };
-  const recordAnswer = (text: string) => {
+
+  /** Record an answer to the current question and move the interview on. */
+  const takeAnswer = async (text: string, speakReply: boolean) => {
     const answer = text.trim() || SKIPPED;
+    const i = qi;
     setAnswers((a) => {
       const next = [...a];
-      next[qi] = answer;
+      // A follow-up's answer joins the answer to its question.
+      next[i] = next[i] && next[i] !== SKIPPED ? `${next[i]} ${answer}` : answer;
       return next;
     });
+    qa.current.push({ q: asking.current, a: answer === SKIPPED ? "" : answer });
     if (answer !== SKIPPED) say("you", answer);
-    const n = qi + 1;
-    if (n >= questions.length) void closeLive(answer);
-    else {
-      setQi(n);
-      void ask(n, answer);
+    const reply = await nextLine(answer, i);
+    say("ai", reply.text);
+    if (reply.followUp) {
+      followUps.current++;
+      asking.current = reply.text;
+    } else if (i + 1 < questions.length) {
+      asking.current = questions[i + 1]!.q;
+      setQi(i + 1);
+    } else {
+      setQi(questions.length);
+      setFinished(true);
+    }
+    if (speakReply) await voice.speak(reply.text);
+  };
+
+  /* ---------- Live ---------- */
+  const ask = async () => {
+    const q = questions[0]!.q;
+    asking.current = q;
+    const text = `Hi ${firstName}. I'll ask ${questions.length} questions. Take your time. First: ${q}`;
+    say("ai", text);
+    await voice.speak(text);
+  };
+  const [thinking, setThinking] = useState(false);
+  const recordAnswer = async (text: string) => {
+    setThinking(true);
+    try {
+      await takeAnswer(text, true);
+    } finally {
+      setThinking(false);
     }
   };
-  const toggleAnswer = () => {
-    if (finished) return;
-    if (voice.listening) recordAnswer(voice.stopListening());
-    else voice.startListening();
+  const toggleAnswer = async () => {
+    if (finished || thinking || voice.transcribing) return;
+    if (voice.listening) await recordAnswer(await voice.stopListening());
+    else await voice.startListening();
   };
-  const skipLive = () => {
-    if (finished) return;
-    if (voice.listening) voice.stopListening();
+  const skipLive = async () => {
+    if (finished || thinking) return;
+    if (voice.listening) await voice.stopListening();
     voice.stopSpeaking();
-    recordAnswer("");
+    await recordAnswer("");
   };
 
   /* ---------- Typed ---------- */
@@ -270,25 +342,9 @@ export function Interview({
     if (typing) return;
     const text = skip ? SKIPPED : draft.trim();
     if (!text) return;
-    const i = qi;
-    setAnswers((a) => {
-      const next = [...a];
-      next[i] = text;
-      return next;
-    });
-    say("you", text);
     setDraft("");
     setTyping(true);
-    setQi(i + 1);
-    window.setTimeout(() => {
-      setTyping(false);
-      say(
-        "ai",
-        i + 1 < questions.length
-          ? `${acknowledge(text, i)} ${questions[i + 1]!.q}`
-          : "That's everything from me. Select See feedback for your report.",
-      );
-    }, 1100);
+    void takeAnswer(text, false).finally(() => setTyping(false));
   };
   useEffect(() => {
     const c = chatRef.current;
@@ -308,6 +364,10 @@ export function Interview({
     setPicks(MCQ_BANK.map(() => null));
     setError(null);
     timedOut.current = false;
+    linesRef.current = [];
+    qa.current = [];
+    followUps.current = 0;
+    asking.current = questions[0]?.q ?? "";
     startedAt.current = new Date().toISOString();
   };
   const start = async (m: Mode = mode) => {
@@ -326,14 +386,11 @@ export function Interview({
     setScreen(m);
     window.scrollTo({ top: 0 });
     if (m === "typed")
-      setLines([
-        {
-          who: "ai",
-          t: "00:00",
-          text: `Hi ${firstName}. I'll ask six questions; take your time and type each answer. First: ${questions[0]!.q}`,
-        },
-      ]);
-    if (m === "live") void ask(0);
+      say(
+        "ai",
+        `Hi ${firstName}. I'll ask six questions; take your time and type each answer. First: ${questions[0]!.q}`,
+      );
+    if (m === "live") void ask();
   };
   // /interview?start=mcq (Retake on a test result) starts straight away.
   const autoStarted = useRef(false);
@@ -345,7 +402,7 @@ export function Interview({
   });
 
   const quit = () => {
-    if (voice.listening) voice.stopListening();
+    if (voice.listening) void voice.stopListening();
     voice.stopSpeaking();
     stopCam();
     leaveSession();
@@ -359,8 +416,10 @@ export function Interview({
     const live = screen === "live";
     let final = answers;
     if (live && voice.listening) {
+      const last = (await voice.stopListening()) || SKIPPED;
       final = [...answers];
-      final[qi] = voice.stopListening() || SKIPPED;
+      final[qi] = final[qi] ? `${final[qi]} ${last}` : last;
+      qa.current.push({ q: asking.current, a: last === SKIPPED ? "" : last });
     }
     voice.stopSpeaking();
     stopCam();
@@ -384,8 +443,10 @@ export function Interview({
           };
         }),
         speakingSeconds: live ? voice.speakingSeconds() : undefined,
-        sttEngine: live ? (voice.failed ? "typed" : "webspeech") : null,
+        sttEngine: live ? voice.engine : null,
         mcqPicks: screen === "mcq" ? picks : undefined,
+        strictness,
+        qa: screen === "mcq" ? undefined : qa.current,
       });
       leaveSession();
       router.push(`/interview?session=${id}`);
@@ -429,6 +490,8 @@ export function Interview({
             setType={setType}
             length={length}
             setLength={setLength}
+            strictness={strictness}
+            setStrictness={setStrictness}
             cap={data.cap}
             cam={cam}
             enableCam={enableCam}
@@ -485,13 +548,35 @@ export function Interview({
                       ? "Speaking"
                       : voice.listening
                         ? "Listening"
-                        : finished
-                          ? "Done"
-                          : "Waiting · select the mic to answer"}
+                        : voice.transcribing
+                          ? "Transcribing…"
+                          : thinking
+                            ? "Thinking…"
+                            : finished
+                              ? "Done"
+                              : "Waiting · select the mic to answer"}
                   </span>
+                  {voice.modelProgress != null && (
+                    <div className="mt-2 flex w-56 flex-col gap-1" role="status">
+                      <span className="text-caption text-ink-subtle">
+                        Loading on-device transcription · {voice.modelProgress}%
+                      </span>
+                      <div className="h-1 overflow-hidden rounded-full bg-surface-3">
+                        <div
+                          className="h-full rounded-[inherit] bg-primary transition-[width] duration-150"
+                          style={{ width: `${voice.modelProgress}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  {voice.notice && !voice.failed && (
+                    <span className="mt-1 max-w-sm text-caption text-pretty text-warning-ink">
+                      {voice.notice}
+                    </span>
+                  )}
                 </div>
                 {voice.failed && !finished && (
-                  <TypedFallback message={voice.failed} onSubmit={recordAnswer} />
+                  <TypedFallback message={voice.failed} onSubmit={(t) => void recordAnswer(t)} />
                 )}
                 {captions && !voice.failed && (
                   <div className="absolute inset-x-4 bottom-4 flex justify-center">
@@ -566,8 +651,8 @@ export function Interview({
                 icon={voice.listening ? "mic" : "mic-off"}
                 label={voice.listening ? "Finish answer" : "Answer"}
                 off={!voice.listening}
-                disabled={finished || !!voice.failed}
-                onClick={toggleAnswer}
+                disabled={finished || !!voice.failed || thinking || voice.transcribing}
+                onClick={() => void toggleAnswer()}
               />
               <MeetingButton
                 icon={cam === "on" ? "video" : "video-off"}
@@ -585,7 +670,7 @@ export function Interview({
                 icon="skip-forward"
                 label="Skip question"
                 disabled={finished}
-                onClick={skipLive}
+                onClick={() => void skipLive()}
               />
               {!mobile && (
                 <MeetingButton
@@ -848,6 +933,8 @@ function Setup({
   setType: (v: InterviewType) => void;
   length: string;
   setLength: (v: string) => void;
+  strictness: Strictness;
+  setStrictness: (v: Strictness) => void;
   cap: InterviewData["cap"];
   cam: "off" | "on" | "denied";
   enableCam: () => Promise<void>;
@@ -949,6 +1036,13 @@ function Setup({
                 options={LENGTHS}
                 value={p.length}
                 onChange={p.setLength}
+                className="min-w-[160px] flex-[1_1_160px]"
+              />
+              <Dropdown
+                label="Strictness"
+                options={STRICTNESS}
+                value={p.strictness}
+                onChange={(v) => p.setStrictness(v as Strictness)}
                 className="min-w-[160px] flex-[1_1_160px]"
               />
             </div>

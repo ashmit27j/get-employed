@@ -27,12 +27,13 @@ function producer(): Promise<PgBoss> {
 export async function enqueue(
   queue: QueueName,
   data: object,
-  options: { singletonKey?: string } = {},
+  options: { singletonKey?: string; startAfterSeconds?: number } = {},
 ) {
   const b = await producer();
   await b.createQueue(queue);
   return b.send(queue, data, {
     singletonKey: options.singletonKey,
+    startAfter: options.startAfterSeconds,
     retryLimit: 5,
     retryBackoff: true,
   });

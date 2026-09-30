@@ -2,6 +2,8 @@ import { and, desc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { schema } from "@ge/db";
+import { appModel } from "@/server/ai";
+import { respondWithAI } from "@/server/assistant/llm";
 import { respond } from "@/server/assistant/router";
 import { toChatJob } from "@/server/assistant/threads";
 import { getDb } from "@/server/db";
@@ -50,12 +52,18 @@ export async function POST(request: Request) {
       .returning({ id: chatThreads.id });
     threadId = t!.id;
   }
-  const [previous] = await db
-    .select({ jobIds: chatMessages.jobIds })
+  const earlier = await db
+    .select({ role: chatMessages.role, text: chatMessages.text, jobIds: chatMessages.jobIds })
     .from(chatMessages)
-    .where(and(eq(chatMessages.threadId, threadId), eq(chatMessages.role, "assistant")))
+    .where(eq(chatMessages.threadId, threadId))
     .orderBy(desc(chatMessages.createdAt))
-    .limit(1);
+    .limit(12);
+  const previous = earlier.find((m) => m.role === "assistant");
+  const history = earlier
+    .reverse()
+    .map(
+      (m) => ({ role: m.role, content: m.text }) as { role: "user" | "assistant"; content: string },
+    );
   await db.insert(chatMessages).values({ threadId, role: "user", text });
 
   const encoder = new TextEncoder();
@@ -66,7 +74,23 @@ export async function POST(request: Request) {
         controller.enqueue(encoder.encode(`${JSON.stringify(event)}\n`));
       send({ type: "thread", id, title });
       try {
-        const reply = await respond(userId, text, previous?.jobIds ?? []);
+        // Gemini with tool calling when a key is configured; the rule-based router otherwise.
+        const model = await appModel(userId);
+        let reply: Awaited<ReturnType<typeof respond>> & { profileUpdated?: boolean };
+        try {
+          reply = model
+            ? await respondWithAI(model, {
+                userId,
+                userName: session.user.name,
+                text,
+                history,
+                recentJobIds: previous?.jobIds ?? [],
+              })
+            : await respond(userId, text, previous?.jobIds ?? []);
+        } catch (err) {
+          console.error("[assistant] AI reply failed, using rules", err);
+          reply = await respond(userId, text, previous?.jobIds ?? []);
+        }
         send({ type: "text", text: reply.text });
         if (reply.actions.length) send({ type: "actions", actions: reply.actions });
         const jobs = reply.jobIds.length
@@ -93,6 +117,7 @@ export async function POST(request: Request) {
           .set({ lastMessageAt: new Date() })
           .where(eq(chatThreads.id, id));
         revalidatePath("/", "layout");
+        if (reply.profileUpdated) send({ type: "profile" });
         send({ type: "done", id: msg!.id });
       } catch (err) {
         console.error("[assistant]", err);

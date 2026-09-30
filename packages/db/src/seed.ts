@@ -1,6 +1,7 @@
 // Seeds a demo user and the prototype's mock data. Safe to re-run: it removes the demo user
 // (cascading to their rows) and all jobs from the "seed" source first.
 //   pnpm db:seed
+//   pnpm db:seed -- --reset-jobs   also removes every ingested job (the e2e tests expect only the seed's)
 import { eq, inArray } from "drizzle-orm";
 import { hashPassword } from "better-auth/crypto";
 import { createDb } from "./index";
@@ -56,6 +57,10 @@ async function main() {
       .where(eq(s.jobs.sourceKey, SEED_SOURCE));
     await tx.delete(s.contacts).where(inArray(s.contacts.jobId, seedJobs));
     await tx.delete(s.jobs).where(eq(s.jobs.sourceKey, SEED_SOURCE));
+    if (process.argv.includes("--reset-jobs")) {
+      await tx.delete(s.jobs);
+      await tx.delete(s.jobSources);
+    }
 
     /* User, settings, profile */
     await tx.insert(s.users).values({

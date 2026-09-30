@@ -6,9 +6,25 @@ import { templateName, type Profile } from "@ge/core";
 import { ResumePaper } from "./ResumePaper";
 
 /** Export PDF: prints the A4 pages (globals.css) until compiled PDFs arrive with resume.compile. */
-export function printResume() {
+/**
+ * Export PDF: the compiled PDF (Tectonic, resume.compile) when it matches the latest edit,
+ * otherwise the browser's print of the A4 preview.
+ */
+export async function exportResume(resumeId?: string | null) {
+  if (resumeId) {
+    const url = `/api/resumes/${resumeId}/pdf`;
+    const head = await fetch(url, { method: "HEAD" }).catch(() => null);
+    if (head?.ok) {
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "";
+      a.click();
+      return;
+    }
+  }
   window.print();
 }
+export const printResume = () => void exportResume();
 
 const noop = () => () => {};
 
@@ -33,7 +49,7 @@ export function PrintableResume({ doc, template }: { doc: Profile; template: str
   );
 }
 
-function ShareMenu({ subject }: { subject: string }) {
+function ShareMenu({ subject, resumeId }: { subject: string; resumeId?: string | null }) {
   const { open, setOpen, ref, triggerRef } = usePopover();
   const [copied, setCopied] = useState(false);
   const items: {
@@ -57,7 +73,7 @@ function ShareMenu({ subject }: { subject: string }) {
         location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(location.href)}`;
       },
     },
-    { label: "Download PDF", icon: "download", act: printResume },
+    { label: "Download PDF", icon: "download", act: () => void exportResume(resumeId) },
     {
       label: "Share to LinkedIn",
       icon: "external-link",
@@ -119,6 +135,7 @@ export function PreviewAside({
   subject,
   tools,
   footer,
+  resumeId,
 }: {
   doc: Profile;
   template: string;
@@ -128,6 +145,8 @@ export function PreviewAside({
   /** Extra buttons after the template button (upload and export on the main resume). */
   tools?: ReactNode;
   footer?: ReactNode;
+  /** For "Download PDF": serves the compiled PDF when there is one. */
+  resumeId?: string | null;
 }) {
   return (
     <aside className="sticky top-[88px] flex max-w-[560px] min-w-0 flex-[1_1_420px] flex-col gap-3 max-lg:static max-lg:max-w-none">
@@ -143,7 +162,7 @@ export function PreviewAside({
           </Button>
           {tools}
         </div>
-        <ShareMenu subject={subject} />
+        <ShareMenu subject={subject} resumeId={resumeId} />
       </div>
       <ResumePaper doc={doc} template={template} highlights={highlights} />
       {footer}

@@ -71,7 +71,7 @@ export function LinkedinProfile({ data }: { data: LinkedinData }) {
   const [url, setUrl] = useState("");
   const [urlError, setUrlError] = useState<string | null>(null);
   const hasSource = fromUrl || upload.state !== "idle";
-  const importing = (fromUrl || upload.state === "done") && !data.snapshot;
+  const importing = (fromUrl || upload.state === "done") && !data.snapshot && !data.error;
   usePollWhile(importing);
   // Refresh once the upload lands so the page picks up the pending import.
   useEffect(() => {
@@ -101,7 +101,9 @@ export function LinkedinProfile({ data }: { data: LinkedinData }) {
             <span className="text-caption text-ink-subtle" aria-live="polite">
               {importing
                 ? "Rebuilding your profile from the page…"
-                : "Imported from your profile link"}
+                : data.error
+                  ? "Import didn't finish"
+                  : "Imported from your profile link"}
             </span>
           </div>
           <IconButton
@@ -193,6 +195,11 @@ export function LinkedinProfile({ data }: { data: LinkedinData }) {
             </Button>
           </form>
         </div>
+      )}
+      {data.error && (
+        <p role="alert" className="m-0 text-small text-danger-ink">
+          {data.error}
+        </p>
       )}
       {upload.error && (
         <p role="alert" className="m-0 text-small text-danger-ink">

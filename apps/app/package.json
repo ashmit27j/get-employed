@@ -12,11 +12,13 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1143.0",
+    "@ge/ai": "workspace:*",
     "@ge/core": "workspace:*",
     "@ge/db": "workspace:*",
     "@ge/ui": "workspace:*",
+    "@huggingface/transformers": "^4.3.0",
     "@next/env": "^16.3.7",
+    "ai": "^7.0.123",
     "better-auth": "^1.7.6",
     "drizzle-orm": "^0.45.3",
     "next": "^16.3.7",

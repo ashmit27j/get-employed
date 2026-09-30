@@ -78,6 +78,13 @@
       "when": 1790766908290,
       "tag": "0010_user_llm_key",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1790785103865,
+      "tag": "0011_linked_profile_error",
+      "breakpoints": true
     }
   ]
 }

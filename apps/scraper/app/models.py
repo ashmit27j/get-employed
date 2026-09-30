@@ -10,7 +10,7 @@ class LinkedInSearchRequest(BaseModel):
 
 
 class JobSummary(BaseModel):
-    """Mirrors the RawJob zod schema in packages/core; the worker validates it again."""
+    """Mirrors the schema in apps/worker/src/ingest/sources.ts; the worker validates it again."""
 
     external_id: str
     title: str
@@ -18,12 +18,27 @@ class JobSummary(BaseModel):
     location: str
     url: str
     posted_at: str | None = None
+    description: str | None = None
 
 
 class JobDetail(JobSummary):
-    description: str = ""
     criteria: dict[str, str] = Field(default_factory=dict)
 
 
 class LinkedInJobRequest(BaseModel):
-    id: str
+    id: str = Field(pattern=r"^\d{4,20}$")
+
+
+class LinkedInProfileRequest(BaseModel):
+    #: The part after linkedin.com/in/.
+    handle: str = Field(pattern=r"^[\w%-]{3,100}$")
+
+
+class LinkedInProfile(BaseModel):
+    handle: str
+    name: str = ""
+    headline: str = ""
+    about: str = ""
+    experience: list[str] = Field(default_factory=list)
+    education: list[str] = Field(default_factory=list)
+    skills: list[str] = Field(default_factory=list)

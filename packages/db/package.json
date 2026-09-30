@@ -6,7 +6,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./schema": "./src/schema.ts",
-    "./load-env": "./src/load-env.ts"
+    "./load-env": "./src/load-env.ts",
+    "./storage": "./src/storage.ts"
   },
   "scripts": {
     "lint": "eslint .",
@@ -18,6 +19,7 @@
     "db:seed": "tsx src/seed.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1143.0",
     "@ge/core": "workspace:*",
     "better-auth": "^1.7.6",
     "drizzle-orm": "^0.45.3",

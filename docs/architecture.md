@@ -7,10 +7,13 @@ GetEmployed is one Next.js app that serves both the public marketing pages and t
 ```
 apps/app          The site and the app. Next.js App Router: marketing pages ((marketing), static),
                   product pages, route handlers and server actions.
-apps/worker       Node process: pg-boss consumers and cron schedules.
+apps/worker       Node process: pg-boss consumers and cron schedules (boards hourly, saved searches
+                  hourly, cleanup and follow-ups daily). `pnpm --filter @ge/worker run-job <queue> <json>`.
 apps/scraper      Python 3.10+: FastAPI + Scrapling. Internal network only.
 packages/ui       v2 tokens (Tailwind theme + CSS variables) and shared React components.
-packages/core     zod schemas, shared types, query parser, match and ATS scoring, JobSource types.
+packages/core     zod schemas, shared types, query parser, match and ATS scoring, ingestion normalisers,
+                  rule-based resume and LinkedIn parsing.
+packages/ai       Gemini tasks (Vercel AI SDK), server only; every caller has a rule-based fallback.
 packages/db       Drizzle schema, migrations, seed built from prototype/ge-data.js.
 packages/config   Shared tsconfig, ESLint and Tailwind preset.
 prototype/        The design prototype. Read-only spec.

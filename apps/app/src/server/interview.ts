@@ -6,6 +6,7 @@ import { getDb } from "./db";
 import { env } from "./env";
 import { loadJobCards } from "./jobs";
 import { loadProfile } from "./profile";
+import { llmKeyFor } from "./settings";
 
 const { interviewSessions } = schema;
 
@@ -30,6 +31,8 @@ export interface InterviewData {
   cap: { used: number; max: number | null };
   /** Skills from the user's profile, for sessions that aren't about one job. */
   profileSkills: string[];
+  /** An LLM is configured: the interviewer asks follow-ups and Gemini grades. */
+  ai: boolean;
 }
 
 const monthStart = () => {
@@ -53,7 +56,7 @@ export async function liveSessionsThisMonth(userId: string) {
 }
 
 export async function loadInterview(userId: string): Promise<InterviewData> {
-  const [rows, cards, cap, profile] = await Promise.all([
+  const [rows, cards, cap, profile, key] = await Promise.all([
     getDb()
       .select()
       .from(interviewSessions)
@@ -63,6 +66,7 @@ export async function loadInterview(userId: string): Promise<InterviewData> {
     loadJobCards(userId, { limit: 100 }),
     liveSessionsThisMonth(userId),
     loadProfile(userId),
+    llmKeyFor(userId),
   ]);
   return {
     sessions: rows.map((r) => ({
@@ -80,5 +84,6 @@ export async function loadInterview(userId: string): Promise<InterviewData> {
     jobs: cards.map((c) => ({ id: c.id, title: c.title, company: c.company, skills: c.skills })),
     cap,
     profileSkills: profile.doc.skills.flatMap((g) => g.items),
+    ai: !!key,
   };
 }

@@ -1,0 +1,27 @@
+{
+  "name": "@ge/ai",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@ai-sdk/google": "^4.0.86",
+    "@ge/core": "workspace:*",
+    "ai": "^7.0.123",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@ge/config": "workspace:*",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.39.5",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.2"
+  }
+}

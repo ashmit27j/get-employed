@@ -160,6 +160,8 @@ export const linkedProfiles = pgTable(
     /** LinkedIn rewrites (LinkedinSuggestion[]). */
     suggestions: jsonb().$type<LinkedinSuggestion[]>().notNull().default([]),
     importedAt: timestamp({ withTimezone: true }),
+    /** Why the last import failed (e.g. LinkedIn asked to sign in); null when it worked. */
+    error: text(),
     ...timestamps,
   },
   (t) => [uniqueIndex().on(t.userId, t.kind)],

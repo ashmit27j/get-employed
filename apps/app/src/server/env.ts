@@ -30,6 +30,15 @@ const AppEnvSchema = ServerEnvSchema.extend({
     z.coerce.number().int().positive().optional(),
   ),
   GOOGLE_GENERATIVE_AI_API_KEY: optional,
+  LLM_MODEL: z.preprocess(blankToUndefined, z.string().default("gemini-flash-latest")),
+  INTERVIEW_MODEL: z.preprocess(blankToUndefined, z.string().default("gemini-flash-latest")),
+  GOOGLE_TTS_CREDENTIALS: optional,
+  TTS_WAVENET_VOICE: z.string().default("en-IN-Wavenet-A"),
+  TTS_STANDARD_VOICE: z.string().default("en-IN-Standard-A"),
+  TTS_WAVENET_MONTHLY_LIMIT: z.preprocess(blankToUndefined, z.coerce.number().default(1_000_000)),
+  TTS_STANDARD_MONTHLY_LIMIT: z.preprocess(blankToUndefined, z.coerce.number().default(4_000_000)),
+  TTS_SAFETY_RATIO: z.preprocess(blankToUndefined, z.coerce.number().min(0).max(1).default(0.9)),
+  SEARCH_FRESHNESS_MINUTES: z.preprocess(blankToUndefined, z.coerce.number().default(60)),
   S3_FORCE_PATH_STYLE: z
     .enum(["true", "false"])
     .default("true")

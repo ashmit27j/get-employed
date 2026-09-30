@@ -1,0 +1,1 @@
+ALTER TABLE "linked_profiles" ADD COLUMN "error" text;

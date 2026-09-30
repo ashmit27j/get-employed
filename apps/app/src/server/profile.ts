@@ -42,8 +42,8 @@ export async function loadJobProfile(user: {
   id: string;
   targetRole?: string | null;
   preferredLocations?: string[] | null;
-}): Promise<{ doc: Profile; details: JobDetails }> {
-  const [{ doc }, [row]] = await Promise.all([
+}): Promise<{ doc: Profile; details: JobDetails; version: number }> {
+  const [{ doc, version }, [row]] = await Promise.all([
     loadProfile(user.id),
     getDb()
       .select({ details: profiles.details })
@@ -58,7 +58,7 @@ export async function loadJobProfile(user: {
     ...stored,
     links: { ...linksFromContact(doc.contact.links), ...stored.links },
   });
-  return { doc, details };
+  return { doc, details, version };
 }
 
 /**

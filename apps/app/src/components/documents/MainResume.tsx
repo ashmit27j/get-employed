@@ -17,7 +17,7 @@ import { atsScore, templateName, toLatex, type Profile } from "@ge/core";
 import { saveMainLatex, saveMainResume, setMainTemplate } from "@/server/actions/documents";
 import type { MainResume as MainResumeData } from "@/server/documents";
 import { AssistantHint, LatexEditor, TemplatePicker } from "./DocBlocks";
-import { PreviewAside, ToolIcon, printResume } from "./PreviewAside";
+import { PreviewAside, ToolIcon, exportResume } from "./PreviewAside";
 
 const count = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 const SAVE_DELAY = 800;
@@ -492,6 +492,7 @@ export function MainResume({
           template={template}
           onOpenPicker={() => setPicker(true)}
           subject="My resume"
+          resumeId={data.id}
           tools={
             <>
               <ToolIcon
@@ -499,7 +500,11 @@ export function MainResume({
                 title="Upload a resume"
                 onClick={() => router.push("/documents?view=upload")}
               />
-              <ToolIcon icon="download" title="Export PDF" onClick={printResume} />
+              <ToolIcon
+                icon="download"
+                title="Export PDF"
+                onClick={() => void exportResume(data.id)}
+              />
             </>
           }
         />

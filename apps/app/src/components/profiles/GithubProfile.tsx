@@ -100,7 +100,7 @@ export function GithubProfile({
   const [pending, start] = useTransition();
   const [login, setLogin] = useState(data.login ?? "");
   const [error, setError] = useState<string | null>(null);
-  const importing = !!data.login && !data.snapshot;
+  const importing = !!data.login && !data.snapshot && !data.error;
   usePollWhile(importing);
 
   const snap = data.snapshot;
@@ -197,9 +197,9 @@ export function GithubProfile({
             {pending || importing ? "Connecting…" : snap ? "Refresh" : "Connect"}
           </Button>
         </form>
-        {error && (
+        {(error ?? data.error) && (
           <p role="alert" className="m-0 text-small text-danger-ink">
-            {error}
+            {error ?? data.error}
           </p>
         )}
       </Panel>

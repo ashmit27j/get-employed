@@ -402,4 +402,9 @@ export const MCQ_BANK: McqQuestion[] = [
 export type SessionReport = InterviewReport & {
   mcq?: { picks: (number | null)[] };
   questions?: string[];
+  /** Question and answer pairs, for interview.grade. */
+  qa?: { q: string; a: string }[];
+  /** "ai" once Gemini has graded the session. */
+  gradedBy?: "rules" | "ai";
+  strictness?: "Lenient" | "Standard" | "Strict";
 };

@@ -47,6 +47,12 @@ const Save = z.object({
     .optional(),
   sttEngine: z.enum(["webspeech", "whisper", "typed"]).nullish(),
   mcqPicks: z.array(z.number().int().min(0).max(3).nullable()).max(MCQ_BANK.length).optional(),
+  strictness: z.enum(["Lenient", "Standard", "Strict"]).default("Standard"),
+  /** Every question asked, follow-ups included, with its answer (for interview.grade). */
+  qa: z
+    .array(z.object({ q: z.string().max(1000), a: z.string().max(10_000) }))
+    .max(40)
+    .optional(),
 });
 
 /**
@@ -84,7 +90,13 @@ export async function saveInterviewSession(input: z.input<typeof Save>): Promise
     });
     score = graded.score;
     rubric = graded.rubric;
-    report = { ...graded.report, questions: questions.map((q) => q.q) };
+    report = {
+      ...graded.report,
+      questions: questions.map((q) => q.q),
+      qa: s.qa?.length ? s.qa : questions.map((q, i) => ({ q: q.q, a: s.answers[i] ?? "" })),
+      gradedBy: "rules" as const,
+      strictness: s.strictness,
+    };
   }
   const db = getDb();
   const [row] = await db

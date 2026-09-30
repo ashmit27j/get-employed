@@ -26,6 +26,24 @@ async function ownResume(userId: string, id: string) {
   return row;
 }
 
+/** Queue a PDF build of a resume after edits settle (resume.compile in the worker). */
+async function queueCompile(userId: string, resumeId: string | undefined) {
+  if (!resumeId) return;
+  await enqueue(
+    "resume.compile",
+    { userId, resumeId },
+    { singletonKey: `compile:${resumeId}`, startAfterSeconds: 20 },
+  ).catch((err: unknown) => console.error("[documents] could not queue resume.compile", err));
+}
+
+async function mainResumeId(userId: string) {
+  const [row] = await getDb()
+    .select({ id: resumes.id })
+    .from(resumes)
+    .where(and(eq(resumes.userId, userId), eq(resumes.kind, "main")));
+  return row?.id;
+}
+
 /** Save the main resume (the profile document, docs/decisions.md D18) and its ATS score. */
 export async function saveMainResume(doc: Profile): Promise<{ atsScore: number }> {
   const user = await requireUser();
@@ -33,6 +51,7 @@ export async function saveMainResume(doc: Profile): Promise<{ atsScore: number }
   const { keywords } = await mainAtsKeywords(user.id);
   const score = atsScore(parsed, keywords).score;
   await saveProfile(user.id, parsed, { atsScore: score });
+  await queueCompile(user.id, await mainResumeId(user.id));
   refresh();
   return { atsScore: score };
 }
@@ -49,6 +68,7 @@ export async function saveMainLatex(source: string | null) {
       editedAt: new Date(),
     })
     .where(and(eq(resumes.userId, user.id), eq(resumes.kind, "main")));
+  await queueCompile(user.id, await mainResumeId(user.id));
   refresh();
 }
 
@@ -265,6 +285,7 @@ export async function saveTailoredResume(resumeId: string): Promise<{ atsScore: 
           .values({ applicationId: app.id, kind: "tailored", data: { resumeId: row.id } });
     }
   }
+  await queueCompile(user.id, row.id);
   refresh();
   revalidatePath("/tracker");
   return { atsScore: score };

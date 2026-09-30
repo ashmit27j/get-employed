@@ -131,3 +131,61 @@ export function matchBreakdown(input: {
     gainNote,
   };
 }
+
+const ROLE_WORDS: [RegExp, string][] = [
+  [/back[- ]?end|server|api|platform|distributed/, "backend"],
+  [/front[- ]?end|\bui\b|web/, "frontend"],
+  [/full[- ]?stack/, "fullstack"],
+  [/android|ios|mobile|swift|kotlin/, "mobile"],
+  [/data|analytics|analyst/, "data"],
+  [/machine learning|\bml\b|\bai\b/, "ml"],
+  [/devops|sre|cloud|infra/, "platform"],
+  [/qa|test|sdet/, "qa"],
+  [/security/, "security"],
+  [/product manager/, "product"],
+  [/design/, "design"],
+];
+const families = (s: string) =>
+  ROLE_WORDS.filter(([re]) => re.test(s.toLowerCase())).map(([, f]) => f);
+
+/**
+ * The headline match score (0–100) that match.compute stores. Weights: skills 45%, experience 20%,
+ * role fit 15%, location 10%, project evidence 10%. Roles far above the user's level are capped,
+ * because skill overlap doesn't make a student a fit for a lead role. Also returns the missing
+ * skills and a rule-based reason for when no LLM is configured.
+ */
+export function matchScore(input: {
+  profile: Profile;
+  job: { title: string; skills: string[]; experience: string; location: string; mode: WorkMode };
+  experienceLevel?: string | null;
+  preferredLocations?: string[];
+  targetRole?: string | null;
+}): { score: number; missing: string[]; reason: string } {
+  const { profile, job } = input;
+  const missing = job.skills.filter((s) => !hasSkill(profile, s) && !skillEvidence(profile, s));
+  const b = matchBreakdown({
+    profile,
+    job: { ...job, missing },
+    experienceLevel: input.experienceLevel,
+    preferredLocations: input.preferredLocations,
+  });
+  const matched = job.skills.filter((s) => !missing.includes(s));
+  // Smoothed so a one-skill listing can't read as a perfect match.
+  const skills = Math.round((100 * (matched.length + 1)) / (job.skills.length + 2));
+  const want = families(input.targetRole ?? "");
+  const got = families(job.title);
+  const role = !want.length ? 70 : got.some((f) => want.includes(f)) ? 100 : got.length ? 35 : 60;
+  let score = Math.round(
+    skills * 0.45 + b.experience * 0.2 + role * 0.15 + b.location * 0.1 + (b.projects || 50) * 0.1,
+  );
+  if (b.experience < 60) score = Math.min(score, 50);
+  const backed = matched.filter((s) => skillEvidence(profile, s)).slice(0, 2);
+  const reason = !job.skills.length
+    ? `It doesn't list skills; judged on role and experience fit.`
+    : backed.length
+      ? `Your ${joinAnd(backed)} work covers ${matched.length} of ${job.skills.length} listed skills.`
+      : matched.length
+        ? `You list ${matched.length} of the ${job.skills.length} skills it asks for.`
+        : `It asks for ${joinAnd(job.skills.slice(0, 2))}, which your profile doesn't show yet.`;
+  return { score: Math.max(0, Math.min(100, score)), missing, reason };
+}

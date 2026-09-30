@@ -75,6 +75,7 @@ export type JobSourceKey = (typeof JOB_SOURCE_KEYS)[number];
 export const QUEUES = [
   "ingest.search",
   "ingest.refresh-saved",
+  "ingest.cleanup",
   "match.compute",
   "contact.find",
   "email.draft",

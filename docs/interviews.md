@@ -13,7 +13,7 @@ The order of engines:
 Whisper details:
 
 - Runs in a **Web Worker** so the UI never freezes.
-- **Lazy-loaded** only when the fallback is needed. Uses `whisper-tiny` by default and `whisper-base` if the device can handle it.
+- **Lazy-loaded** only when the fallback is needed. Uses `Xenova/whisper-tiny.en` by default (`NEXT_PUBLIC_WHISPER_MODEL`).
 - Shows a download progress bar while the model loads and a "Transcribing…" indicator while it works.
 - Transcribes the recorded answer in short chunks.
 - The model is released and the worker terminated when the session ends.

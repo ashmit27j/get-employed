@@ -41,6 +41,8 @@ export default async function ProfilePage() {
     <>
       <Topbar crumbs={[{ label: "Job Profile" }]} />
       <JobProfile
+        // A new version (e.g. the assistant filled the profile in) starts the form from it.
+        key={profile.version}
         initial={profile}
         library={library}
         locked={user.onboardingStep != null}

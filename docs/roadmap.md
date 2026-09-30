@@ -64,15 +64,19 @@ Order: jobs → job detail → saved search → tracker → documents → mailbo
 - Left for Phase 6 on the interview page: the AI model picker, Strictness, and eye contact / posture metrics (they need the LLM and video analysis).
 - Not built on purpose: the prototype's plan quotas ("Emails this month 38/50", "Cloud checks 184 of 300", overages). They wait for billing (D15).
 
-## Phase 6: Backend wiring
+## Phase 6: Backend wiring (done)
 
-- Ingestion (LinkedIn scraper + API sources), query parsing, matching, salary estimates
-- Resume parsing, tailoring, ATS scoring, LaTeX compile
-- Contact finding, Gmail/SMTP sending with approval, open tracking
-- Assistant with tool calling and saved threads and groups
-- Interviews: Whisper fallback, Gemini follow-ups and grading (`interview.grade`), Cloud TTS tiers, strictness and model choice
-- "Edit with AI" on the Job Profile and the LinkedIn URL import need the Phase 6 assistant and worker to do the actual filling
-- Use `llmKeyFor(userId)` (`apps/app/src/server/settings.ts`) for every LLM call so a user's own key wins
+Every LLM step has a rule-based fallback, so the app works without a Gemini key (D26). A user's own key (Settings → Developer) wins over the deployment's.
+
+- [x] `@ge/ai`: one typed function per Gemini task (query parsing, skills, match reasons, tailoring, drafts, resume parsing, interview turns and grading, LinkedIn review), tested against the AI SDK's mock model
+- [x] Ingestion: Greenhouse and Lever boards for 12 Indian companies (D28), Adzuna (with a key), LinkedIn guest search through `apps/scraper` (behind the switch); India and engineering-role filters, normalised location, mode, experience and salary, dedupe across sources, salary estimates from comparable jobs; hourly board refresh, saved-search refresh by frequency, daily cleanup
+- [x] Matching: `match.compute` scores every open job per profile version (skills, experience with a seniority cap, role fit, location, project evidence); Gemini writes reasons for the best matches
+- [x] Resumes: `resume.parse` (PDF, DOCX, LaTeX → profile; Gemini or the rule parser), `resume.tailor` (Gemini rewrites or safe rule rewrites that only surface skills the resume already backs), `resume.compile` (Tectonic → PDF in storage; Export PDF downloads it when it matches the latest edit)
+- [x] Outreach: `contact.find` (addresses listed in the post, else the careers inbox of the company's MX-checked domain; never a guessed person, D27), `email.draft`, `email.send` (approved only; sending window and daily limit; Gmail API or SMTP; compiled resume attached; open pixel at `/t/o/[token]`), `email.track` (daily follow-up drafts, approved like any email), Gmail connect from the Mailbox
+- [x] Assistant: Gemini tool calling over the same tools as the rule router, plus `fill_profile` for "Edit with AI" on the Job Profile
+- [x] Profiles: `profile.import-github` (public API, README scores, pins from GraphQL or the public page), `profile.import-linkedin` (PDF export or public page through the scraper; failures shown on the page)
+- [x] Interviews: `/api/interview/turn` (Gemini follow-ups, at most two per session, Strictness), `/api/tts` (Cloud TTS, WaveNet → Standard → browser voice, character reservation and cache), Whisper in a Web Worker when Web Speech fails, `interview.grade`
+- Not built: choosing the interview model per session (the deployment sets `INTERVIEW_MODEL`); eye contact and posture scores (need video analysis)
 
 ## TODO (not scheduled)
 
