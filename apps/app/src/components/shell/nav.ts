@@ -42,6 +42,9 @@ export const NAV: { group: string; items: NavEntry[] }[] = [
   },
 ];
 
+/** Set by the proxy when a signed-in visit to `/` lands on /jobs; the shell then shows the Home tab. */
+export const NAV_HOME_COOKIE = "ge-nav-home";
+
 /** Mobile bottom bar; everything else lives in the "More" drawer. */
 export const MOBILE_TABS: { id: NavId; label: string; icon: IconName; href: string }[] = [
   { id: "tracker", label: "Tracker", icon: "square-kanban", href: "/tracker" },

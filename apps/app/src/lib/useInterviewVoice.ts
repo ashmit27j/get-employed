@@ -57,8 +57,9 @@ async function toPcm16k(blob: Blob): Promise<Float32Array> {
  * the browser's voice when that's off or over budget. Answers are transcribed with Web Speech;
  * if it's missing or fails at runtime the session switches to Whisper in a Web Worker, and typing
  * is the last resort. Answering is click to start, click to stop: the mic is never always on.
+ * `lang` is what the candidate speaks (recognition); `voiceLang` is the interviewer's accent.
  */
-export function useInterviewVoice(lang = "en-IN") {
+export function useInterviewVoice(lang = "en-IN", voiceLang = "en-US") {
   const supported = useSyncExternalStore(
     noSubscribe,
     () => !!recognitionCtor() || canRecord(),
@@ -102,16 +103,17 @@ export function useInterviewVoice(lang = "en-IN") {
         }
         synth.cancel();
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang;
+        u.lang = voiceLang;
+        const voices = synth.getVoices();
         const voice =
-          synth.getVoices().find((v) => v.lang === lang) ??
-          synth.getVoices().find((v) => v.lang.startsWith("en"));
+          voices.find((v) => v.lang.replace("_", "-") === voiceLang) ??
+          voices.find((v) => v.lang.startsWith("en"));
         if (voice) u.voice = voice;
         u.onend = () => resolve();
         u.onerror = () => resolve();
         synth.speak(u);
       }),
-    [lang],
+    [voiceLang],
   );
 
   const speak = useCallback(

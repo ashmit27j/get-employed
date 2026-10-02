@@ -10,6 +10,8 @@ function producer(): Promise<PgBoss> {
   boss ??= (async () => {
     const b = new PgBoss({
       connectionString: env().DATABASE_URL,
+      // Sending needs one connection; the default pool of 10 per instance exhausts the pooler.
+      max: 1,
       supervise: false,
       schedule: false,
     });
