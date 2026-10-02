@@ -4,6 +4,7 @@ import { APIError, createAuthMiddleware } from "better-auth/api";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { emailOTP, username } from "better-auth/plugins";
+import { dash } from "@better-auth/infra";
 import { PASSWORD_HINT, passwordOk } from "@ge/core";
 import { schema } from "@ge/db";
 import { getDb } from "./db";
@@ -117,6 +118,7 @@ function createAuth() {
           });
         },
       }),
+      dash(),
       nextCookies(),
     ],
   });

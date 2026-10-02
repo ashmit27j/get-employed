@@ -83,7 +83,7 @@ Every LLM step has a rule-based fallback, so the app works without a Gemini key 
 - **Two-step verification** (Better Auth two-factor plugin) for Account.
 - **More connectors:** LinkedIn/GitHub sign-in, Google Calendar, Drive, Notion and Slack appear in the prototype's Account page but have no design in the architecture yet.
 
-- **Billing and plan quotas:** Razorpay, Free/Pro limits, the Usage tab against the limits. The numbers are not final.
+- **Billing and plan quotas:** payment provider (undecided), Free/Pro limits, the Usage tab against the limits. The numbers are not final.
 - **Hosting:** a cloud host for `apps/worker` and `apps/scraper`, managed Postgres, an S3 bucket, domains (all current URLs are placeholders).
 - **Google:** brand verification and `gmail.send` verification before going past 100 test users.
 - **IMAP connection** for automatic reply and bounce detection.

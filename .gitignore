@@ -1,7 +1,6 @@
 # Dependencies
 node_modules/
 .pnpm-store/
-
 # Builds
 .next/
 out/
@@ -32,3 +31,13 @@ Thumbs.db
 .idea/
 # Logs
 *.log
+
+.vercel
+
+# Secrets: service-account keys, certificates, local Claude settings
+gete-*.json
+*-service-account*.json
+service-account*.json
+*.pem
+*.key
+.claude/settings.local.json

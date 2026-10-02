@@ -12,6 +12,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@better-auth/infra": "^0.4.13",
     "@ge/ai": "workspace:*",
     "@ge/core": "workspace:*",
     "@ge/db": "workspace:*",
