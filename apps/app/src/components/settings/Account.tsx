@@ -328,6 +328,7 @@ export function Account({
               ref={file}
               type="file"
               accept="image/png,image/jpeg"
+              aria-label="Upload photo"
               className="hidden"
               onChange={(e) => {
                 const f = e.target.files?.[0];

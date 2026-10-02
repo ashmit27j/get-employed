@@ -5,7 +5,7 @@ const optional = z.preprocess(blankToUndefined, z.string().optional());
 const num = (d: number) => z.preprocess(blankToUndefined, z.coerce.number().default(d));
 
 /** Everything apps/worker reads from the environment (see .env.example). */
-export const WorkerEnvSchema = ServerEnvSchema.extend({
+const WorkerEnvSchema = ServerEnvSchema.extend({
   BETTER_AUTH_SECRET: optional,
   MAILBOX_ENCRYPTION_KEY: optional,
   GOOGLE_GENERATIVE_AI_API_KEY: optional,

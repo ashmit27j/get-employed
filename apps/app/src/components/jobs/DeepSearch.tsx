@@ -22,6 +22,7 @@ import {
   EMPTY_FILTERS,
   FILTER_OPTIONS,
   SALARY_RANGE,
+  SEARCH_FREQUENCIES,
   SEARCH_FREQUENCY_LABELS,
   countFilters,
   filtersToChips,
@@ -29,8 +30,10 @@ import {
   parseFilters,
   type JobCard,
   type JobFilters,
+  type SearchFrequency,
 } from "@ge/core";
 import { useDictation } from "@/lib/useDictation";
+import { useEscape } from "@/lib/useEscape";
 import { createSavedSearch, updateSavedSearch } from "@/server/actions/searches";
 import type { SavedSearchItem } from "@/server/searches";
 import { fmtLast } from "./JobsBoard";
@@ -42,6 +45,10 @@ const EXAMPLES = [
   "iOS roles, SwiftUI, 15 LPA+",
 ];
 const MAX_CHARS = 3000;
+const FREQ_OPTIONS = SEARCH_FREQUENCIES.map((f) => ({
+  value: f,
+  label: SEARCH_FREQUENCY_LABELS[f],
+}));
 
 type ListKey = "roles" | "locations" | "modes" | "experience" | "skills";
 type GroupKey = ListKey | "type" | "salary";
@@ -225,8 +232,9 @@ export function DeepSearch({
   const [extra, setExtra] = useState<Partial<Record<ListKey, string[]>>>({});
   const [focused, setFocused] = useState(false);
   const [promptsOpen, setPromptsOpen] = useState(false);
+  useEscape(promptsOpen, () => setPromptsOpen(false));
   const [hintClosed, setHintClosed] = useState(false);
-  const [freq, setFreq] = useState("Daily");
+  const [freq, setFreq] = useState<SearchFrequency>("daily");
   const [autoDraft, setAutoDraft] = useState(true);
   const [saveOpen, setSaveOpen] = useState(false);
   const [saving, startSave] = useTransition();
@@ -280,7 +288,7 @@ export function DeepSearch({
       const id = await createSavedSearch({
         query: query.trim(),
         chips: filtersToChips(f),
-        frequency: freq.toLowerCase(),
+        frequency: freq,
         autoDraft,
       });
       setSaveOpen(false);
@@ -335,7 +343,11 @@ export function DeepSearch({
               </button>
               {promptsOpen && (
                 <>
-                  <div className="fixed inset-0 z-20" onClick={() => setPromptsOpen(false)} />
+                  <div
+                    aria-hidden="true"
+                    className="fixed inset-0 z-20"
+                    onClick={() => setPromptsOpen(false)}
+                  />
                   <div
                     role="menu"
                     className="absolute bottom-[calc(100%+8px)] left-0 z-21 flex w-[300px] max-w-[calc(100vw-48px)] flex-col gap-0.5 rounded-lg border border-hairline-strong bg-surface-2 p-1.5"
@@ -597,9 +609,9 @@ export function DeepSearch({
           <span className="text-small text-ink-subtle">Frequency</span>
           <Segmented
             label="Frequency"
-            options={["Hourly", "Daily", "Weekly"]}
+            options={FREQ_OPTIONS}
             value={freq}
-            onChange={setFreq}
+            onChange={(v) => setFreq(v as SearchFrequency)}
           />
         </div>
         <label className="flex items-center gap-2.5 text-small text-ink-muted">

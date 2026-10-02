@@ -112,7 +112,6 @@ function HeroSearch() {
       <form
         action={SIGN_UP_URL}
         method="get"
-        onMouseDown={stop}
         onFocusCapture={stop}
         className="flex w-full gap-2 max-md:flex-col"
       >

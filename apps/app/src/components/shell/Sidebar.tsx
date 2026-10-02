@@ -331,6 +331,7 @@ export function DesktopSidebar({ active, data }: { active: NavId; data: ShellDat
     <>
       {collapsed && (
         <div
+          role="presentation"
           className="fixed top-3 left-3 z-21"
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}

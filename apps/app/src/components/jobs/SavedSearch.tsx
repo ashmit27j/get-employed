@@ -18,6 +18,7 @@ import {
 import {
   filtersToChips,
   parseFilters,
+  SEARCH_FREQUENCY_MS,
   timeAgo,
   type JobCard,
   type SearchFrequency,
@@ -31,11 +32,10 @@ import { fmtLast } from "./JobsBoard";
 import { salaryProps } from "./JobRow";
 
 const MODE_LABEL = { "on-site": "On-site", hybrid: "Hybrid", remote: "Remote" } as const;
-const FREQ: [SearchFrequency, string, number][] = [
-  ["hourly", "Hour", 3_600_000],
-  ["six-hourly", "6 hours", 6 * 3_600_000],
-  ["daily", "Day", 86_400_000],
-  ["weekly", "Week", 7 * 86_400_000],
+const FREQ_OPTIONS: { value: SearchFrequency; label: string }[] = [
+  { value: "four-hourly", label: "4 hours" },
+  { value: "eight-hourly", label: "8 hours" },
+  { value: "daily", label: "Day" },
 ];
 const NOTIFY: [SearchNotify, string][] = [
   ["each", "Each new match"],
@@ -53,7 +53,7 @@ const RUN_ON: [SearchRunOn, string, "cloud" | "laptop", string][] = [
 ];
 
 /** "38 min", "4 h 12 min", "3 days" until the next scheduled check. */
-export function untilLabel(ms: number) {
+function untilLabel(ms: number) {
   const min = Math.max(1, Math.round(ms / 60_000));
   if (min < 60) return `${min} min`;
   const h = Math.floor(min / 60);
@@ -130,12 +130,11 @@ export function SavedSearchView({
       router.push(`/jobs?board=Saved&deleted=${s.id}&q=${encodeURIComponent(s.query)}`);
     });
 
-  const freq = FREQ.find((f) => f[0] === s.frequency) ?? FREQ[2]!;
   const nNew = s.active ? matches.filter((m) => m.isNew).length : 0;
   const next = useMemo(() => {
     const last = s.lastRunAt ? new Date(s.lastRunAt).getTime() : now.getTime();
-    return untilLabel(Math.max(60_000, last + freq[2] - now.getTime()));
-  }, [s.lastRunAt, freq, now]);
+    return untilLabel(Math.max(60_000, last + SEARCH_FREQUENCY_MS[s.frequency] - now.getTime()));
+  }, [s.lastRunAt, s.frequency, now]);
 
   return (
     <PageBody>
@@ -257,9 +256,9 @@ export function SavedSearchView({
         <Row label="Check every">
           <Segmented
             label="Check every"
-            options={FREQ.map((f) => f[1])}
-            value={freq[1]}
-            onChange={(v) => patch({ frequency: FREQ.find((f) => f[1] === v)![0] })}
+            options={FREQ_OPTIONS}
+            value={s.frequency}
+            onChange={(v) => patch({ frequency: v as SearchFrequency })}
           />
         </Row>
         <Row label="Runs on" top>

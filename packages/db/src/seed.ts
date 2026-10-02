@@ -201,7 +201,8 @@ async function main() {
           userId: SEED_USER_ID,
           query: q.q,
           filters: toChips(q.chips),
-          frequency: q.freq.toLowerCase() as "hourly" | "daily" | "weekly",
+          // The prototype has Hourly/Daily/Weekly; 4 hours is now the floor and daily the ceiling.
+          frequency: q.freq === "Hourly" ? "four-hourly" : "daily",
           active: q.active,
           newCount: q.newCount,
           lastRunAt: SEED_NOW,

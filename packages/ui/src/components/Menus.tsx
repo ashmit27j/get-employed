@@ -144,6 +144,7 @@ export function Dropdown({
               <div
                 key={o}
                 role="option"
+                tabIndex={-1}
                 aria-selected={o === current}
                 onMouseDown={(e) => {
                   e.preventDefault();
@@ -246,6 +247,7 @@ export function Combobox({
                 key={it.custom ? "__custom" : it.value}
                 id={`${id}-o${i}`}
                 role="option"
+                tabIndex={-1}
                 aria-selected={i === hi}
                 onMouseDown={(e) => {
                   e.preventDefault();
@@ -345,6 +347,7 @@ export function InlineSelect({
             <div
               key={o}
               role="option"
+              tabIndex={-1}
               aria-selected={o === current}
               onMouseDown={(e) => {
                 e.preventDefault();

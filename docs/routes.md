@@ -7,6 +7,7 @@ Every route is ported from a file in `prototype/`. Copy, states and flows match 
 | Route                                    | Prototype source                                                           | Notes                                                              |
 | ---------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------ |
 | `/`                                      | `marketing/Home.jsx`, `HomeSections.jsx`, `ProductMock.jsx`, `Figures.jsx` | Anchors `#how` (How it works), `#selfhost` (Self-host), `#pricing` |
+| `/privacy`, `/terms`                     | —                                                                          | New; indexed and listed in the sitemap                             |
 | `/sitemap.xml`, `/robots.txt`, OG images | —                                                                          | New                                                                |
 
 - Top nav links: How it works, Pricing (`/#pricing`), Self-host. `/pricing` redirects to `/#pricing`; there is no changelog.

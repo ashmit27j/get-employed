@@ -41,7 +41,7 @@ const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
 
 /** "Today", "Tomorrow", "In 4 days", "2 days overdue" and the badge tone for an alert. */
-export function alertWhen(alert: Pick<TrackerAlert, "dueAt" | "createdAt">, now: Date) {
+function alertWhen(alert: Pick<TrackerAlert, "dueAt" | "createdAt">, now: Date) {
   if (!alert.dueAt) {
     const fresh = now.getTime() - new Date(alert.createdAt).getTime() < 3_600_000;
     return {

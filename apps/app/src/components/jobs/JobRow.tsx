@@ -17,7 +17,7 @@ export function salaryProps(s: NonNullable<JobCard["salary"]>) {
       } as const);
 }
 
-export function contactLine(c: JobCard["contact"]) {
+function contactLine(c: JobCard["contact"]) {
   if (c.status === "found")
     return { icon: "user-check" as const, label: `${c.name} · ${c.role}`, found: true };
   if (c.status === "searching")
@@ -87,7 +87,7 @@ export function JobRow({
         <span className="max-md:hidden">
           {job.salary && <SalaryBadge {...salaryProps(job.salary)} quiet />}
         </span>
-        <div className="flex items-center" onClick={(e) => e.stopPropagation()}>
+        <div role="presentation" className="flex items-center" onClick={(e) => e.stopPropagation()}>
           <IconButton icon="eye-off" title="Hide this job" onClick={onHide} size={40} />
           <IconButton
             icon={job.saved ? "bookmark-check" : "bookmark"}
@@ -138,6 +138,7 @@ export function JobRow({
             </div>
           )}
           <div
+            role="presentation"
             className="flex flex-wrap items-center justify-between gap-3 border-t border-hairline pt-3.5"
             onClick={(e) => e.stopPropagation()}
           >

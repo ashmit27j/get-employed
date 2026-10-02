@@ -318,7 +318,7 @@ export function AuthScreen({ googleEnabled }: { googleEnabled: boolean }) {
 
   return (
     <AuthChrome>
-      <div className="flex flex-1 flex-col justify-center py-14">
+      <main className="flex flex-1 flex-col justify-center py-14">
         <div className="relative flex justify-center border-y border-hairline">
           <div className="relative flex w-[min(1264px,calc(100%-32px))]">
             {(
@@ -483,7 +483,7 @@ export function AuthScreen({ googleEnabled }: { googleEnabled: boolean }) {
             <div aria-hidden="true" className={cx(hatch, "border-l border-hairline")} />
           </div>
         </div>
-      </div>
+      </main>
     </AuthChrome>
   );
 }

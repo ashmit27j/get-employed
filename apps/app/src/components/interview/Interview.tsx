@@ -611,6 +611,7 @@ export function Interview({
                   {cam === "on" ? (
                     <video
                       ref={attachVideo}
+                      aria-hidden="true"
                       autoPlay
                       muted
                       playsInline
@@ -1092,6 +1093,7 @@ function Setup({
                 {p.cam === "on" ? (
                   <video
                     ref={attachVideo}
+                    aria-hidden="true"
                     autoPlay
                     muted
                     playsInline

@@ -119,17 +119,14 @@ export function SettingsDialog() {
   ).filter(([, items]) => items.length);
 
   return (
-    <div
-      onClick={close}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-scrim p-6 font-sans max-md:p-0"
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-6 font-sans max-md:p-0">
+      <div aria-hidden="true" onClick={close} className="absolute inset-0 bg-scrim" />
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        onClick={(e) => e.stopPropagation()}
         className="relative grid h-[min(720px,calc(100vh-48px))] w-[min(1000px,100%)] grid-cols-[232px_minmax(0,1fr)] overflow-hidden rounded-xl border border-hairline-strong bg-canvas text-ink shadow-edge outline-none max-md:h-full max-md:grid-cols-1 max-md:grid-rows-[auto_minmax(0,1fr)] max-md:rounded-none max-md:border-0"
       >
         <aside className="flex min-h-0 flex-col gap-4 border-r border-hairline bg-surface-1 p-3 max-md:gap-2 max-md:border-r-0 max-md:border-b max-md:pt-3 max-md:pr-14">

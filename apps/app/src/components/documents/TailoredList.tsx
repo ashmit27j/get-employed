@@ -9,7 +9,7 @@ import { PrintableResume } from "./PreviewAside";
 
 const SORTS = ["Recently edited", "ATS score", "Company A–Z"] as const;
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-export const fmtDate = (iso: string) => {
+const fmtDate = (iso: string) => {
   const d = new Date(iso);
   return `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 };

@@ -24,8 +24,6 @@ export async function exportResume(resumeId?: string | null) {
   }
   window.print();
 }
-export const printResume = () => void exportResume();
-
 const noop = () => () => {};
 
 /** An off-screen copy of the resume at A4 width that only shows when printing. */

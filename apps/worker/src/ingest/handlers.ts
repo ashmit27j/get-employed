@@ -7,6 +7,7 @@ import {
   filtersToChips,
   matchesFilters,
   parseFilters,
+  SEARCH_FREQUENCY_MS,
   type JobCard,
   type JobFilters,
   type RawJob,
@@ -51,7 +52,7 @@ async function run(ctx: Ctx, key: string, fetcher: () => Promise<RawJob[]>): Pro
 }
 
 /** Company boards return all their openings, so they refresh on a timer rather than per query. */
-export async function refreshBoards(ctx: Ctx, force = false): Promise<string[]> {
+async function refreshBoards(ctx: Ctx, force = false): Promise<string[]> {
   const freshMs = ctx.env.SEARCH_FRESHNESS_MINUTES * 60_000;
   const raws: RawJob[] = [];
   for (const b of BOARDS) {
@@ -184,13 +185,6 @@ export async function ingestSearch(ctx: Ctx, data: unknown) {
   if (userId && touched.length) await ctx.send("match.compute", { userId }, `match:${userId}`);
 }
 
-const INTERVAL_MS: Record<string, number> = {
-  hourly: 3_600_000,
-  "six-hourly": 6 * 3_600_000,
-  daily: 86_400_000,
-  weekly: 7 * 86_400_000,
-};
-
 /** ingest.refresh-saved (cron): queue every active cloud search that is due. */
 export async function refreshSaved(ctx: Ctx) {
   const rows = await ctx.db
@@ -211,8 +205,8 @@ export async function refreshSaved(ctx: Ctx) {
   let queued = 0;
   for (const r of rows) {
     const age = Date.now() - (r.lastRunAt?.getTime() ?? 0);
-    // Five minutes' slack so an hourly search runs every hourly tick.
-    if (age + 5 * 60_000 < INTERVAL_MS[r.frequency]!) continue;
+    // Five minutes' slack so a 4-hourly search runs on its fourth hourly tick, not the fifth.
+    if (age + 5 * 60_000 < SEARCH_FREQUENCY_MS[r.frequency]) continue;
     await ctx.send("ingest.search", { userId: r.userId, savedSearchId: r.id }, r.id);
     queued++;
   }

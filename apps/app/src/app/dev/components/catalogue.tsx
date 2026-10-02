@@ -340,7 +340,7 @@ export function Catalogue() {
           ]}
         />
         <Row>
-          <SourceChip name="LinkedIn" icon="si:linkedin" />
+          <SourceChip name="Indeed" icon="si:indeed" />
           <SourceChip name="Careers pages" icon="building-2" />
           <SourceChip name="Naukri" />
         </Row>

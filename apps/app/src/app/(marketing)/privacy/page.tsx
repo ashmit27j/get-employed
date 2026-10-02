@@ -3,7 +3,7 @@ import { SectionHeading } from "@ge/ui";
 import { Section } from "@/components/site/Frame";
 import { REPO_URL } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Privacy", robots: { index: false } };
+export const metadata: Metadata = { title: "Privacy" };
 
 // TODO(owner): replace with the real Privacy text before launch (docs/roadmap.md).
 export default function PrivacyPage() {

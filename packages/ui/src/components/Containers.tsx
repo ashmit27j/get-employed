@@ -20,7 +20,7 @@ const cardVariant: Record<CardVariant, string> = {
 
 /**
  * Lifted panel: surface step, 1px hairline, 7% top edge. `interactive` adds the hover lift
- * (surface-1 → 2, hairline → strong); give it `onClick` or `href`-wrapped content.
+ * (surface-1 → 2, hairline → strong); wrap it in a link for navigation.
  */
 export function Card({
   variant = "default",
@@ -29,7 +29,6 @@ export function Card({
   title,
   children,
   className,
-  onClick,
 }: {
   variant?: CardVariant;
   interactive?: boolean;
@@ -37,11 +36,9 @@ export function Card({
   title?: ReactNode;
   children?: ReactNode;
   className?: string;
-  onClick?: () => void;
 }) {
   return (
     <div
-      onClick={onClick}
       className={cx(
         "box-border flex flex-col gap-3 border text-body text-ink shadow-edge transition-[background-color,border-color]",
         transition,
@@ -378,18 +375,15 @@ export function Modal({
   }, [open, onClose]);
   if (!open) return null;
   return (
-    <div
-      onClick={onClose}
-      className="fixed inset-0 z-60 flex items-center justify-center bg-scrim p-6 font-sans"
-    >
+    <div className="fixed inset-0 z-60 flex items-center justify-center p-6 font-sans">
+      <div aria-hidden="true" onClick={onClose} className="absolute inset-0 bg-scrim" />
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        onClick={(e) => e.stopPropagation()}
-        className="flex max-h-[calc(100vh-48px)] w-full flex-col overflow-hidden rounded-xl border border-hairline-strong bg-canvas text-ink shadow-edge outline-none"
+        className="relative flex max-h-[calc(100vh-48px)] w-full flex-col overflow-hidden rounded-xl border border-hairline-strong bg-canvas text-ink shadow-edge outline-none"
         style={{ maxWidth: width }}
       >
         <div className="flex items-start gap-2 pt-[18px] pr-3 pb-3 pl-5">

@@ -33,7 +33,7 @@ async function gh(ctx: Ctx, path: string, accept = "application/vnd.github+json"
 }
 
 /** How complete a README is against README_CHECKS (0–100). */
-export function readmeScore(readme: string, repoDescription: string): number {
+function readmeScore(readme: string, repoDescription: string): number {
   const t = readme.toLowerCase();
   const checks = [
     !!repoDescription.trim() || /^#.+\n+[^#\n]{20,}/m.test(readme),

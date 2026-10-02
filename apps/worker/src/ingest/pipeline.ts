@@ -144,7 +144,7 @@ export async function upsertJobs(ctx: Ctx, raws: RawJob[]): Promise<string[]> {
  * Jobs without a stated salary get an estimate: the median band of comparable jobs (same title
  * family and city) that state one, else a market prior with low confidence.
  */
-export async function estimateSalaries(ctx: Ctx, ids: string[]): Promise<void> {
+async function estimateSalaries(ctx: Ctx, ids: string[]): Promise<void> {
   if (!ids.length) return;
   const targets = await ctx.db
     .select({

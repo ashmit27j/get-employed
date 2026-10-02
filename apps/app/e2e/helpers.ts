@@ -1,7 +1,7 @@
 import type { Page } from "@playwright/test";
 
 // Demo account from packages/db/src/seed.ts (password: SEED_PASSWORD, default below).
-export const DEMO = {
+const DEMO = {
   username: "ashmit",
   password: process.env.SEED_PASSWORD ?? "getemployed-demo",
 };

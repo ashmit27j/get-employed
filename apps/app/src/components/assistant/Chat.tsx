@@ -16,6 +16,7 @@ import {
 import type { ChatAction } from "@ge/core";
 import { salaryProps } from "@/components/jobs/JobRow";
 import { useDictation } from "@/lib/useDictation";
+import { useEscape } from "@/lib/useEscape";
 import type { ChatJob, ChatMessageView } from "@/server/assistant/threads";
 
 const MAX = 3000;
@@ -103,6 +104,7 @@ export function Chat({
   const [busy, setBusy] = useState(false);
   const [focus, setFocus] = useState(false);
   const [promptsOpen, setPromptsOpen] = useState(false);
+  useEscape(promptsOpen, () => setPromptsOpen(false));
   const [dictated, setDictated] = useState("");
   const dictation = useDictation(setDictated);
   const scroller = useRef<HTMLDivElement>(null);
@@ -370,7 +372,11 @@ export function Chat({
                     </button>
                     {promptsOpen && (
                       <>
-                        <div className="fixed inset-0 z-20" onClick={() => setPromptsOpen(false)} />
+                        <div
+                          aria-hidden="true"
+                          className="fixed inset-0 z-20"
+                          onClick={() => setPromptsOpen(false)}
+                        />
                         <div
                           role="menu"
                           className="absolute bottom-[calc(100%+8px)] left-0 z-21 flex w-[300px] max-w-[calc(100vw-48px)] flex-col gap-0.5 rounded-lg border border-hairline-strong bg-surface-2 p-1.5"

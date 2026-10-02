@@ -173,7 +173,7 @@ const Adzuna = z.object({
 });
 
 /** Keywords for keyword sources: roles and skills from the filters, else a broad default. */
-export function keywordsFor(f: JobFilters): string {
+function keywordsFor(f: JobFilters): string {
   const words = [...f.roles, ...f.skills.slice(0, 2)];
   if (f.type === "internship") words.push("intern");
   return words.length ? words.join(" ") : "software engineer";

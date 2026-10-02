@@ -15,7 +15,7 @@ import { enqueue } from "./queue";
 const { profiles, resumes, users } = schema;
 
 /** A profile for someone who hasn't uploaded or filled one in yet. */
-export function emptyProfile(user: { name: string; email: string }): Profile {
+function emptyProfile(user: { name: string; email: string }): Profile {
   return ProfileSchema.parse({ contact: { name: user.name, email: user.email } });
 }
 

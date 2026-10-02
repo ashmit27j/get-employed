@@ -13,13 +13,18 @@ export const STAGE_LABELS: Record<Stage, string> = {
 export const WORK_MODES = ["on-site", "hybrid", "remote"] as const;
 export type WorkMode = (typeof WORK_MODES)[number];
 
-export const SEARCH_FREQUENCIES = ["hourly", "six-hourly", "daily", "weekly"] as const;
+export const SEARCH_FREQUENCIES = ["four-hourly", "eight-hourly", "daily"] as const;
 export type SearchFrequency = (typeof SEARCH_FREQUENCIES)[number];
 export const SEARCH_FREQUENCY_LABELS: Record<SearchFrequency, string> = {
-  hourly: "Hourly",
-  "six-hourly": "Every 6 hours",
+  "four-hourly": "Every 4 hours",
+  "eight-hourly": "Every 8 hours",
   daily: "Daily",
-  weekly: "Weekly",
+};
+/** How often each saved search runs; 4 hours is the floor to keep scraping and AI costs down. */
+export const SEARCH_FREQUENCY_MS: Record<SearchFrequency, number> = {
+  "four-hourly": 4 * 3_600_000,
+  "eight-hourly": 8 * 3_600_000,
+  daily: 24 * 3_600_000,
 };
 
 /** Where a saved search runs: the worker ("cloud") or the open app on the user's device ("local"). */

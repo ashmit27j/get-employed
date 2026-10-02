@@ -10,6 +10,7 @@ import {
   renameThread,
   togglePinThread,
 } from "@/server/actions/chats";
+import { useEscape } from "@/lib/useEscape";
 import type { ChatGroupItem, ChatThreadItem } from "@/server/shell";
 import { GROUP_COLORS } from "./nav";
 import { useStoredJson } from "./useStoredJson";
@@ -29,6 +30,7 @@ function ChatMenu({
   onAction: (a: "pin" | "rename" | "delete" | "new-group" | { move: string | null }) => void;
 }) {
   const [sub, setSub] = useState(false);
+  useEscape(true, onClose);
   const item =
     "box-border flex w-full cursor-pointer items-center gap-2.5 rounded-sm px-2.5 py-[7px] text-left text-small text-ink hover:bg-surface-3";
   const act = (a: Parameters<typeof onAction>[0]) => {
@@ -37,7 +39,7 @@ function ChatMenu({
   };
   return (
     <>
-      <div className="fixed inset-0 z-59" onClick={onClose} />
+      <div aria-hidden="true" className="fixed inset-0 z-59" onClick={onClose} />
       <div
         role="menu"
         className="absolute top-[calc(100%+2px)] right-0 z-60 flex w-[190px] flex-col gap-px rounded-md border border-hairline-strong bg-surface-2 p-1 shadow-edge"

@@ -32,6 +32,7 @@ export function ResumeCard({
   const router = useRouter();
   const act = (icon: "download" | "trash-2", label: string, fn?: () => void) => (
     <span
+      role="presentation"
       className="inline-flex rounded-sm border border-hairline-strong bg-canvas"
       onClick={(e) => e.stopPropagation()}
     >
@@ -132,17 +133,14 @@ export function TemplatePicker({
     return () => window.removeEventListener("keydown", k);
   }, [onClose]);
   return (
-    <div
-      onClick={onClose}
-      className="fixed inset-0 z-60 flex items-center justify-center bg-scrim p-6 max-md:p-0"
-    >
+    <div className="fixed inset-0 z-60 flex items-center justify-center p-6 max-md:p-0">
+      <div aria-hidden="true" onClick={onClose} className="absolute inset-0 bg-scrim" />
       <div
         ref={dialog}
         role="dialog"
         aria-modal="true"
         aria-label="Choose a template"
-        onClick={(e) => e.stopPropagation()}
-        className="grid h-[min(720px,100%)] w-[min(960px,100%)] grid-cols-[minmax(0,1fr)_340px] overflow-hidden rounded-xl border border-hairline-strong bg-canvas shadow-edge max-md:h-full max-md:grid-cols-1 max-md:rounded-none"
+        className="relative grid h-[min(720px,100%)] w-[min(960px,100%)] grid-cols-[minmax(0,1fr)_340px] overflow-hidden rounded-xl border border-hairline-strong bg-canvas shadow-edge max-md:h-full max-md:grid-cols-1 max-md:rounded-none"
       >
         <div className="overflow-y-auto border-r border-hairline bg-surface-1 p-8 max-md:hidden">
           <div className="mx-auto max-w-[480px]">

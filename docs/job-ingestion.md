@@ -50,5 +50,5 @@ The worker converts each `RawJob` into the `jobs` row shape, validated with zod.
 ## Scheduling
 
 - **On demand:** a search whose cached results are older than `SEARCH_FRESHNESS_MINUTES` enqueues `ingest.search`.
-- **Saved searches:** cron runs `ingest.refresh-saved` for `hourly`/`daily`/`weekly` searches that are active, updates `saved_search_results` and `new_count`, and enqueues `match.compute`.
+- **Saved searches:** cron runs `ingest.refresh-saved` for `four-hourly`/`eight-hourly`/`daily` searches that are active (4 hours is the minimum, to bound scraping and AI cost), updates `saved_search_results` and `new_count`, and enqueues `match.compute`.
 - **Cleanup:** jobs past `expires_at`, or not seen for N days, are marked closed every day. The marketing copy says expired roles are removed daily.

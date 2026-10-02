@@ -354,11 +354,12 @@ export function ProductTour() {
 
   return (
     <div
+      role="presentation"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className="grid min-h-[400px] grid-cols-[200px_minmax(0,1fr)] overflow-hidden rounded-lg border border-hairline bg-canvas text-ui max-lg:grid-cols-1"
     >
-      <aside
+      <div
         role="tablist"
         aria-label="Product tour"
         aria-orientation="vertical"
@@ -399,7 +400,7 @@ export function ProductTour() {
           <span className="size-1.5 rounded-full bg-success" />
           Open to work
         </div>
-      </aside>
+      </div>
       <div className="flex min-w-0 flex-col">
         <div className="flex items-center gap-2.5 border-b border-hairline px-4 py-2.5 text-ink-muted">
           <span className="font-medium text-ink">{f.label}</span>
@@ -409,6 +410,7 @@ export function ProductTour() {
             {FEATURES.map((x, i) => (
               <span
                 key={x.id}
+                role="presentation"
                 onClick={() => jump(i)}
                 className={cx(
                   "h-[3px] w-[18px] cursor-pointer overflow-hidden rounded-full",

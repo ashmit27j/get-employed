@@ -27,7 +27,7 @@ type Block = { kind: "p"; text: string } | { kind: "ul"; items: string[] };
 type Section = { heading: string | null; blocks: Block[] };
 
 /** "## " starts a section, "- " lines form a list, anything else is a paragraph. */
-export function parseDescription(text: string): Section[] {
+function parseDescription(text: string): Section[] {
   const sections: Section[] = [];
   let cur: Section = { heading: null, blocks: [] };
   const push = () => cur.blocks.length && sections.push(cur);

@@ -110,7 +110,7 @@ const KIND: Record<InboxKind, [string, "success" | "accent" | "neutral"]> = {
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 /** "10:42" today, "Yesterday", else "Sep 25". */
-export function mailDate(iso: string, now: Date) {
+function mailDate(iso: string, now: Date) {
   const d = new Date(iso);
   const day = (x: Date) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
   const diff = Math.round((day(now) - day(d)) / 86_400_000);

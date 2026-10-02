@@ -31,7 +31,7 @@ export const handlers: Record<QueueName, Handler> = {
 export const schedules: { queue: QueueName; cron: string; data?: object }[] = [
   { queue: "ingest.refresh-saved", cron: "0 * * * *" },
   // Company boards refresh even when nobody searches, so the feed stays current.
-  { queue: "ingest.search", cron: "30 * * * *", data: {} },
+  { queue: "ingest.search", cron: "30 */4 * * *", data: {} },
   { queue: "ingest.cleanup", cron: "15 3 * * *" },
   { queue: "email.track", cron: "0 4 * * *" },
 ];

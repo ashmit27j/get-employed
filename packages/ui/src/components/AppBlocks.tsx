@@ -420,6 +420,7 @@ export function Dropzone({
   }
   return (
     <div
+      role="presentation"
       onDragOver={(e) => {
         e.preventDefault();
         setOver(true);
@@ -441,6 +442,7 @@ export function Dropzone({
         ref={input}
         type="file"
         accept={accept}
+        aria-label={buttonLabel}
         className="hidden"
         onChange={(e) => pick(e.target.files?.[0])}
       />

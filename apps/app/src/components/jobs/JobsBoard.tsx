@@ -47,25 +47,29 @@ const ROLE_FILTERS: Record<string, RegExp> = {
   Graduate: /graduate|trainee|intern/i,
 };
 const MODE_LABEL = { "on-site": "On-site", hybrid: "Hybrid", remote: "Remote" } as const;
+/** The company boards refresh at :30 past every fourth UTC hour (worker cron "30 *\/4 * * *"). */
+const WAVE_S = 4 * 3600;
+const WAVE_OFFSET_S = 30 * 60;
 
-/** Seconds until the next hourly refresh of saved searches ("Next wave"). */
+/** Seconds until the next board refresh ("Next wave"). */
 function useNextWave(): number {
   const [left, setLeft] = useState<number | null>(null);
   useEffect(() => {
     const tick = () => {
-      const d = new Date();
-      setLeft(3600 - (d.getMinutes() * 60 + d.getSeconds()));
+      const s = Math.floor(Date.now() / 1000) - WAVE_OFFSET_S;
+      setLeft(WAVE_S - (((s % WAVE_S) + WAVE_S) % WAVE_S));
     };
     tick();
     const t = setInterval(tick, 1000);
     return () => clearInterval(t);
   }, []);
-  return left ?? 3600;
+  return left ?? WAVE_S;
 }
 
 function NextWave() {
   const left = useNextWave();
-  const clock = `${String(Math.floor(left / 60)).padStart(2, "0")}:${String(left % 60).padStart(2, "0")}`;
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const clock = `${Math.floor(left / 3600)}:${pad(Math.floor(left / 60) % 60)}:${pad(left % 60)}`;
   return (
     <div className="flex flex-none items-center gap-3.5 rounded-lg border border-hairline bg-surface-1 py-3 pr-[18px] pl-3 max-md:hidden">
       <span className="relative flex size-14 flex-none items-center justify-center">
@@ -93,7 +97,7 @@ function NextWave() {
             strokeWidth="3"
             strokeLinecap="round"
             strokeDasharray="157.08"
-            strokeDashoffset={(157.08 * (1 - left / 3600)).toFixed(2)}
+            strokeDashoffset={(157.08 * (1 - left / WAVE_S)).toFixed(2)}
             className="transition-[stroke-dashoffset] duration-1000 ease-linear"
           />
         </svg>
@@ -103,7 +107,7 @@ function NextWave() {
       </span>
       <span className="flex flex-col gap-0.5">
         <span className="text-small font-medium">Next wave</span>
-        <span className="text-caption text-ink-subtle">New roles every hour</span>
+        <span className="text-caption text-ink-subtle">New roles every 4 hours</span>
       </span>
     </div>
   );
@@ -261,7 +265,7 @@ function Discover({ jobs: initial, now }: { jobs: JobCard[]; now: Date }) {
   );
 }
 
-export function SavedSearchRow({ s, now }: { s: SavedSearchItem; now: Date }) {
+function SavedSearchRow({ s, now }: { s: SavedSearchItem; now: Date }) {
   const router = useRouter();
   const href = `/jobs/searches/${s.id}`;
   const last = s.lastRunAt ? `checked ${fmtLast(s.lastRunAt, now)}` : "not checked yet";
@@ -297,7 +301,7 @@ export function SavedSearchRow({ s, now }: { s: SavedSearchItem; now: Date }) {
           {s.active && s.newCount > 0 && <StatusBadge tone="accent">{s.newCount} new</StatusBadge>}
         </span>
       </div>
-      <div onClick={(e) => e.stopPropagation()}>
+      <div role="presentation" onClick={(e) => e.stopPropagation()}>
         <IconButton icon="arrow-up-right" title="Open saved search" href={href} />
       </div>
     </div>

@@ -17,7 +17,7 @@ export interface SessionRow {
 }
 
 /** "Chrome on macOS" from a user agent. */
-export function describeAgent(ua: string | null | undefined): {
+function describeAgent(ua: string | null | undefined): {
   device: string;
   icon: SessionRow["icon"];
 } {

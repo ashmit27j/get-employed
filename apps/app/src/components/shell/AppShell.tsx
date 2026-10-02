@@ -22,7 +22,7 @@ const ROUTES: [string, NavId][] = [
   ["/profile", "jobprofile"],
 ];
 
-export function navIdFor(pathname: string): NavId {
+function navIdFor(pathname: string): NavId {
   return (
     ROUTES.find(([prefix]) => pathname === prefix || pathname.startsWith(prefix + "/"))?.[1] ??
     "jobs"

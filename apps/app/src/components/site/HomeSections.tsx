@@ -91,6 +91,7 @@ function Step({
   const [on, setOn] = useState(false);
   return (
     <div
+      role="presentation"
       data-step=""
       onMouseEnter={() => setOn(true)}
       onMouseLeave={() => setOn(false)}
@@ -149,7 +150,8 @@ export function HowItWorks() {
 }
 
 const SOURCES: [string, IconName | `si:${string}` | undefined][] = [
-  ["LinkedIn", "si:linkedin"],
+  // Simple Icons has no LinkedIn mark (the CDN 404s), so it shows the letter like the others.
+  ["LinkedIn", undefined],
   ["Google Careers", "si:google"],
   ["Naukri", undefined],
   ["Indeed", "si:indeed"],
@@ -173,6 +175,7 @@ export function SourceCarousel() {
             Listings pulled from the boards you already use
           </div>
           <div
+            role="presentation"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
             className="w-full overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_14%,black_86%,transparent)]"
