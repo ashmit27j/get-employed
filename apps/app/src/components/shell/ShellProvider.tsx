@@ -3,13 +3,11 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
   useSyncExternalStore,
   type ReactNode,
 } from "react";
-import { NAV_HOME_COOKIE } from "./nav";
 
 /** Per-device UI state for the app shell. Persisted in localStorage (docs/data-model.md). */
 interface ShellState {
@@ -100,12 +98,6 @@ export function ShellProvider({ children }: { children: ReactNode }) {
   );
   const setFocusMode = useCallback((on: boolean) => setOverride(on ? true : null), []);
   const [sidebarTab, setSidebarTab] = useStored(KEYS.tab, parseTab);
-  // Arriving from `/` while signed in (proxy.ts) always opens on the Home tab.
-  useEffect(() => {
-    if (!document.cookie.split("; ").includes(`${NAV_HOME_COOKIE}=1`)) return;
-    document.cookie = `${NAV_HOME_COOKIE}=; path=/; max-age=0`;
-    setSidebarTab("home");
-  }, [setSidebarTab]);
   const [dockWidth, setWidth] = useStored(KEYS.dock, parseWidth);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [dockOpen, setDockOpenRaw] = useState(false);
