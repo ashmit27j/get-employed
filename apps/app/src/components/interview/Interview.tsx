@@ -8,6 +8,7 @@ import {
   Dropdown,
   Icon,
   IconButton,
+  Modal,
   PageHeader,
   Panel,
   cx,
@@ -136,6 +137,7 @@ export function Interview({
   const [sec, setSec] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [confirmEnd, setConfirmEnd] = useState(false);
 
   // Live and typed sessions.
   const [qi, setQi] = useState(0);
@@ -413,6 +415,7 @@ export function Interview({
 
   const end = async () => {
     if (saving) return;
+    setConfirmEnd(false);
     const live = screen === "live";
     let final = answers;
     if (live && voice.listening) {
@@ -684,10 +687,31 @@ export function Interview({
                 label="End and review"
                 danger
                 disabled={saving}
-                onClick={() => void end()}
+                onClick={() => setConfirmEnd(true)}
               />
             </div>
             {error && <ErrorLine text={error} />}
+            <Modal
+              open={confirmEnd}
+              onClose={() => setConfirmEnd(false)}
+              title="End the interview?"
+              sub={
+                finished
+                  ? "You'll go to your feedback report."
+                  : "You can't continue this session after it ends. Your answers so far go into the feedback report."
+              }
+              width={420}
+              footer={
+                <>
+                  <Button variant="tertiary" onClick={() => setConfirmEnd(false)}>
+                    Keep going
+                  </Button>
+                  <Button disabled={saving} onClick={() => void end()}>
+                    End and review
+                  </Button>
+                </>
+              }
+            />
           </section>
         )}
 
