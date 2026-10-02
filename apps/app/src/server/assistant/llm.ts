@@ -156,7 +156,7 @@ export async function respondWithAI(
     system: `${SYSTEM}\n\nThe user is ${input.userName}.\nTop jobs for them:\n${jobList || "(none yet)"}${recent.length ? `\nJobs in your last reply, in order:\n${recent.join("\n")}` : ""}`,
     messages: [...input.history.slice(-10), { role: "user", content: input.text }],
     tools,
-    stopWhen: isStepCount(5),
+    stopWhen: isStepCount(3),
     maxRetries: 1,
   });
 

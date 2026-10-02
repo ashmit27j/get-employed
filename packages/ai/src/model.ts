@@ -1,5 +1,5 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
-import type { LanguageModel } from "ai";
+import { defaultSettingsMiddleware, wrapLanguageModel, type LanguageModel } from "ai";
 
 /**
  * The model for one call, or null when there is no key: every caller then falls back to the
@@ -11,7 +11,13 @@ export function languageModel(opts: {
 }): LanguageModel | null {
   if (!opts.apiKey) return null;
   const google = createGoogleGenerativeAI({ apiKey: opts.apiKey });
-  return google(opts.model || "gemini-flash-latest");
+  // Thinking tokens are billed as output and every task here is short and structured, so keep it minimal.
+  return wrapLanguageModel({
+    model: google(opts.model || "gemini-flash-latest"),
+    middleware: defaultSettingsMiddleware({
+      settings: { providerOptions: { google: { thinkingConfig: { thinkingLevel: "minimal" } } } },
+    }),
+  });
 }
 
 /** Shared system rule: this product writes for Indian students and early-career engineers. */

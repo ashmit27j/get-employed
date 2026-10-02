@@ -20,7 +20,7 @@ import type { Ctx } from "../ctx";
 const { jobs, companies, salaryEstimates, jobSources } = schema;
 
 /** LLM skill extraction is capped per run: the dictionary covers most postings. */
-const LLM_SKILL_CALLS_PER_RUN = 15;
+const LLM_SKILL_CALLS_PER_RUN = 3;
 
 async function companyId(ctx: Ctx, name: string, cache: Map<string, string>): Promise<string> {
   const key = name.trim().toLowerCase();

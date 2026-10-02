@@ -8,7 +8,7 @@ import type { Ctx } from "./ctx";
 const { jobs, companies, jobMatches, profiles, users } = schema;
 
 /** The LLM writes reasons for the best matches only; the rest keep the rule-based sentence. */
-const LLM_REASONS_PER_RUN = 12;
+const LLM_REASONS_PER_RUN = 3;
 
 /**
  * match.compute: score every open job against the user's current profile version and store the
