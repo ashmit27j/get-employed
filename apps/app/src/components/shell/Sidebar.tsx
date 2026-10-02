@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable @next/next/no-img-element -- small brand icons for LinkedIn/GitHub nav items */
-import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import Link, { useLinkStatus } from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Avatar, Icon, IconButton, Kbd, Wordmark, cx, type IconName } from "@ge/ui";
 import { authClient } from "@/lib/auth-client";
@@ -25,6 +25,16 @@ function NavGlyph({ icon, active }: { icon: NavEntry["icon"]; active: boolean })
       />
     );
   return <Icon name={icon as IconName} size={16} className={active ? "text-primary" : undefined} />;
+}
+
+/** Swaps in a spinner while the clicked link's page loads, so the click responds at once. */
+function Pending({ children }: { children?: ReactNode }) {
+  const { pending } = useLinkStatus();
+  return pending ? (
+    <Icon name="loader" size={14} className="flex-none text-ink-subtle motion-safe:animate-spin" />
+  ) : (
+    children
+  );
 }
 
 function NavItem({
@@ -53,11 +63,13 @@ function NavItem({
     >
       <NavGlyph icon={entry.icon} active={active} />
       <span className="flex-1">{entry.label}</span>
-      {badge ? (
-        <span className="min-w-[18px] rounded-full bg-surface-3 px-1.5 text-center font-mono text-micro tracking-normal text-ink">
-          {badge}
-        </span>
-      ) : null}
+      <Pending>
+        {badge ? (
+          <span className="min-w-[18px] rounded-full bg-surface-3 px-1.5 text-center font-mono text-micro tracking-normal text-ink">
+            {badge}
+          </span>
+        ) : null}
+      </Pending>
     </Link>
   );
 }
@@ -434,7 +446,9 @@ export function MobileTabBar({ active, locked }: { active: NavId; locked: boolea
             className={cell(on)}
           >
             {on && bar}
-            <Icon name={t.icon} size={20} className={on ? "text-primary" : undefined} />
+            <Pending>
+              <Icon name={t.icon} size={20} className={on ? "text-primary" : undefined} />
+            </Pending>
             {t.label}
           </Link>
         );

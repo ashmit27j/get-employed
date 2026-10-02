@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { after } from "next/server";
 import { JobsBoard } from "@/components/jobs/JobsBoard";
 import { PageBody, Topbar } from "@/components/shell/AppShell";
 import { keepFeedFresh } from "@/server/freshness";
@@ -11,7 +12,8 @@ export const metadata: Metadata = { title: "Job board" };
 
 export default async function JobsPage() {
   const user = await requireOnboardedUser();
-  void keepFeedFresh(user.id);
+  // After the response, so the freshness check never competes with the page's own queries.
+  after(() => keepFeedFresh(user.id));
   const [all, searches, settings] = await Promise.all([
     loadJobCards(user.id),
     loadSavedSearches(user.id),
