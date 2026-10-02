@@ -12,6 +12,8 @@ FIXTURES = Path(__file__).parent / "fixtures"
 
 
 def client_with(**overrides: object) -> TestClient:
+    # No secret unless a test sets one, so a local .env's SCRAPER_SHARED_SECRET doesn't leak in.
+    overrides.setdefault("scraper_shared_secret", None)
     app.dependency_overrides[get_settings] = lambda: Settings(**overrides)
     return TestClient(app)
 
