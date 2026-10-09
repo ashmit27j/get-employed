@@ -28,17 +28,16 @@ export function TopNav({
   active,
   homeHref = "/",
   signInHref,
-  ctaHref,
   signInLabel = "Sign in",
-  ctaLabel = "Get started",
+  actions,
 }: {
   links: NavLink[];
   active?: string;
   homeHref?: string;
   signInHref: string;
-  ctaHref: string;
   signInLabel?: string;
-  ctaLabel?: string;
+  /** Extra controls (e.g. the theme toggle) shown before the sign in button. */
+  actions?: ReactNode;
 }) {
   return (
     <header className="sticky top-0 z-10 h-(--nav-height) border-b border-hairline bg-canvas">
@@ -67,11 +66,11 @@ export function TopNav({
             );
           })}
         </nav>
-        <div className="ml-auto flex gap-2">
+        <div className="ml-auto flex items-center gap-2">
+          {actions}
           <Button variant="secondary" href={signInHref}>
             {signInLabel}
           </Button>
-          <Button href={ctaHref}>{ctaLabel}</Button>
         </div>
       </div>
     </header>
