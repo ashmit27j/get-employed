@@ -1,0 +1,53 @@
+{
+  "slug": "drone-pairs",
+  "title": "Drone Pairs",
+  "difficulty": "easy",
+  "topics": ["hashing", "arrays", "counting"],
+  "companyTags": [],
+  "roleTags": ["sde", "backend"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 10,
+  "examples": [
+    {
+      "input": "5 6\n1 5 3 3 7\n",
+      "output": "2\n",
+      "explanation": "The pairs are (1, 5) at positions 1 and 2, and (3, 3) at positions 3 and 4. The 7 has no partner because 6 − 7 = −1 isn't in the list."
+    },
+    {
+      "input": "4 10\n5 5 5 5\n",
+      "output": "6\n",
+      "explanation": "Any two of the four 5s make 10, and there are 4 · 3 / 2 = 6 ways to choose two of them."
+    }
+  ],
+  "hints": [
+    "Fix the parcel that comes second in a pair. Which weight must the first parcel have?",
+    "As you scan left to right, you only need to know how many earlier parcels had each weight. Which structure answers \"how many times have I seen x?\" in O(1)?",
+    "The answer can be as large as n(n − 1)/2 ≈ 2·10^10, and a_i + a_j can reach 2·10^9. Check which of your variables need 64 bits."
+  ],
+  "complexity": { "time": "O(n) expected", "space": "O(n)" },
+  "resources": [
+    {
+      "title": "Hash tables, explained visually (VisuAlgo)",
+      "url": "https://visualgo.net/en/hashtable",
+      "kind": "visualizer"
+    },
+    {
+      "title": "std::unordered_map reference",
+      "url": "https://en.cppreference.com/w/cpp/container/unordered_map",
+      "kind": "reference"
+    },
+    {
+      "title": "collections.Counter in the Python docs",
+      "url": "https://docs.python.org/3/library/collections.html#collections.Counter",
+      "kind": "reference"
+    },
+    {
+      "title": "Blowing up unordered_map, and how to stop it (Codeforces blog)",
+      "url": "https://codeforces.com/blog/entry/62393",
+      "kind": "article"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "extends": "@ge/config/tsconfig/node.json",
+  "include": ["bin", "lib", "lambdas", "shared", "scripts", "test", "*.ts"]
+}

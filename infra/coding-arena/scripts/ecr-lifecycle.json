@@ -1,0 +1,10 @@
+{
+  "rules": [
+    {
+      "rulePriority": 1,
+      "description": "Keep only the 2 most recent images (the live sandbox and one rollback)",
+      "selection": { "tagStatus": "any", "countType": "imageCountMoreThan", "countNumber": 2 },
+      "action": { "type": "expire" }
+    }
+  ]
+}

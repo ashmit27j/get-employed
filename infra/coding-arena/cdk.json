@@ -1,0 +1,17 @@
+{
+  "app": "npx tsx bin/arena.ts",
+  "watch": { "include": ["bin", "lib", "lambdas", "shared", "sandbox"] },
+  "context": {
+    "region": "ap-south-1",
+    "allowedOrigins": "http://localhost:4000",
+    "alertEmail": "",
+    "sandboxReservedConcurrency": 5,
+    "tokenSecretParam": "/coding-arena/token-secret",
+    "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
+    "@aws-cdk/core:checkSecretUsage": true,
+    "@aws-cdk/aws-iam:minimizePolicies": true,
+    "@aws-cdk/core:target-partitions": ["aws"],
+    "@aws-cdk/aws-ec2:restrictDefaultSecurityGroup": false,
+    "@aws-cdk/aws-lambda-nodejs:useLatestRuntimeVersion": true
+  }
+}

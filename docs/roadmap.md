@@ -78,6 +78,17 @@ Every LLM step has a rule-based fallback, so the app works without a Gemini key 
 - [x] Interviews: `/api/interview/turn` (Gemini follow-ups, at most two per session, Strictness), `/api/tts` (Cloud TTS, WaveNet → Standard → browser voice, character reservation and cache), Whisper in a Web Worker when Web Speech fails, `interview.grade`
 - Not built: choosing the interview model per session (the deployment sets `INTERVIEW_MODEL`); eye contact and posture scores (need video analysis)
 
+## Phase 7: Coding Arena (in progress)
+
+Plan: four arenas (DSA and Logic building judged in C++/Python; Aptitude and CS fundamentals as MCQ), hints first and the full editorial always available. See `infra/coding-arena/README.md` and D29, D30.
+
+- [x] Arena token (`@ge/core/arena-token`, `POST /api/arena/token`), env vars
+- [x] CDK stack: sandbox (container Lambda, isolated VPC, seccomp runner), SQS → Step Functions → executor → finalize, HTTP + WebSocket APIs, alarms, $1 budget
+- [x] Unit tests (comparator, rate limiter, token, verdicts); sandbox security suite and e2e test written
+- [ ] Sandbox security suite passing locally and deployed; `cdk diff` reviewed; deployed; e2e passing
+- [ ] Frontend: nav entry, hub, problem list, problem page (Monaco, live verdicts, history), MCQ pages, jobs "Practice for this role"
+- [ ] Content: 12 DSA, 8 logic building, 4 aptitude sets and 4 CS fundamentals sets; admin editor and test upload
+
 ## TODO (not scheduled)
 
 - **Two-step verification** (Better Auth two-factor plugin) for Account.

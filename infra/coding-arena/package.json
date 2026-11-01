@@ -1,0 +1,52 @@
+{
+  "name": "@ge/coding-arena",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Coding Arena judge backend on AWS (CDK).",
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc",
+    "test": "vitest run --project unit",
+    "test:sandbox": "vitest run --project sandbox",
+    "test:e2e": "vitest run --project e2e",
+    "synth": "cdk synth",
+    "diff": "cdk diff",
+    "destroy": "cdk destroy",
+    "deploy": "cdk deploy --outputs-file outputs.json",
+    "sandbox:build": "docker build -t coding-arena-sandbox sandbox",
+    "sandbox:run": "docker run --rm -p 9000:8080 --user 1000:1000 --memory 1g coding-arena-sandbox",
+    "content:build": "tsx scripts/build-content.ts",
+    "content:verify": "tsx scripts/verify-content.ts",
+    "seed": "tsx scripts/seed.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.1161.0",
+    "@aws-sdk/client-dynamodb": "^3.1161.0",
+    "@aws-sdk/client-lambda": "^3.1161.0",
+    "@aws-sdk/client-s3": "^3.1161.0",
+    "@aws-sdk/client-sfn": "^3.1161.0",
+    "@aws-sdk/client-sqs": "^3.1161.0",
+    "@aws-sdk/client-ssm": "^3.1161.0",
+    "@aws-sdk/lib-dynamodb": "^3.1161.0",
+    "@aws-sdk/s3-request-presigner": "^3.1161.0",
+    "@ge/core": "workspace:*",
+    "aws-cdk-lib": "^2.275.0",
+    "constructs": "^10.8.1",
+    "jose": "6.2.12",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@ge/config": "workspace:*",
+    "@types/aws-lambda": "^8.10.164",
+    "@types/node": "^22.0.0",
+    "@types/ws": "^8.18.2",
+    "aws-cdk": "^2.1147.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^9.39.5",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3",
+    "vitest": "^5.0.2",
+    "ws": "^8.22.1"
+  }
+}

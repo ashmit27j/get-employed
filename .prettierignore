@@ -5,3 +5,5 @@ apps/scraper/
 .next/
 out/
 dist/
+infra/coding-arena/cdk.out/
+infra/coding-arena/content/**/tests/

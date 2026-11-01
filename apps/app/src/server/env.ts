@@ -39,6 +39,11 @@ const AppEnvSchema = ServerEnvSchema.extend({
   TTS_STANDARD_MONTHLY_LIMIT: z.preprocess(blankToUndefined, z.coerce.number().default(4_000_000)),
   TTS_SAFETY_RATIO: z.preprocess(blankToUndefined, z.coerce.number().min(0).max(1).default(0.9)),
   SEARCH_FRESHNESS_MINUTES: z.preprocess(blankToUndefined, z.coerce.number().default(60)),
+  /** Coding Arena (infra/coding-arena). Unset URL = Arena shows "not set up on this server". */
+  ARENA_API_URL: z.preprocess(blankToUndefined, z.string().url().optional()),
+  ARENA_WS_URL: z.preprocess(blankToUndefined, z.string().url().optional()),
+  ARENA_TOKEN_SECRET: z.preprocess(blankToUndefined, z.string().min(32).optional()),
+  ARENA_ADMIN_USER_IDS: optional,
   S3_FORCE_PATH_STYLE: z
     .enum(["true", "false"])
     .default("true")
