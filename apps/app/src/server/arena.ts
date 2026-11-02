@@ -28,6 +28,24 @@ export class ArenaError extends Error {
   }
 }
 
+export type ArenaResult<T> = { ok: true; data: T } | { ok: false; status: number; message: string };
+
+const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+export const isArenaSlug = (s: string) => s.length <= 64 && SLUG.test(s);
+
+/** Like arenaFetch, but turns failures into a value pages can render instead of throwing. */
+export async function arenaLoad<T>(userId: string, path: string): Promise<ArenaResult<T>> {
+  if (!arenaConfigured())
+    return { ok: false, status: 503, message: "Coding Arena isn't set up on this server." };
+  try {
+    return { ok: true, data: await arenaFetch<T>(userId, path) };
+  } catch (err) {
+    if (err instanceof ArenaError) return { ok: false, status: err.status, message: err.message };
+    console.error("[arena] request failed", path, err);
+    return { ok: false, status: 502, message: "Coding Arena didn't respond. Try again." };
+  }
+}
+
 /** Server-to-server call to the Arena HTTP API as this user (used by server components). */
 export async function arenaFetch<T>(
   userId: string,

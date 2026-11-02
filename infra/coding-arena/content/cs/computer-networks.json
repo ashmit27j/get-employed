@@ -1,0 +1,105 @@
+{
+  "setId": "computer-networks",
+  "title": "Computer networks",
+  "topic": "networks",
+  "difficulty": "medium",
+  "minutes": 12,
+  "description": "OSI layers, TCP and UDP, the handshake, ports, DNS, ARP, subnets and HTTP status codes.",
+  "companyTags": [],
+  "roleTags": ["sde", "backend", "devops", "frontend"],
+  "order": 30,
+  "resources": [
+    {
+      "title": "High Performance Browser Networking (free book)",
+      "url": "https://hpbn.co/",
+      "kind": "article"
+    },
+    {
+      "title": "HTTP response status codes (MDN)",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
+      "kind": "reference"
+    }
+  ],
+  "questions": [
+    {
+      "id": "routing-layer",
+      "prompt": "At which OSI layer does IP routing between networks happen?",
+      "options": ["Network layer", "Data link layer", "Transport layer", "Session layer"],
+      "answer": 0,
+      "explanation": "Layer 3, the network layer, handles logical addressing (IP) and routing between networks. The data link layer (2) moves frames within one network."
+    },
+    {
+      "id": "ordered-delivery",
+      "prompt": "Which transport protocol guarantees that data arrives in order and without loss?",
+      "options": ["ICMP", "UDP", "IP", "TCP"],
+      "answer": 3,
+      "explanation": "TCP uses sequence numbers, acknowledgements and retransmission. UDP sends independent datagrams with no delivery or ordering guarantee, which is why it has lower overhead."
+    },
+    {
+      "id": "https-port",
+      "prompt": "What is the default port for HTTPS?",
+      "options": ["80", "8080", "443", "22"],
+      "answer": 2,
+      "explanation": "HTTPS uses 443. HTTP uses 80, and SSH uses 22."
+    },
+    {
+      "id": "dns",
+      "prompt": "What does DNS do?",
+      "options": [
+        "Assigns IP addresses to devices",
+        "Translates domain names into IP addresses",
+        "Maps IP addresses to MAC addresses",
+        "Encrypts web traffic"
+      ],
+      "answer": 1,
+      "explanation": "DNS resolves names like example.com to IP addresses. DHCP assigns addresses, TLS encrypts, and ARP maps IP to MAC."
+    },
+    {
+      "id": "usable-hosts",
+      "prompt": "How many usable host addresses does an IPv4 /24 subnet have?",
+      "options": ["256", "255", "254", "128"],
+      "answer": 2,
+      "explanation": "A /24 leaves 8 host bits: 2⁸ = 256 addresses. The all-zeros address (network) and all-ones address (broadcast) are reserved, leaving 254."
+    },
+    {
+      "id": "handshake",
+      "prompt": "What is the order of TCP's three-way handshake?",
+      "options": [
+        "SYN, SYN-ACK, ACK",
+        "SYN, ACK, SYN-ACK",
+        "SYN-ACK, SYN, ACK",
+        "ACK, SYN, SYN-ACK"
+      ],
+      "answer": 0,
+      "explanation": "The client sends SYN, the server replies SYN-ACK, and the client confirms with ACK. Both sides have then agreed on starting sequence numbers."
+    },
+    {
+      "id": "arp",
+      "prompt": "On an IPv4 local network, which protocol finds the MAC address for a given IP address?",
+      "options": ["ARP", "DHCP", "NAT", "DNS"],
+      "answer": 0,
+      "explanation": "ARP broadcasts \"who has this IP?\" and the owner replies with its MAC address. (IPv6 uses Neighbor Discovery instead.)"
+    },
+    {
+      "id": "status-404",
+      "prompt": "What does the HTTP status code 404 mean?",
+      "options": ["Not found", "Moved permanently", "Forbidden", "The server crashed"],
+      "answer": 0,
+      "explanation": "404 Not Found: the server has no resource at that URL. 403 is Forbidden, 301 is Moved Permanently, and 5xx codes are server errors."
+    },
+    {
+      "id": "switch",
+      "prompt": "Which device forwards frames within a LAN based on MAC addresses?",
+      "options": ["Hub", "Router", "Switch", "Modem"],
+      "answer": 2,
+      "explanation": "A switch learns which MAC address is on which port and forwards frames only there (layer 2). A hub repeats everything to every port, and a router forwards packets between networks by IP (layer 3)."
+    },
+    {
+      "id": "slash-26",
+      "prompt": "Which subnet mask corresponds to /26?",
+      "options": ["255.255.255.0", "255.255.255.128", "255.255.255.192", "255.255.255.224"],
+      "answer": 2,
+      "explanation": "/26 means 26 one-bits: 24 for the first three octets and 2 in the last: 11000000 = 192."
+    }
+  ]
+}

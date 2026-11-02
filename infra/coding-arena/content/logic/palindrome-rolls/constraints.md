@@ -1,0 +1,2 @@
+- 1 ≤ t ≤ 10⁴
+- Each roll number has 1 to 200 characters, each a letter (a–z, A–Z) or a digit.

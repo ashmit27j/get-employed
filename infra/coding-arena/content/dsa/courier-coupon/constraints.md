@@ -1,0 +1,4 @@
+- 2 ≤ n ≤ 10⁵
+- 0 ≤ m ≤ 10⁵
+- 1 ≤ uᵢ, vᵢ ≤ n (roads can be loops or repeat another road)
+- 1 ≤ wᵢ ≤ 10⁶

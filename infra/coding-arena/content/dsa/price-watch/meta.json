@@ -1,0 +1,49 @@
+{
+  "slug": "price-watch",
+  "title": "Price Watch",
+  "difficulty": "medium",
+  "topics": ["stack", "monotonic-stack", "arrays"],
+  "companyTags": [],
+  "roleTags": ["sde", "backend"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 10,
+  "examples": [
+    {
+      "input": "6\n3 1 4 1 5 9\n",
+      "output": "7\n",
+      "explanation": "The waits are 2, 1, 2, 1, 1 and 0. Day 1's price 3 is first beaten on day 3 (price 4), day 3's price 4 is first beaten on day 5, and nothing beats day 6. They add up to 7."
+    },
+    {
+      "input": "4\n5 5 5 5\n",
+      "output": "0\n",
+      "explanation": "The price never goes strictly higher, so every wait is 0."
+    }
+  ],
+  "hints": [
+    "For each day, scanning forward until a higher price is O(n) per day. A strictly decreasing run of prices makes that O(n²) in total.",
+    "Scan left to right and keep the days that are still waiting for a higher price. What do their prices look like, read from the oldest to the newest?",
+    "The waiting days always have non-increasing prices, so a stack works: when today's price beats the top, the top's wait is decided. Every day is pushed once and popped at most once.",
+    "The total can reach about n²/2 ≈ 2 · 10¹⁰. Use a 64-bit integer."
+  ],
+  "complexity": { "time": "O(n)", "space": "O(n)" },
+  "resources": [
+    {
+      "title": "Monotonic stack (CP-Algorithms: minimum stack)",
+      "url": "https://cp-algorithms.com/data_structures/stack_queue_modification.html",
+      "kind": "article"
+    },
+    {
+      "title": "std::stack reference",
+      "url": "https://en.cppreference.com/w/cpp/container/stack",
+      "kind": "reference"
+    },
+    {
+      "title": "Using lists as stacks (Python tutorial)",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html#using-lists-as-stacks",
+      "kind": "reference"
+    }
+  ]
+}

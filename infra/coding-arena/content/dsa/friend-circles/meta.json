@@ -1,0 +1,43 @@
+{
+  "slug": "friend-circles",
+  "title": "Friend Circles",
+  "difficulty": "medium",
+  "topics": ["union-find", "graphs"],
+  "companyTags": [],
+  "roleTags": ["sde", "backend"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 40,
+  "examples": [
+    {
+      "input": "5 6\n2 1 2\n1 1 2\n1 3 4\n2 1 2\n2 2 3\n1 2 4\n",
+      "output": "NYN\n",
+      "explanation": "At first 1 and 2 aren't connected (N). After 1–2 and 3–4 become friends, 1 and 2 share a circle (Y), but 2 and 3 don't yet (N). The last line links the two circles, but there are no questions after it."
+    },
+    {
+      "input": "3 3\n1 1 2\n1 2 3\n2 3 1\n",
+      "output": "Y\n",
+      "explanation": "3 knows 2 and 2 knows 1, so 3 and 1 are in the same circle."
+    }
+  ],
+  "hints": [
+    "Running a BFS for every question is O(n + m) per question. Is there a structure that merges groups and answers \"same group?\" quickly?",
+    "Union-find (disjoint set union) gives every group one representative. Two students share a circle exactly when their representatives are equal.",
+    "Use path compression (or path halving) and union by size. Together they make each operation almost O(1)."
+  ],
+  "complexity": { "time": "O((n + q) α(n))", "space": "O(n)" },
+  "resources": [
+    {
+      "title": "Disjoint set union (CP-Algorithms)",
+      "url": "https://cp-algorithms.com/data_structures/disjoint_set_union.html",
+      "kind": "article"
+    },
+    {
+      "title": "Union-find, visualised (VisuAlgo)",
+      "url": "https://visualgo.net/en/ufds",
+      "kind": "visualizer"
+    }
+  ]
+}

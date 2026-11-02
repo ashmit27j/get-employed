@@ -1,0 +1,95 @@
+{
+  "setId": "time-work-speed",
+  "title": "Time, work and speed",
+  "topic": "time-and-work",
+  "difficulty": "medium",
+  "minutes": 15,
+  "description": "Work rates, pipes and cisterns, man-days, and trains crossing poles and each other.",
+  "companyTags": [],
+  "roleTags": ["sde", "data", "analyst"],
+  "order": 20,
+  "resources": [
+    {
+      "title": "Time and work practice questions (IndiaBix)",
+      "url": "https://www.indiabix.com/aptitude/time-and-work/",
+      "kind": "practice"
+    },
+    {
+      "title": "Problems on trains (IndiaBix)",
+      "url": "https://www.indiabix.com/aptitude/problems-on-trains/",
+      "kind": "practice"
+    }
+  ],
+  "questions": [
+    {
+      "id": "together",
+      "prompt": "A can finish a job in 12 days and B in 18 days. How long do they take working together?",
+      "options": ["15 days", "7.2 days", "6 days", "7.5 days"],
+      "answer": 1,
+      "explanation": "Add the rates: 1/12 + 1/18 = 3/36 + 2/36 = 5/36 of the job per day, so together they need 36/5 = 7.2 days."
+    },
+    {
+      "id": "b-alone",
+      "prompt": "A and B together finish a job in 10 days. A alone takes 15 days. How long does B take alone?",
+      "options": ["25 days", "20 days", "30 days", "5 days"],
+      "answer": 2,
+      "explanation": "B's rate = 1/10 − 1/15 = 3/30 − 2/30 = 1/30, so B alone takes 30 days."
+    },
+    {
+      "id": "man-days",
+      "prompt": "6 people build a wall in 8 days. How many days would 4 people take, working at the same rate?",
+      "options": ["12 days", "10 days", "5.3 days", "16 days"],
+      "answer": 0,
+      "explanation": "The wall is 6 × 8 = 48 person-days of work. 4 people need 48 / 4 = 12 days."
+    },
+    {
+      "id": "pipes",
+      "prompt": "Pipe A fills a tank in 4 hours. Pipe B empties the full tank in 6 hours. With both open, how long does an empty tank take to fill?",
+      "options": ["10 hours", "2.4 hours", "8 hours", "12 hours"],
+      "answer": 3,
+      "explanation": "Net rate = 1/4 − 1/6 = 3/12 − 2/12 = 1/12 of the tank per hour, so it fills in 12 hours."
+    },
+    {
+      "id": "twice-as-fast",
+      "prompt": "A works twice as fast as B. Together they finish a job in 8 days. How long would A take alone?",
+      "options": ["12 days", "16 days", "24 days", "10 days"],
+      "answer": 0,
+      "explanation": "Let B's rate be x and A's 2x. Then 3x = 1/8, so x = 1/24 and A's rate is 2/24 = 1/12: 12 days."
+    },
+    {
+      "id": "worker-hours",
+      "prompt": "15 workers finish a project in 20 days, working 8 hours a day. How many days would 20 workers take, working 6 hours a day?",
+      "options": ["15 days", "25 days", "20 days", "18 days"],
+      "answer": 2,
+      "explanation": "Total work = 15 × 20 × 8 = 2,400 worker-hours. 20 workers × 6 hours = 120 worker-hours a day, so 2,400 / 120 = 20 days."
+    },
+    {
+      "id": "train-pole",
+      "prompt": "A 300 m long train passes a pole in 15 seconds. What is its speed?",
+      "options": ["20 km/h", "72 km/h", "54 km/h", "60 km/h"],
+      "answer": 1,
+      "explanation": "Passing a pole, the train covers its own length: 300 / 15 = 20 m/s. Multiply by 18/5 to get km/h: 72 km/h."
+    },
+    {
+      "id": "finish-the-rest",
+      "prompt": "A can do a job in 10 days. A works for 4 days, then B finishes the rest in 9 days. How long would B take to do the whole job alone?",
+      "options": ["13.5 days", "18 days", "12 days", "15 days"],
+      "answer": 3,
+      "explanation": "In 4 days A does 4/10 of the job, leaving 6/10. B does 6/10 in 9 days, so the whole job takes B 9 / 0.6 = 15 days."
+    },
+    {
+      "id": "trains-crossing",
+      "prompt": "Trains of 120 m and 180 m run towards each other at 40 km/h and 50 km/h. How long do they take to cross each other completely?",
+      "options": ["12 seconds", "10 seconds", "15 seconds", "20 seconds"],
+      "answer": 0,
+      "explanation": "Moving towards each other, the speeds add: 90 km/h = 25 m/s. They must cover both lengths, 300 m, so 300 / 25 = 12 seconds."
+    },
+    {
+      "id": "three-workers",
+      "prompt": "A, B and C can do a job alone in 20, 30 and 60 days. How long do they take together?",
+      "options": ["11 days", "10 days", "12 days", "15 days"],
+      "answer": 1,
+      "explanation": "1/20 + 1/30 + 1/60 = 3/60 + 2/60 + 1/60 = 6/60 = 1/10, so 10 days."
+    }
+  ]
+}

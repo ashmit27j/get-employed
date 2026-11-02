@@ -85,9 +85,9 @@ Plan: four arenas (DSA and Logic building judged in C++/Python; Aptitude and CS 
 - [x] Arena token (`@ge/core/arena-token`, `POST /api/arena/token`), env vars
 - [x] CDK stack: sandbox (container Lambda, isolated VPC, seccomp runner), SQS → Step Functions → executor → finalize, HTTP + WebSocket APIs, alarms, $1 budget
 - [x] Unit tests (comparator, rate limiter, token, verdicts); sandbox security suite and e2e test written
-- [ ] Sandbox security suite passing locally and deployed; `cdk diff` reviewed; deployed; e2e passing
-- [ ] Frontend: nav entry, hub, problem list, problem page (Monaco, live verdicts, history), MCQ pages, jobs "Practice for this role"
-- [ ] Content: 12 DSA, 8 logic building, 4 aptitude sets and 4 CS fundamentals sets; admin editor and test upload
+- [ ] Sandbox security suite passing on the deployed stack; `cdk diff` reviewed; deployed; e2e passing (all 20 reference solutions pass in both languages on the local sandbox image)
+- [x] Frontend: nav entry, hub, problem list, problem page (Monaco, live verdicts, history), MCQ pages, jobs "Practice for this role"
+- [x] Content: 12 DSA, 8 logic building, 4 aptitude sets and 4 CS fundamentals sets; admin editor and test upload
 
 ## TODO (not scheduled)
 

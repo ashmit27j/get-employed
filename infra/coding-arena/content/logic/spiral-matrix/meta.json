@@ -1,0 +1,37 @@
+{
+  "slug": "spiral-matrix",
+  "title": "Seating Spiral",
+  "difficulty": "medium",
+  "topics": ["arrays", "matrices", "simulation"],
+  "companyTags": [],
+  "roleTags": ["sde", "frontend", "backend"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 20,
+  "examples": [
+    {
+      "input": "3 4\n1 2 3 4\n5 6 7 8\n9 10 11 12\n",
+      "output": "1 2 3 4 8 12 11 10 9 5 6 7\n",
+      "explanation": "Right along the top row, down the last column, left along the bottom row, up the first column, then right through what's left."
+    }
+  ],
+  "hints": [
+    "Keep four boundaries: top, bottom, left and right. Walk the top row, then the right column, then the bottom row, then the left column, and move each boundary inwards after walking it.",
+    "When only one row or one column is left, make sure you don't walk it twice. Check the boundaries again before the bottom row and the left column."
+  ],
+  "complexity": { "time": "O(R · C)", "space": "O(1) beyond the matrix" },
+  "resources": [
+    {
+      "title": "Lists and nested lists (Python tutorial)",
+      "url": "https://docs.python.org/3/tutorial/datastructures.html#nested-list-comprehensions",
+      "kind": "reference"
+    },
+    {
+      "title": "std::vector reference",
+      "url": "https://en.cppreference.com/w/cpp/container/vector",
+      "kind": "reference"
+    }
+  ]
+}

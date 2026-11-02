@@ -1,0 +1,48 @@
+{
+  "slug": "merit-list",
+  "title": "Merit List Swaps",
+  "difficulty": "hard",
+  "topics": ["fenwick-tree", "merge-sort", "counting"],
+  "companyTags": [],
+  "roleTags": ["sde", "backend", "data"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 20,
+  "examples": [
+    {
+      "input": "5\n3 1 2 5 4\n",
+      "output": "3\n",
+      "explanation": "The out-of-order pairs are (3, 1), (3, 2) and (5, 4). Each swap of two neighbours fixes exactly one of them."
+    },
+    {
+      "input": "3\n7 7 7\n",
+      "output": "0\n",
+      "explanation": "Equal scores are already in order."
+    }
+  ],
+  "hints": [
+    "A swap of two neighbours changes the relative order of exactly one pair. So the answer is the number of pairs i < j with aᵢ > aⱼ: the inversions.",
+    "Counting inversions pair by pair is O(n²). Merge sort can count them while it merges: when an element from the right half is placed first, it jumps over every element still waiting in the left half.",
+    "Another way: scan right to left and keep a Fenwick tree of the values seen so far (after compressing them to 1..n). For each aᵢ, count how many seen values are smaller."
+  ],
+  "complexity": { "time": "O(n log n)", "space": "O(n)" },
+  "resources": [
+    {
+      "title": "Fenwick tree (CP-Algorithms)",
+      "url": "https://cp-algorithms.com/data_structures/fenwick.html",
+      "kind": "article"
+    },
+    {
+      "title": "Point update, range sum and counting inversions (USACO Guide)",
+      "url": "https://usaco.guide/gold/PURS",
+      "kind": "article"
+    },
+    {
+      "title": "Sorting, visualised (VisuAlgo)",
+      "url": "https://visualgo.net/en/sorting",
+      "kind": "visualizer"
+    }
+  ]
+}

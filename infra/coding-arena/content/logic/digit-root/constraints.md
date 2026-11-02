@@ -1,0 +1,2 @@
+- 1 ≤ q ≤ 10⁴
+- 0 ≤ N < 10¹⁹ (N fits in an unsigned 64-bit integer; in a signed one only up to 9.2 · 10¹⁸)

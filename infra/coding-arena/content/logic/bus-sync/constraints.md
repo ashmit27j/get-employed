@@ -1,0 +1,4 @@
+- 1 ≤ T ≤ 1000
+- 1 ≤ n ≤ 20
+- 1 ≤ pᵢ ≤ 40
+- The answer is at most 5.4 · 10¹⁵, so it fits in a 64-bit integer.

@@ -1,0 +1,37 @@
+{
+  "slug": "palindrome-rolls",
+  "title": "Palindrome Roll Numbers",
+  "difficulty": "easy",
+  "topics": ["strings", "two-pointers"],
+  "companyTags": [],
+  "roleTags": ["sde", "frontend", "backend"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 30,
+  "examples": [
+    {
+      "input": "4\n21CS1SC12\nabcBA\nx\nCSE2025\n",
+      "output": "3\n",
+      "explanation": "21CS1SC12 reads the same backwards. So does abcBA once you ignore case, and so does any single character. CSE2025 doesn't."
+    }
+  ],
+  "hints": [
+    "Compare the first character with the last, the second with the second-to-last, and so on. You can stop as soon as one pair differs.",
+    "Convert both characters to lower case before comparing them. Digits are unchanged by that."
+  ],
+  "complexity": { "time": "O(total length)", "space": "O(1)" },
+  "resources": [
+    {
+      "title": "String methods in the Python docs",
+      "url": "https://docs.python.org/3/library/stdtypes.html#string-methods",
+      "kind": "reference"
+    },
+    {
+      "title": "std::tolower reference",
+      "url": "https://en.cppreference.com/w/cpp/string/byte/tolower",
+      "kind": "reference"
+    }
+  ]
+}

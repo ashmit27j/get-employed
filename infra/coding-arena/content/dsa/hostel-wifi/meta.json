@@ -1,0 +1,42 @@
+{
+  "slug": "hostel-wifi",
+  "title": "Hostel Wi-Fi",
+  "difficulty": "medium",
+  "topics": ["binary-search", "greedy", "sorting"],
+  "companyTags": [],
+  "roleTags": ["sde", "backend"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 20,
+  "examples": [
+    {
+      "input": "5 3\n1 2 8 4 9\n",
+      "output": "3\n",
+      "explanation": "Put routers in the rooms at 1, 4 and 8 (or 1, 4 and 9). The closest two are 3 metres apart. No choice of three rooms keeps every pair 4 or more apart."
+    },
+    {
+      "input": "2 2\n10 3\n",
+      "output": "7\n"
+    }
+  ],
+  "hints": [
+    "Turn the question around: given a distance d, can you place k routers so that every two are at least d apart?",
+    "For a fixed d, sort the rooms and place greedily: take the first room, then the next room at least d past the last router, and so on. Why is taking the earliest possible room never worse?",
+    "If d works, every smaller distance works too. That monotonicity lets you binary search for the largest d that works."
+  ],
+  "complexity": { "time": "O(n log n + n log X), X = 10⁹", "space": "O(n)" },
+  "resources": [
+    {
+      "title": "Binary search on the answer (USACO Guide)",
+      "url": "https://usaco.guide/silver/binary-search",
+      "kind": "article"
+    },
+    {
+      "title": "Binary search (CP-Algorithms)",
+      "url": "https://cp-algorithms.com/num_methods/binary_search.html",
+      "kind": "article"
+    }
+  ]
+}

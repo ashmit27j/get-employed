@@ -1,0 +1,43 @@
+{
+  "slug": "metro-recharge",
+  "title": "Metro Recharge",
+  "difficulty": "easy",
+  "topics": ["prefix-sums", "arrays"],
+  "companyTags": [],
+  "roleTags": ["sde", "backend", "data"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 20,
+  "examples": [
+    {
+      "input": "5 3\n40 0 25 60 15\n1 3\n2 5\n4 4\n",
+      "output": "65\n100\n60\n",
+      "explanation": "Days 1 to 3 cost 40 + 0 + 25 = 65. Days 2 to 5 cost 0 + 25 + 60 + 15 = 100. Day 4 alone cost 60."
+    }
+  ],
+  "hints": [
+    "Answering each query with a loop is O(n) per query, up to 2.5 · 10⁹ steps in total. What could you compute once, before reading the queries?",
+    "Let P[i] be the total of the first i days, with P[0] = 0. How do you get the total of days l..r from two values of P?",
+    "Totals reach 10⁵ · 10⁹ = 10¹⁴. Use 64-bit integers for P."
+  ],
+  "complexity": { "time": "O(n + q)", "space": "O(n)" },
+  "resources": [
+    {
+      "title": "Prefix sums (USACO Guide)",
+      "url": "https://usaco.guide/silver/prefix-sums",
+      "kind": "article"
+    },
+    {
+      "title": "std::partial_sum reference",
+      "url": "https://en.cppreference.com/w/cpp/algorithm/partial_sum",
+      "kind": "reference"
+    },
+    {
+      "title": "itertools.accumulate in the Python docs",
+      "url": "https://docs.python.org/3/library/itertools.html#itertools.accumulate",
+      "kind": "reference"
+    }
+  ]
+}

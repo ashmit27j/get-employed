@@ -1,0 +1,36 @@
+{
+  "slug": "zigzag-triangle",
+  "title": "Zigzag Triangle",
+  "difficulty": "easy",
+  "topics": ["loops", "patterns"],
+  "companyTags": [],
+  "roleTags": ["sde", "frontend", "backend"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 40,
+  "examples": [
+    {
+      "input": "4\n",
+      "output": "1\n3 2\n4 5 6\n10 9 8 7\n"
+    }
+  ],
+  "hints": [
+    "Row i has i numbers. Which number does row i start counting from? Keep a running counter across rows.",
+    "Build each row's numbers in increasing order, then reverse the even-numbered rows before printing."
+  ],
+  "complexity": { "time": "O(n²)", "space": "O(n)" },
+  "resources": [
+    {
+      "title": "for statements (Python tutorial)",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html#for-statements",
+      "kind": "reference"
+    },
+    {
+      "title": "for loops in C++ (cppreference)",
+      "url": "https://en.cppreference.com/w/cpp/language/for",
+      "kind": "reference"
+    }
+  ]
+}

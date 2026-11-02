@@ -1,0 +1,2 @@
+- 1 ≤ |A|, |B| ≤ 2000
+- Both strings contain only the letters a to z.

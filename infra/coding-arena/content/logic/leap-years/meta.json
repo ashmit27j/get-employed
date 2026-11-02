@@ -1,0 +1,38 @@
+{
+  "slug": "leap-years",
+  "title": "Leap Year Count",
+  "difficulty": "medium",
+  "topics": ["math", "conditions"],
+  "companyTags": [],
+  "roleTags": ["sde", "backend", "data"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 10,
+  "examples": [
+    {
+      "input": "3\n1996 2004\n1900 1900\n2000 2000\n",
+      "output": "3\n0\n1\n",
+      "explanation": "1996, 2000 and 2004 are leap years. 1900 is divisible by 100 but not by 400, so it isn't. 2000 is divisible by 400, so it is."
+    }
+  ],
+  "hints": [
+    "First write the rule for one year: divisible by 4, except years divisible by 100, except years divisible by 400.",
+    "Ranges go up to 10¹⁸ years, so you can't loop over them. How many multiples of 4 are there from 1 to y?",
+    "Let f(y) count leap years in 1..y. Then f(y) = ⌊y/4⌋ − ⌊y/100⌋ + ⌊y/400⌋, and the answer for [L, R] is f(R) − f(L − 1)."
+  ],
+  "complexity": { "time": "O(1) per query", "space": "O(1)" },
+  "resources": [
+    {
+      "title": "Leap year rules (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Leap_year",
+      "kind": "reference"
+    },
+    {
+      "title": "Inclusion–exclusion principle (CP-Algorithms)",
+      "url": "https://cp-algorithms.com/combinatorics/inclusion-exclusion.html",
+      "kind": "article"
+    }
+  ]
+}

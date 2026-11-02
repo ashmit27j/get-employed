@@ -1,0 +1,2 @@
+- 2 ≤ k ≤ n ≤ 10⁵
+- 0 ≤ xᵢ ≤ 10⁹, all distinct

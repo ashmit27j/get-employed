@@ -1,0 +1,3 @@
+- 1 ≤ n ≤ 2 · 10⁵
+- 1 ≤ pᵢ ≤ 10⁹
+- The answer can exceed 2³¹ − 1.

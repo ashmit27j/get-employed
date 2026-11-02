@@ -1,0 +1,2 @@
+- 1 ≤ n ≤ 2 · 10⁵
+- Each word has 1 to 10 letters from a to z.

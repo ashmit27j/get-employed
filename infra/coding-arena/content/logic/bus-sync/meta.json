@@ -1,0 +1,43 @@
+{
+  "slug": "bus-sync",
+  "title": "Campus Bus Sync",
+  "difficulty": "medium",
+  "topics": ["math", "gcd", "loops"],
+  "companyTags": [],
+  "roleTags": ["sde", "backend", "data"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 40,
+  "examples": [
+    {
+      "input": "2\n3\n4 6 10\n2\n7 7\n",
+      "output": "60\n7\n",
+      "explanation": "Buses every 4, 6 and 10 minutes all leave together again at minute 60, the least common multiple. Two buses every 7 minutes meet every 7 minutes."
+    }
+  ],
+  "hints": [
+    "All buses leave together at minute t exactly when every period divides t. The smallest such t > 0 is the least common multiple of the periods.",
+    "lcm(a, b) = a / gcd(a, b) · b. Fold it over the list: lcm(a, b, c) = lcm(lcm(a, b), c).",
+    "Divide before you multiply. a · b can overflow even when the lcm itself fits."
+  ],
+  "complexity": { "time": "O(n log P) per case", "space": "O(1)" },
+  "resources": [
+    {
+      "title": "Euclidean algorithm for the GCD (CP-Algorithms)",
+      "url": "https://cp-algorithms.com/algebra/euclid-algorithm.html",
+      "kind": "article"
+    },
+    {
+      "title": "math.lcm and math.gcd in the Python docs",
+      "url": "https://docs.python.org/3/library/math.html#math.lcm",
+      "kind": "reference"
+    },
+    {
+      "title": "std::lcm reference",
+      "url": "https://en.cppreference.com/w/cpp/numeric/lcm",
+      "kind": "reference"
+    }
+  ]
+}

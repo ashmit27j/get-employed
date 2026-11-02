@@ -1,0 +1,140 @@
+{
+  "setId": "oop",
+  "title": "Object-oriented programming",
+  "topic": "oop",
+  "difficulty": "easy",
+  "minutes": 10,
+  "description": "Encapsulation, inheritance, polymorphism, abstraction and SOLID, with short Python and C++ snippets.",
+  "companyTags": [],
+  "roleTags": ["sde", "backend", "frontend"],
+  "order": 40,
+  "resources": [
+    {
+      "title": "Classes (Python tutorial)",
+      "url": "https://docs.python.org/3/tutorial/classes.html",
+      "kind": "reference"
+    },
+    {
+      "title": "Virtual functions (cppreference)",
+      "url": "https://en.cppreference.com/w/cpp/language/virtual",
+      "kind": "reference"
+    },
+    {
+      "title": "SOLID principles (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/SOLID",
+      "kind": "article"
+    }
+  ],
+  "questions": [
+    {
+      "id": "encapsulation",
+      "prompt": "What does encapsulation mean?",
+      "options": [
+        "Bundling data with the methods that use it, and restricting direct access to the data",
+        "A class inheriting from several parents",
+        "Writing many functions with the same name",
+        "Splitting a program into files"
+      ],
+      "answer": 0,
+      "explanation": "Encapsulation keeps an object's state behind its methods (private fields, public methods), so the object controls how its data changes."
+    },
+    {
+      "id": "overloading",
+      "prompt": "Method overloading (same name, different parameter lists) is an example of:",
+      "options": [
+        "Encapsulation",
+        "Compile-time polymorphism",
+        "Runtime polymorphism",
+        "Multiple inheritance"
+      ],
+      "answer": 1,
+      "explanation": "The compiler picks the overload from the argument types, before the program runs. Overriding a virtual method is resolved at runtime instead."
+    },
+    {
+      "id": "super-call",
+      "prompt": "What does this Python code print?\n\n```python\nclass A:\n    def hi(self):\n        return \"A\"\n\nclass B(A):\n    def hi(self):\n        return \"B\" + super().hi()\n\nprint(B().hi())\n```",
+      "options": ["A", "B", "BA", "AB"],
+      "answer": 2,
+      "explanation": "B overrides hi, returns \"B\" and appends what A's hi returns via super(): \"B\" + \"A\" = \"BA\"."
+    },
+    {
+      "id": "interfaces",
+      "prompt": "In Java, which is true?",
+      "options": [
+        "A class can extend several classes",
+        "A class can implement several interfaces but extend only one class",
+        "Abstract classes can be instantiated",
+        "Interfaces can't declare methods"
+      ],
+      "answer": 1,
+      "explanation": "Java allows single class inheritance but multiple interface implementation. Abstract classes can't be instantiated directly."
+    },
+    {
+      "id": "liskov",
+      "prompt": "\"Objects of a subclass should be usable anywhere the base class is expected, without breaking the program.\" Which principle is this?",
+      "options": [
+        "Single responsibility",
+        "Open/closed",
+        "Liskov substitution",
+        "Dependency inversion"
+      ],
+      "answer": 2,
+      "explanation": "The Liskov substitution principle, the L in SOLID. A classic violation is a Square subclass of Rectangle whose setWidth also changes the height."
+    },
+    {
+      "id": "virtual",
+      "prompt": "In C++, what makes a call through a base-class pointer run the derived class's version of a method?",
+      "options": [
+        "Declaring the method `inline`",
+        "Declaring the method `static`",
+        "Making the method `private`",
+        "Declaring the method `virtual` in the base class"
+      ],
+      "answer": 3,
+      "explanation": "A `virtual` method is dispatched at runtime through the object's vtable. Without it, the call is bound at compile time to the pointer's static type."
+    },
+    {
+      "id": "constructor",
+      "prompt": "Which statement about constructors in C++ and Java is true?",
+      "options": [
+        "They must return a value",
+        "They can only be called explicitly",
+        "A class can have only one",
+        "They have the same name as the class and no return type"
+      ],
+      "answer": 3,
+      "explanation": "Constructors share the class name, declare no return type, run automatically when an object is created, and can be overloaded."
+    },
+    {
+      "id": "has-a",
+      "prompt": "A `Car` class holds an `Engine` object as a field. Which relationship is this?",
+      "options": ["Overloading", "Inheritance (is-a)", "Composition (has-a)", "Polymorphism"],
+      "answer": 2,
+      "explanation": "A car has an engine, so it's composition. Inheritance would claim a car is an engine. \"Prefer composition over inheritance\" is common design advice."
+    },
+    {
+      "id": "abstraction",
+      "prompt": "What is abstraction in OOP?",
+      "options": [
+        "Hiding implementation details and exposing only what a user of the object needs",
+        "Making every field public",
+        "Copying code between classes",
+        "Using only abstract classes"
+      ],
+      "answer": 0,
+      "explanation": "Abstraction means showing the essential interface (e.g. `list.sort()`) and hiding how it works. Abstract classes and interfaces are one way to express it."
+    },
+    {
+      "id": "virtual-destructor",
+      "prompt": "In C++, you `delete` a derived object through a base-class pointer, and the base class destructor is **not** virtual. What happens?",
+      "options": [
+        "Both destructors run normally",
+        "Only the derived destructor runs",
+        "Undefined behaviour; typically the derived destructor doesn't run",
+        "A compile error"
+      ],
+      "answer": 2,
+      "explanation": "Deleting through a base pointer without a virtual destructor is undefined behaviour. In practice only the base destructor runs, so the derived part's resources leak. Give polymorphic base classes a virtual destructor."
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "slug": "internship-offers",
+  "title": "Internship Offers",
+  "difficulty": "medium",
+  "topics": ["greedy", "heap", "sorting"],
+  "companyTags": [],
+  "roleTags": ["sde", "backend", "data"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 50,
+  "examples": [
+    {
+      "input": "4\n2 50\n1 10\n2 20\n1 30\n",
+      "output": "80\n",
+      "explanation": "Accept the 30 offer on day 1 and the 50 offer on day 2. Only two offers can be accepted by day 2, and 30 + 50 is the best pair."
+    },
+    {
+      "input": "3\n3 5\n3 6\n3 7\n",
+      "output": "18\n",
+      "explanation": "All three deadlines are day 3, so all three fit."
+    }
+  ],
+  "hints": [
+    "Suppose you already know which offers to accept. In what order should you accept them so no deadline is missed?",
+    "A set of offers is possible exactly when, for every day d, at most d chosen offers have a deadline of d or earlier.",
+    "Go through offers by deadline. Keep the chosen ones in a min-heap of stipends. If the heap holds more offers than the current deadline allows, drop the smallest."
+  ],
+  "complexity": { "time": "O(n log n)", "space": "O(n)" },
+  "resources": [
+    {
+      "title": "Scheduling jobs with deadlines (CP-Algorithms)",
+      "url": "https://cp-algorithms.com/schedules/schedule_with_completion_duration.html",
+      "kind": "article"
+    },
+    {
+      "title": "heapq in the Python docs",
+      "url": "https://docs.python.org/3/library/heapq.html",
+      "kind": "reference"
+    },
+    {
+      "title": "std::priority_queue reference",
+      "url": "https://en.cppreference.com/w/cpp/container/priority_queue",
+      "kind": "reference"
+    }
+  ]
+}

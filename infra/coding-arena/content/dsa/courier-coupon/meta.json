@@ -1,0 +1,48 @@
+{
+  "slug": "courier-coupon",
+  "title": "Courier Coupon",
+  "difficulty": "hard",
+  "topics": ["graphs", "dijkstra", "shortest-paths"],
+  "companyTags": [],
+  "roleTags": ["sde", "backend"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 10,
+  "examples": [
+    {
+      "input": "4 4\n1 2 5\n2 4 100\n1 3 20\n3 4 30\n",
+      "output": "5\n",
+      "explanation": "Use the coupon on the 100 road: 1 → 2 costs 5 and 2 → 4 is free. Without the coupon the best route costs 50."
+    },
+    {
+      "input": "3 1\n1 2 7\n",
+      "output": "-1\n",
+      "explanation": "No road reaches junction 3."
+    }
+  ],
+  "hints": [
+    "Without the coupon this is a plain shortest-path problem with non-negative tolls. Which algorithm fits?",
+    "Remember one extra fact about where you are: whether you've already used the coupon. That turns each junction into two states.",
+    "From state (v, unused), a road of toll w leads to (u, unused) at cost w, or to (u, used) at cost 0. From (v, used), roads cost their toll. Run Dijkstra on these 2n states."
+  ],
+  "complexity": { "time": "O((n + m) log n)", "space": "O(n + m)" },
+  "resources": [
+    {
+      "title": "Dijkstra's algorithm (CP-Algorithms)",
+      "url": "https://cp-algorithms.com/graph/dijkstra_sparse.html",
+      "kind": "article"
+    },
+    {
+      "title": "Shortest paths, visualised (VisuAlgo)",
+      "url": "https://visualgo.net/en/sssp",
+      "kind": "visualizer"
+    },
+    {
+      "title": "heapq in the Python docs",
+      "url": "https://docs.python.org/3/library/heapq.html",
+      "kind": "reference"
+    }
+  ]
+}

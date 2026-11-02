@@ -1,0 +1,110 @@
+{
+  "setId": "dbms",
+  "title": "Databases and SQL",
+  "topic": "dbms",
+  "difficulty": "medium",
+  "minutes": 12,
+  "description": "Normal forms, ACID, joins, GROUP BY and HAVING, NULLs, indexes and isolation anomalies.",
+  "companyTags": [],
+  "roleTags": ["sde", "backend", "data", "analyst"],
+  "order": 20,
+  "resources": [
+    {
+      "title": "Joins between tables (PostgreSQL tutorial)",
+      "url": "https://www.postgresql.org/docs/current/tutorial-join.html",
+      "kind": "reference"
+    },
+    {
+      "title": "Transaction isolation (PostgreSQL docs)",
+      "url": "https://www.postgresql.org/docs/current/transaction-iso.html",
+      "kind": "reference"
+    },
+    {
+      "title": "Database normalization (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Database_normalization",
+      "kind": "article"
+    }
+  ],
+  "questions": [
+    {
+      "id": "third-nf",
+      "prompt": "Which normal form removes transitive dependencies of non-key attributes on the key?",
+      "options": ["1NF", "2NF", "3NF", "4NF"],
+      "answer": 2,
+      "explanation": "2NF removes partial dependencies on part of a composite key. 3NF also removes transitive ones, where a non-key attribute depends on another non-key attribute."
+    },
+    {
+      "id": "acid-i",
+      "prompt": "In ACID, what does the I stand for?",
+      "options": ["Integrity", "Isolation", "Indexing", "Idempotence"],
+      "answer": 1,
+      "explanation": "Atomicity, Consistency, Isolation, Durability. Isolation means concurrent transactions don't see each other's partial work."
+    },
+    {
+      "id": "pk-null",
+      "prompt": "Can a primary key column contain NULL?",
+      "options": ["Yes, once", "Yes, any number of times", "No", "Only in composite keys"],
+      "answer": 2,
+      "explanation": "A primary key must be unique and NOT NULL in every column it covers. (A UNIQUE constraint, by contrast, usually allows NULLs.)"
+    },
+    {
+      "id": "group-by",
+      "prompt": "Which clause do you use to count employees in each department?",
+      "options": ["GROUP BY", "PARTITION", "ORDER BY", "DISTINCT"],
+      "answer": 0,
+      "explanation": "`SELECT dept, COUNT(*) FROM employees GROUP BY dept;` makes one group per department and counts each group."
+    },
+    {
+      "id": "left-join",
+      "prompt": "Which join returns every row of the left table, with matching right-table rows where they exist and NULLs where they don't?",
+      "options": ["LEFT JOIN", "RIGHT JOIN", "CROSS JOIN", "INNER JOIN"],
+      "answer": 0,
+      "explanation": "A LEFT (OUTER) JOIN keeps all left rows. An INNER JOIN would drop the left rows that have no match."
+    },
+    {
+      "id": "having",
+      "prompt": "What is the difference between WHERE and HAVING?",
+      "options": [
+        "HAVING filters rows before grouping; WHERE filters groups",
+        "WHERE filters rows before grouping; HAVING filters groups after aggregation",
+        "HAVING only works with joins",
+        "They are the same"
+      ],
+      "answer": 1,
+      "explanation": "WHERE runs on individual rows, so it can't use aggregates. HAVING runs after GROUP BY and can, e.g. `HAVING COUNT(*) > 5`."
+    },
+    {
+      "id": "count-null",
+      "prompt": "A table has 5 rows, and its `email` column is NULL in 2 of them. What does `SELECT COUNT(email) FROM t;` return?",
+      "options": ["5", "3", "2", "NULL"],
+      "answer": 1,
+      "explanation": "COUNT(column) counts only non-NULL values: 3. COUNT(*) counts rows and would return 5."
+    },
+    {
+      "id": "cross-join",
+      "prompt": "Table R has 3 rows and table S has 4 rows. How many rows does `R CROSS JOIN S` produce?",
+      "options": ["7", "4", "12", "3"],
+      "answer": 2,
+      "explanation": "A cross join pairs every row of R with every row of S: 3 × 4 = 12."
+    },
+    {
+      "id": "dirty-read",
+      "prompt": "A transaction reads a value that another transaction has written but not committed yet. What is this anomaly called?",
+      "options": ["Dirty read", "Phantom read", "Lost update", "Non-repeatable read"],
+      "answer": 0,
+      "explanation": "Reading uncommitted data is a dirty read. The READ COMMITTED isolation level and above prevent it."
+    },
+    {
+      "id": "index",
+      "prompt": "What is the main trade-off of adding an index on a column?",
+      "options": [
+        "Faster lookups on that column, slower inserts and updates",
+        "Faster inserts, slower lookups",
+        "Less disk space used",
+        "It changes query results"
+      ],
+      "answer": 0,
+      "explanation": "An index (usually a B-tree) speeds up searches, joins and sorts on the column, but every insert, update and delete must also update the index, and it takes extra space."
+    }
+  ]
+}

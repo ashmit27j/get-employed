@@ -1,0 +1,3 @@
+- 1 ≤ n ≤ 10⁵
+- 1 ≤ aᵢ ≤ 10⁹
+- The answer can exceed 2³¹ − 1.

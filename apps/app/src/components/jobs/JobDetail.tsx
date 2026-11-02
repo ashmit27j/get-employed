@@ -14,7 +14,7 @@ import {
   ScoreBar,
   cx,
 } from "@ge/ui";
-import { mentions, timeAgo } from "@ge/core";
+import { mentions, roleTagForTitle, tagLabel, timeAgo } from "@ge/core";
 import { PageBody } from "@/components/shell/AppShell";
 import { addProfileSkill } from "@/server/actions/profile";
 import { toggleSaveJob } from "@/server/actions/jobs";
@@ -359,8 +359,33 @@ export function JobDetailView({ detail, nowIso }: { detail: JobDetail; nowIso: s
               </>
             )}
           </Panel>
+          <PracticePanel title={job.title} />
         </div>
       </div>
     </PageBody>
+  );
+}
+
+/** Links to Coding Arena problems tagged for this kind of role. */
+function PracticePanel({ title }: { title: string }) {
+  const role = roleTagForTitle(title);
+  if (!role) return null;
+  return (
+    <Panel title="Practice for this role" icon="code-xml" padded>
+      <div className="flex flex-col gap-3">
+        <p className="m-0 text-small text-pretty text-ink-muted">
+          Coding rounds for {tagLabel(role)} roles lean on these problems. Solve a few before you
+          apply.
+        </p>
+        <Button
+          variant="secondary"
+          size="sm"
+          fullWidth
+          href={`/arena/dsa?role=${encodeURIComponent(role)}`}
+        >
+          Open Coding Arena
+        </Button>
+      </div>
+    </Panel>
   );
 }

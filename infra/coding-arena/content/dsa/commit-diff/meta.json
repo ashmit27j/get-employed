@@ -1,0 +1,42 @@
+{
+  "slug": "commit-diff",
+  "title": "Commit Diff",
+  "difficulty": "medium",
+  "topics": ["dynamic-programming", "strings"],
+  "companyTags": [],
+  "roleTags": ["sde", "backend", "devops"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 70,
+  "examples": [
+    {
+      "input": "abcbdab\nbdcaba\n",
+      "output": "4\n",
+      "explanation": "One longest common subsequence is bcba: keep b, c, b, a from the first string and b, c, b, a from the second."
+    },
+    {
+      "input": "git\nhub\n",
+      "output": "0\n"
+    }
+  ],
+  "hints": [
+    "Compare the last characters of the two strings. If they're equal, what can you say about an optimal answer? If they're different, one of them can't be in the match. Which one?",
+    "Let L[i][j] be the answer for the first i characters of A and the first j of B. Write L[i][j] from L[i − 1][j − 1], L[i − 1][j] and L[i][j − 1].",
+    "Each row only depends on the row before it, so two rows of length |B| + 1 are enough."
+  ],
+  "complexity": { "time": "O(|A| · |B|)", "space": "O(|B|)" },
+  "resources": [
+    {
+      "title": "Longest common subsequence (USACO Guide: paths on grids)",
+      "url": "https://usaco.guide/gold/paths-grids",
+      "kind": "article"
+    },
+    {
+      "title": "Diff algorithms and the LCS (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Longest_common_subsequence",
+      "kind": "reference"
+    }
+  ]
+}

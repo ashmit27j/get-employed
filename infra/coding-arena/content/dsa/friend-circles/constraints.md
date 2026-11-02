@@ -1,0 +1,4 @@
+- 1 ≤ n ≤ 10⁵
+- 1 ≤ q ≤ 1.5 · 10⁵
+- 1 ≤ a, b ≤ n (a may equal b)
+- There is at least one question (t = 2).

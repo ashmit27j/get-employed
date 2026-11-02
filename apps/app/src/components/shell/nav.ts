@@ -7,6 +7,7 @@ export type NavId =
   | "outbox"
   | "resume"
   | "interview"
+  | "arena"
   | "assistant"
   | "linkedin"
   | "github"
@@ -30,6 +31,7 @@ export const NAV: { group: string; items: NavEntry[] }[] = [
       { id: "outbox", label: "Mailbox", icon: "mail", href: "/mailbox", badge: "drafts" },
       { id: "resume", label: "Documents", icon: "file-text", href: "/documents" },
       { id: "interview", label: "Interview prep", icon: "graduation-cap", href: "/interview" },
+      { id: "arena", label: "Coding Arena", icon: "code-xml", href: "/arena" },
     ],
   },
   {

@@ -1,0 +1,125 @@
+{
+  "setId": "operating-systems",
+  "title": "Operating systems",
+  "topic": "operating-systems",
+  "difficulty": "medium",
+  "minutes": 12,
+  "description": "Scheduling, deadlocks, paging, semaphores and threads: the OS questions that come up in technical interviews.",
+  "companyTags": [],
+  "roleTags": ["sde", "backend", "devops"],
+  "order": 10,
+  "resources": [
+    {
+      "title": "Operating Systems: Three Easy Pieces (free book)",
+      "url": "https://pages.cs.wisc.edu/~remzi/OSTEP/",
+      "kind": "article"
+    },
+    {
+      "title": "Page replacement algorithms (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Page_replacement_algorithm",
+      "kind": "reference"
+    }
+  ],
+  "questions": [
+    {
+      "id": "starvation",
+      "prompt": "Which CPU scheduling algorithm can make long jobs wait forever (starvation) when short jobs keep arriving?",
+      "options": [
+        "First come, first served",
+        "Round robin",
+        "Shortest job first",
+        "First in, first out"
+      ],
+      "answer": 2,
+      "explanation": "SJF always picks the shortest waiting job, so a steady stream of short jobs can keep a long one waiting indefinitely. Ageing (raising priority over time) is the usual fix. FCFS and round robin serve every job eventually."
+    },
+    {
+      "id": "deadlock-conditions",
+      "prompt": "Which of these is **not** one of the four necessary conditions for deadlock?",
+      "options": ["Mutual exclusion", "Hold and wait", "Preemption", "Circular wait"],
+      "answer": 2,
+      "explanation": "The four conditions are mutual exclusion, hold and wait, **no** preemption, and circular wait. Allowing preemption breaks one of them, which is a way to prevent deadlock."
+    },
+    {
+      "id": "thrashing",
+      "prompt": "A system is thrashing. What is it spending most of its time on?",
+      "options": [
+        "Handling network interrupts",
+        "Compiling code",
+        "Moving pages between memory and disk",
+        "Running user processes"
+      ],
+      "answer": 2,
+      "explanation": "Thrashing happens when processes don't have enough frames for their working sets, so they page fault constantly and the CPU mostly waits for paging I/O."
+    },
+    {
+      "id": "page-offset",
+      "prompt": "A system uses 32-bit virtual addresses and 4 KB pages. How many bits of an address are the page offset?",
+      "options": ["10", "12", "20", "32"],
+      "answer": 1,
+      "explanation": "4 KB = 4,096 = 2¹² bytes, so 12 bits select a byte within a page. The remaining 20 bits are the page number."
+    },
+    {
+      "id": "context-switch",
+      "prompt": "What does a context switch save so that a process can resume later?",
+      "options": [
+        "Its source code",
+        "Its CPU state: registers, program counter and stack pointer",
+        "The process's whole memory, to disk",
+        "Only its open files"
+      ],
+      "answer": 1,
+      "explanation": "The kernel saves the CPU state into the process control block and loads the next process's state. Memory stays where it is."
+    },
+    {
+      "id": "semaphore",
+      "prompt": "A counting semaphore starts at 3. Five `wait()` (P) operations and then two `signal()` (V) operations are performed. What is its value at the end?",
+      "options": ["0", "-2", "1", "3"],
+      "answer": 0,
+      "explanation": "3 − 5 + 2 = 0. In implementations that allow negative values, it goes 3 → −2 → 0. In ones that block at 0, two processes wait and the two signals wake them, leaving 0 either way."
+    },
+    {
+      "id": "belady",
+      "prompt": "Belady's anomaly, where adding more frames causes more page faults, can happen with which page replacement algorithm?",
+      "options": ["LRU", "Optimal", "FIFO", "None of them"],
+      "answer": 2,
+      "explanation": "FIFO can fault more with more frames. LRU and the optimal algorithm are stack algorithms: the pages in memory with k frames are always a subset of those with k + 1 frames, so they never show the anomaly."
+    },
+    {
+      "id": "threads-share",
+      "prompt": "Threads of the same process share which of these?",
+      "options": [
+        "Their stacks",
+        "Their program counters",
+        "Their registers",
+        "The heap and global variables"
+      ],
+      "answer": 3,
+      "explanation": "Threads share the process's address space: code, heap, globals and open files. Each thread has its own stack, registers and program counter."
+    },
+    {
+      "id": "big-quantum",
+      "prompt": "Round robin scheduling with a very large time quantum behaves like which algorithm?",
+      "options": [
+        "Shortest job first",
+        "Priority scheduling",
+        "Multilevel queue",
+        "First come, first served"
+      ],
+      "answer": 3,
+      "explanation": "If the quantum is longer than any burst, every process runs to completion in arrival order: that's FCFS."
+    },
+    {
+      "id": "external-fragmentation",
+      "prompt": "Which memory scheme suffers from **external** fragmentation?",
+      "options": [
+        "Virtual memory with paging",
+        "Paging with fixed-size frames",
+        "A single fixed partition",
+        "Contiguous allocation with variable-size partitions"
+      ],
+      "answer": 3,
+      "explanation": "Variable-size holes appear between allocations, so free memory can be split into pieces too small to use. Paging avoids external fragmentation (it can waste part of the last page instead: internal fragmentation)."
+    }
+  ]
+}

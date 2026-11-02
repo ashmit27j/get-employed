@@ -1,0 +1,33 @@
+{
+  "slug": "digit-root",
+  "title": "Lucky Digit",
+  "difficulty": "easy",
+  "topics": ["math", "loops", "strings"],
+  "companyTags": [],
+  "roleTags": ["sde", "frontend", "backend", "data"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 20,
+  "examples": [
+    {
+      "input": "3\n9875\n7\n0\n",
+      "output": "2\n7\n0\n",
+      "explanation": "9 + 8 + 7 + 5 = 29, then 2 + 9 = 11, then 1 + 1 = 2. 7 is already one digit, and so is 0."
+    }
+  ],
+  "hints": [
+    "Write a loop that replaces the number by the sum of its digits until it has one digit. How many rounds can that take for a number with 19 digits?",
+    "The numbers can have up to 19 digits. Reading them as text is safe in any language, and summing the characters is the first round.",
+    "Going further: the result equals 1 + (N − 1) mod 9 for N > 0, because a number and its digit sum leave the same remainder when divided by 9."
+  ],
+  "complexity": { "time": "O(total digits)", "space": "O(1)" },
+  "resources": [
+    {
+      "title": "Digital root (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Digital_root",
+      "kind": "reference"
+    }
+  ]
+}

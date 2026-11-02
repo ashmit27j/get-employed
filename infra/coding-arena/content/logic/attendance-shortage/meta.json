@@ -1,0 +1,43 @@
+{
+  "slug": "attendance-shortage",
+  "title": "Attendance Shortage",
+  "difficulty": "easy",
+  "topics": ["conditions", "loops"],
+  "companyTags": [],
+  "roleTags": ["sde", "frontend", "backend", "data"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 10,
+  "examples": [
+    {
+      "input": "4 40\n30 29 40 0\n",
+      "output": "2 4\n",
+      "explanation": "75% of 40 classes is 30. Student 1 attended exactly 30, which is enough. Students 2 and 4 are short."
+    },
+    {
+      "input": "2 3\n3 3\n",
+      "output": "-1\n",
+      "explanation": "Nobody is short, so print -1."
+    }
+  ],
+  "hints": [
+    "Student i is short when aᵢ / T < 0.75. Floating-point division can round the wrong way right at the boundary. Can you compare with integers only?",
+    "Multiply both sides by 100 · T: the student is short exactly when 100 · aᵢ < 75 · T. With T up to 10⁹, those products need 64 bits.",
+    "Collect the short students in order and print them space-separated, or -1 if the list is empty."
+  ],
+  "complexity": { "time": "O(n)", "space": "O(n)" },
+  "resources": [
+    {
+      "title": "Floating-point arithmetic: issues and limitations (Python docs)",
+      "url": "https://docs.python.org/3/tutorial/floatingpoint.html",
+      "kind": "article"
+    },
+    {
+      "title": "Fundamental types and their ranges (cppreference)",
+      "url": "https://en.cppreference.com/w/cpp/language/types",
+      "kind": "reference"
+    }
+  ]
+}

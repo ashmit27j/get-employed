@@ -1,0 +1,100 @@
+{
+  "setId": "probability-counting",
+  "title": "Probability, permutations and combinations",
+  "topic": "probability",
+  "difficulty": "hard",
+  "minutes": 18,
+  "description": "Dice, cards and coins, arrangements with repeated letters, circular seating and committees.",
+  "companyTags": [],
+  "roleTags": ["sde", "data", "analyst", "ml"],
+  "order": 40,
+  "resources": [
+    {
+      "title": "Probability practice questions (IndiaBix)",
+      "url": "https://www.indiabix.com/aptitude/probability/",
+      "kind": "practice"
+    },
+    {
+      "title": "Permutations and combinations practice (IndiaBix)",
+      "url": "https://www.indiabix.com/aptitude/permutation-and-combination/",
+      "kind": "practice"
+    },
+    {
+      "title": "Probability library (Khan Academy)",
+      "url": "https://www.khanacademy.org/math/statistics-probability/probability-library",
+      "kind": "video"
+    }
+  ],
+  "questions": [
+    {
+      "id": "dice-seven",
+      "prompt": "Two fair dice are rolled. What is the probability that the numbers add up to 7?",
+      "options": ["1/6", "1/12", "7/36", "5/36"],
+      "answer": 0,
+      "explanation": "Six of the 36 equally likely outcomes give 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1). 6/36 = 1/6."
+    },
+    {
+      "id": "level",
+      "prompt": "In how many different ways can the letters of LEVEL be arranged?",
+      "options": ["120", "60", "30", "20"],
+      "answer": 2,
+      "explanation": "5 letters with L twice and E twice: 5! / (2! × 2!) = 120 / 4 = 30."
+    },
+    {
+      "id": "committee",
+      "prompt": "In how many ways can a committee of 3 be chosen from 8 people?",
+      "options": ["336", "56", "24", "112"],
+      "answer": 1,
+      "explanation": "Order doesn't matter in a committee: C(8, 3) = (8 × 7 × 6) / (3 × 2 × 1) = 56. 336 counts ordered choices."
+    },
+    {
+      "id": "at-least-one-head",
+      "prompt": "A fair coin is tossed 3 times. What is the probability of getting at least one head?",
+      "options": ["1/2", "3/8", "3/4", "7/8"],
+      "answer": 3,
+      "explanation": "Use the complement: the only outcome with no heads is TTT, with probability 1/8. So P(at least one head) = 1 − 1/8 = 7/8."
+    },
+    {
+      "id": "two-red",
+      "prompt": "A bag has 4 red and 6 blue balls. Two balls are drawn without replacement. What is the probability that both are red?",
+      "options": ["4/25", "2/15", "1/5", "4/15"],
+      "answer": 1,
+      "explanation": "4/10 for the first red, then 3/9 for the second: (4/10) × (3/9) = 12/90 = 2/15. Or C(4,2) / C(10,2) = 6/45 = 2/15."
+    },
+    {
+      "id": "round-table",
+      "prompt": "In how many ways can 5 people sit around a round table, if only their order around the table matters?",
+      "options": ["120", "60", "24", "25"],
+      "answer": 2,
+      "explanation": "Rotations of the same seating are identical, so fix one person and arrange the other 4: 4! = 24."
+    },
+    {
+      "id": "distinct-digits",
+      "prompt": "How many 3-digit numbers with all digits different can be made from the digits 1, 2, 3, 4 and 5?",
+      "options": ["125", "60", "10", "120"],
+      "answer": 1,
+      "explanation": "5 choices for the first digit, 4 for the second and 3 for the third: 5 × 4 × 3 = 60."
+    },
+    {
+      "id": "king-or-heart",
+      "prompt": "One card is drawn from a standard 52-card deck. What is the probability that it is a king or a heart?",
+      "options": ["17/52", "1/4", "4/13", "1/13"],
+      "answer": 2,
+      "explanation": "4 kings + 13 hearts − 1 king of hearts counted twice = 16 cards. 16/52 = 4/13."
+    },
+    {
+      "id": "captain-vice",
+      "prompt": "In how many ways can a captain and a vice-captain be chosen from a team of 11?",
+      "options": ["55", "110", "121", "22"],
+      "answer": 1,
+      "explanation": "The two roles are different, so order matters: 11 choices for captain, then 10 for vice-captain: 110."
+    },
+    {
+      "id": "divisible-by-seven",
+      "prompt": "A two-digit number (10 to 99) is chosen at random. What is the probability that it is divisible by 7?",
+      "options": ["1/7", "13/90", "14/90", "7/45"],
+      "answer": 1,
+      "explanation": "The multiples of 7 from 14 to 98 are 7 × 2 up to 7 × 14: 13 numbers. There are 90 two-digit numbers, so 13/90."
+    }
+  ]
+}

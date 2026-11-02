@@ -1,0 +1,48 @@
+{
+  "slug": "campus-maze",
+  "title": "Campus Maze",
+  "difficulty": "medium",
+  "topics": ["graphs", "bfs", "grids"],
+  "companyTags": [],
+  "roleTags": ["sde", "backend"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 30,
+  "examples": [
+    {
+      "input": "4 5\nS...#\n.##.#\n...#.\n#.#.E\n",
+      "output": "-1\n",
+      "explanation": "Walls cut the gate off. The open cells around E can't be reached from S."
+    },
+    {
+      "input": "3 4\nS.#.\n.#..\n...E\n",
+      "output": "5\n",
+      "explanation": "Go down twice, then right three times: 5 moves."
+    }
+  ],
+  "hints": [
+    "Each move costs the same, so the cells reachable in 1 move, then in 2 moves, and so on form layers. Which search explores a graph layer by layer?",
+    "Breadth-first search from S visits every cell at most once, in order of distance. The first time it reaches E, that distance is the answer.",
+    "Mark a cell as visited when you push it onto the queue, not when you pop it, or the queue can hold the same cell many times."
+  ],
+  "complexity": { "time": "O(R · C)", "space": "O(R · C)" },
+  "resources": [
+    {
+      "title": "Breadth-first search (CP-Algorithms)",
+      "url": "https://cp-algorithms.com/graph/breadth-first-search.html",
+      "kind": "article"
+    },
+    {
+      "title": "Graph traversal, visualised (VisuAlgo)",
+      "url": "https://visualgo.net/en/dfsbfs",
+      "kind": "visualizer"
+    },
+    {
+      "title": "collections.deque in the Python docs",
+      "url": "https://docs.python.org/3/library/collections.html#collections.deque",
+      "kind": "reference"
+    }
+  ]
+}

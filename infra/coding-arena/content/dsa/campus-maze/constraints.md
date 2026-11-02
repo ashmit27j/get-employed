@@ -1,0 +1,3 @@
+- 1 ≤ R, C ≤ 800
+- R · C ≥ 2
+- The grid contains exactly one `S` and exactly one `E`.

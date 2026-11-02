@@ -16,6 +16,7 @@ const ROUTES: [string, NavId][] = [
   ["/mailbox", "outbox"],
   ["/documents", "resume"],
   ["/interview", "interview"],
+  ["/arena", "arena"],
   ["/assistant", "assistant"],
   ["/profiles/linkedin", "linkedin"],
   ["/profiles/github", "github"],

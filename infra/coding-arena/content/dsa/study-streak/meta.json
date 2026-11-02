@@ -1,0 +1,38 @@
+{
+  "slug": "study-streak",
+  "title": "Screen-Time Streak",
+  "difficulty": "easy",
+  "topics": ["two-pointers", "sliding-window", "arrays"],
+  "companyTags": [],
+  "roleTags": ["sde", "frontend", "backend"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 30,
+  "examples": [
+    {
+      "input": "6 10\n2 5 1 3 8 2\n",
+      "output": "3\n",
+      "explanation": "Days 1 to 3 total 8 minutes and days 2 to 4 total 9. Any four days in a row add up to more than 10."
+    },
+    {
+      "input": "3 0\n0 1 0\n",
+      "output": "1\n",
+      "explanation": "A single day with 0 minutes fits a budget of 0."
+    }
+  ],
+  "hints": [
+    "Checking every start and end is O(n²). Can you reuse the work from the previous window?",
+    "All the values are non-negative. If a window is over budget, can extending it to the right ever bring it back under?",
+    "Keep two pointers. Move the right pointer forward one day at a time, and move the left pointer forward while the window is over budget. Both pointers only ever move forward."
+  ],
+  "complexity": { "time": "O(n)", "space": "O(1) beyond the input" },
+  "resources": [
+    {
+      "title": "Two pointers (USACO Guide)",
+      "url": "https://usaco.guide/silver/two-pointers",
+      "kind": "article"
+    }
+  ]
+}

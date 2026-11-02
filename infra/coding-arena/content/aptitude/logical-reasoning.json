@@ -1,0 +1,95 @@
+{
+  "setId": "logical-reasoning",
+  "title": "Series and logical reasoning",
+  "topic": "reasoning",
+  "difficulty": "medium",
+  "minutes": 15,
+  "description": "Number series, coding, blood relations, directions, syllogisms, clocks and calendars.",
+  "companyTags": [],
+  "roleTags": ["sde", "data", "analyst"],
+  "order": 30,
+  "resources": [
+    {
+      "title": "Number series practice (IndiaBix)",
+      "url": "https://www.indiabix.com/logical-reasoning/number-series/",
+      "kind": "practice"
+    },
+    {
+      "title": "Syllogism practice (IndiaBix)",
+      "url": "https://www.indiabix.com/logical-reasoning/logical-deduction/",
+      "kind": "practice"
+    }
+  ],
+  "questions": [
+    {
+      "id": "series-n-n1",
+      "prompt": "What comes next? 2, 6, 12, 20, 30, …",
+      "options": ["40", "42", "36", "44"],
+      "answer": 1,
+      "explanation": "The terms are 1·2, 2·3, 3·4, 4·5, 5·6, so the next is 6·7 = 42. Equivalently, the gaps 4, 6, 8, 10 grow by 2, so the next gap is 12."
+    },
+    {
+      "id": "series-double",
+      "prompt": "What comes next? 3, 5, 9, 17, 33, …",
+      "options": ["49", "66", "65", "64"],
+      "answer": 2,
+      "explanation": "Each term is twice the previous one minus 1: 33 × 2 − 1 = 65."
+    },
+    {
+      "id": "odd-one-out",
+      "prompt": "Which number is the odd one out? 121, 144, 169, 196, 210",
+      "options": ["121", "169", "196", "210"],
+      "answer": 3,
+      "explanation": "121, 144, 169 and 196 are the squares of 11, 12, 13 and 14. 210 isn't a perfect square."
+    },
+    {
+      "id": "letter-code",
+      "prompt": "If CODE is written as DPEF, how is MATH written?",
+      "options": ["NBUI", "LZSG", "NBTI", "OCVJ"],
+      "answer": 0,
+      "explanation": "Each letter moves one place forward: C→D, O→P, D→E, E→F. So M→N, A→B, T→U, H→I: NBUI."
+    },
+    {
+      "id": "blood-relation",
+      "prompt": "Pointing to a man, Riya says, \"He is the son of my grandfather's only son.\" How is the man related to Riya?",
+      "options": ["Cousin", "Uncle", "Brother", "Father"],
+      "answer": 2,
+      "explanation": "Her grandfather's only son must be Riya's father. The son of Riya's father is her brother."
+    },
+    {
+      "id": "syllogism",
+      "prompt": "Statements: All engineers are graduates. Some graduates are coders.\n\nConclusions: (I) Some engineers are coders. (II) All coders are graduates.\n\nWhich conclusions follow?",
+      "options": ["Only I", "Only II", "Both I and II", "Neither I nor II"],
+      "answer": 3,
+      "explanation": "The coders who are graduates might all be non-engineers, so I doesn't follow. Only some coders are known to be graduates, so II doesn't follow either."
+    },
+    {
+      "id": "clock-angle",
+      "prompt": "What is the angle between the hour and minute hands at 3:15?",
+      "options": ["0°", "7.5°", "15°", "12.5°"],
+      "answer": 1,
+      "explanation": "The minute hand is at 90°. The hour hand moves 0.5° a minute, so at 3:15 it is at 90 + 15 × 0.5 = 97.5°. The difference is 7.5°."
+    },
+    {
+      "id": "directions",
+      "prompt": "You face north, turn right, turn right again, then turn left. Which way are you facing?",
+      "options": ["North", "South", "West", "East"],
+      "answer": 3,
+      "explanation": "North → right → East → right → South → left → East."
+    },
+    {
+      "id": "machines",
+      "prompt": "5 machines make 5 widgets in 5 minutes. How long do 100 machines take to make 100 widgets?",
+      "options": ["5 minutes", "100 minutes", "20 minutes", "1 minute"],
+      "answer": 0,
+      "explanation": "Each machine makes one widget in 5 minutes. 100 machines working at once make 100 widgets in the same 5 minutes."
+    },
+    {
+      "id": "calendar",
+      "prompt": "1 January 2025 was a Wednesday. What day of the week was 1 March 2025?",
+      "options": ["Friday", "Saturday", "Sunday", "Thursday"],
+      "answer": 1,
+      "explanation": "From 1 January to 1 March is 31 + 28 = 59 days (2025 isn't a leap year). 59 = 8 × 7 + 3, so it's 3 days after Wednesday: Saturday."
+    }
+  ]
+}

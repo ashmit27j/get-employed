@@ -1,0 +1,41 @@
+{
+  "slug": "word-frequency",
+  "title": "Trending Word",
+  "difficulty": "medium",
+  "topics": ["strings", "hashing", "sorting"],
+  "companyTags": [],
+  "roleTags": ["sde", "backend", "data"],
+  "timeLimitMs": 2000,
+  "pythonTimeLimitMs": 5000,
+  "memoryLimitMb": 256,
+  "checker": "tokens",
+  "order": 30,
+  "examples": [
+    {
+      "input": "7\nplacement intern offer intern placement ppo intern\n",
+      "output": "intern 3\n"
+    },
+    {
+      "input": "4\nbeta alpha beta alpha\n",
+      "output": "alpha 2\n",
+      "explanation": "alpha and beta both appear twice. alpha comes first in dictionary order."
+    }
+  ],
+  "hints": [
+    "Count how many times each word appears. Which data structure maps a word to a number?",
+    "After counting, walk through the counts and keep the best word so far. A word beats the current best if it has a higher count, or the same count and comes earlier in dictionary order."
+  ],
+  "complexity": { "time": "O(total length)", "space": "O(number of distinct words)" },
+  "resources": [
+    {
+      "title": "collections.Counter in the Python docs",
+      "url": "https://docs.python.org/3/library/collections.html#collections.Counter",
+      "kind": "reference"
+    },
+    {
+      "title": "std::unordered_map reference",
+      "url": "https://en.cppreference.com/w/cpp/container/unordered_map",
+      "kind": "reference"
+    }
+  ]
+}
